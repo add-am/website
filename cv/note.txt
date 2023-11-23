@@ -1,0 +1,5 @@
+see:
+
+https://github.com/add-am/CV
+
+for the script to create cv document

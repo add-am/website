@@ -1,0 +1,15 @@
+---
+title: "Projects"
+listing:
+  type: default
+  sort: date
+  image-height: "5cm"
+  fields: [image, date, title, author, reading-time, description]
+format: html
+---
+
+My list of projects will go here
+
+```{r}
+
+```

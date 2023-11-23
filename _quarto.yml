@@ -1,0 +1,75 @@
+authorname: "Adam Shand"
+draft: false
+
+project:
+  type: website
+  
+  resources:
+    - "images/**"
+
+title-meta: "Adam Shand"
+description-meta: "Environmental Scientist | Data Analyst"
+
+website:
+  title: "Adam Shand"
+  description: "Environmental Scientist | Data Analyst"
+  favicon: "images/logo.svg"
+  #site-url: https://www.adamshand22.com
+  #image: "images/favicon.ico"
+  
+  #repo-url: "https://github.com/add-am/tbd"
+  #repo-branch: main
+  
+  search: 
+    location: navbar
+    type: textbox
+    
+  page-footer:
+    left: |
+      <a href="https://github.com/add-am/" class="footer-link"> Source Code</a>
+
+  navbar:
+    pinned: true
+    logo: "images/logo.svg"
+    left:
+      - text: CV
+        href: cv/index.qmd
+      - text: Projects
+        href: projects/index.qmd
+    right:
+      - icon: github
+        href: https://github.com//add-am
+        aria-label: GitHub
+      - icon: twitter
+        href: https://twitter.com/AdamShand7
+        aria-label: Twitter
+      - icon: linkedin
+        href: https://www.linkedin.com/in/adam-shand-a2257117b/
+        aria-label: LinkedIn
+      - icon: envelope
+        href: "mailto:mail.adamshand22@gmail.com"
+        aria-label: Email
+        
+execute:
+  freeze: true
+  warning: false
+
+toc: true
+toc-location: right
+number-sections: false
+
+format:
+  html:
+    fontsize: 1.1em
+    theme: 
+      - html/styles.scss
+    code-fold: show
+    code-overflow: wrap
+    code-tools: false
+    code-block-border-left: "#01272e"
+    code-block-bg: true
+    anchor-sections: false
+    fig-cap-location: margin
+    reference-location: margin
+    page-layout: full
+    

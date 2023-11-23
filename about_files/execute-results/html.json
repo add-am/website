@@ -1,0 +1,16 @@
+{
+  "hash": "33df1e5365a4943ee8179e1adea0b8c3",
+  "result": {
+    "markdown": "---\ntitle: \"About\"\nabout:\n  template: jolla\n  links:\n    - icon: twitter\n      text: twitter\n      href: https://twitter.com\n    - icon: github\n      text: Github\n      href: https://github.com\n---\n\n\nAbout this site\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 3\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 4\n```\n:::\n:::\n",
+    "supporting": [
+      "about_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
