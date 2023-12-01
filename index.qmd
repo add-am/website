@@ -18,14 +18,19 @@ format:
     <div class="hero section_padding">
         <div class="hero_content">
             <h1>Hi, I'm <span class="gradient_text">Adam</span>.</h1> 
-            <p>I am an Environmental Scientist and Data Analyst. Explore my website to learn about applying data techniques to environmental issues using R. You will find information on water quality modelling and scoring, environmental mapping, satellite monitoring, and spatial science. </p>
-            <p>This website, my CV, and all showcase projects were <a href="https://github.com/add-am/"> built in R. </a>
+            <p>I am an Environmental Scientist and Data Analyst. Explore my website to learn about 
+            applying data techniques to environmental issues using R. You will find information on 
+            water quality modelling and scoring, environmental mapping, satellite monitoring, and 
+            spatial science. 
+            <br> 
+            <br>
+            This website, my CV, and all showcase projects were <a href="https://github.com/add-am/"> built in R. </a> </p>
         </div>
         <div class="hero_image">
             <img src="/images/profile_svg.svg"/>
         </div>
     </div>
-    <svg id="bottom_wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+    <svg id="bottom_wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 210">
     <path
                 fill="#01272e"
                 fill-opacity="1"

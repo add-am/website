@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Adam Shand",
+    "title": "Hi, I'm Adam.",
     "section": "",
-    "text": "I am an Environmental Scientist and Data Analyst. Explore my website to learn about applying data techniques to environmental issues using R. You will find information on water quality modelling and scoring, environmental mapping, satellite monitoring, and spatial science. \n            This website, my CV, and all showcase projects were  built in R."
+    "text": "Hi, I'm Adam. \n            I am an Environmental Scientist and Data Analyst. Explore my website to learn about \n            applying data techniques to environmental issues using R. You will find information on \n            water quality modelling and scoring, environmental mapping, satellite monitoring, and \n            spatial science. \n             \n            \n            This website, my CV, and all showcase projects were  built in R."
   },
   {
     "objectID": "about.html",
@@ -144,7 +144,7 @@
     "href": "portfolio/index.html",
     "title": "Portfolio of Work",
     "section": "",
-    "text": "Throughout my career in academia and government I have made my mark across a number of projects, working and publishing on topics such as artificial intelligence, environmental reports, geospatial stories, and automated data analysis. Below is a snapshot of some of this work.\n\n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n\n\n\n\n  \n\n\n\n\nStoryMap: Corals of Cleveland Bay\n\n\nSupervisor, Author and Maintainer\n\n\nA story about the hidden coral world in Cleveland Bay.\n\n\n\n\n\n\n01 Mar, 2024\n\n\n\n\n\n\n  \n\n\n\n\nNorthern Three Spatial Analyses (Freshwater: Fish Sampling Sites)\n\n\nsub title\n\n\n\n\n\n\n\n\n\n26 Nov, 2023\n\n\nAdam Shand\n\n\n\n\n\n\n  \n\n\n\n\nStoryMap: Hydrology and Hydrodynamics of Cleveland Bay\n\n\nAuthor and Maintainer\n\n\nA story about water and sediment movement in Cleveland Bay.\n\n\n\n\n\n\n13 Nov, 2023\n\n\n\n\n\n\n  \n\n\n\n\nOut of the shadows: automatic fish detection from acoustic cameras\n\n\nCo-author\n\n\nEfficacious monitoring of fish stocks is critical for efficient management. Multibeam acoustic cameras, that use sound-…\n\n\n\n\n\n\n26 May, 2022\n\n\nAdam Shand\n\n\n\n\n\n\n  \n\n\n\n\nStoryMap: Guardians of the Bay\n\n\nMaintainer\n\n\nA story about the importance of seagrass in Cleveland Bay.\n\n\n\n\n\n\n15 Feb, 2022\n\n\n\n\n\n\n  \n\n\n\n\ntitle\n\n\nsub title\n\n\nabstract\n\n\n\n\n\n\n10 Feb, 2021\n\n\nAuthor\n\n\n\n\n\n\nNo matching items"
+    "text": "Throughout my career in academia and government I have made my mark across a number of projects, working and publishing on topics such as artificial intelligence, environmental reports, geospatial stories, and automated data analysis. Below is a snapshot of some of this work.\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n\n\n\n\n  \n\n\n\n\nStoryMap: Corals of Cleveland Bay\n\n\nSupervisor, Author and Maintainer\n\n\nA story about the hidden coral world in Cleveland Bay.\n\n\n\n\n\n\n01 Mar, 2024\n\n\n\n\n\n\n  \n\n\n\n\nNorthern Three Spatial Analyses (Freshwater: Fish Sampling Sites)\n\n\nsub title\n\n\n\n\n\n\n\n\n\n26 Nov, 2023\n\n\nAdam Shand\n\n\n\n\n\n\n  \n\n\n\n\nStoryMap: Hydrology and Hydrodynamics of Cleveland Bay\n\n\nAuthor and Maintainer\n\n\nA story about water and sediment movement in Cleveland Bay.\n\n\n\n\n\n\n13 Nov, 2023\n\n\n\n\n\n\n  \n\n\n\n\nOut of the shadows: automatic fish detection from acoustic cameras\n\n\nCo-author\n\n\nEfficacious monitoring of fish stocks is critical for efficient management. Multibeam acoustic cameras, that use sound-…\n\n\n\n\n\n\n26 May, 2022\n\n\nAdam Shand\n\n\n\n\n\n\n  \n\n\n\n\nStoryMap: Guardians of the Bay\n\n\nMaintainer\n\n\nA story about the importance of seagrass in Cleveland Bay.\n\n\n\n\n\n\n15 Feb, 2022\n\n\n\n\n\n\n  \n\n\n\n\ntitle\n\n\nsub title\n\n\nabstract\n\n\n\n\n\n\n10 Feb, 2021\n\n\nAuthor\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "portfolio/out_of_the_shadows.html",
@@ -158,6 +158,62 @@
     "href": "photography/index.html",
     "title": "Photography",
     "section": "",
-    "text": "Test page for imagery.\n\n\n\n\n\nImage 1\n\n\n\n\n\nImage 2\n\n\n\n\n\nImage 3\n\n\n\n\n\nImage 4\n\n\n\n\n\nImage 5\n\n\n\n\n\nImage 6\n\n\n\n\n\nImage 7\n\n\n\n\n\nImage 8"
+    "text": "Test page for imagery.\n\n\n\n\n\nAquinnah\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\nVineyard lighthouse"
+  },
+  {
+    "objectID": "data/dt_maps_fish/note.html",
+    "href": "data/dt_maps_fish/note.html",
+    "title": "Adam Shand",
+    "section": "",
+    "text": "This is a placeholder to ensure the folder is uploaded to GitHub."
+  },
+  {
+    "objectID": "data/dt_maps_impoundment-length/note.html",
+    "href": "data/dt_maps_impoundment-length/note.html",
+    "title": "Adam Shand",
+    "section": "",
+    "text": "This is a placeholder to ensure the folder is uploaded to GitHub."
+  },
+  {
+    "objectID": "data/n3_region-builder/note.html",
+    "href": "data/n3_region-builder/note.html",
+    "title": "Adam Shand",
+    "section": "",
+    "text": "This is a placeholder to ensure the folder is uploaded to GitHub."
+  },
+  {
+    "objectID": "photography/index.html#chilmark",
+    "href": "photography/index.html#chilmark",
+    "title": "Example Lightbox Document",
+    "section": "",
+    "text": "Here is a simple image with a description. This also overrides the description position and places it to the left of the image.\n\n\n\nBeach in Chilmark"
+  },
+  {
+    "objectID": "photography/index.html#elsewhere",
+    "href": "photography/index.html#elsewhere",
+    "title": "Example Lightbox Document",
+    "section": "Elsewhere",
+    "text": "Elsewhere\nThe below demonstrates placing more than one image in a gallery. Note the usage of the layout-ncol which arranges the images on the page side by date. Adding the group attribute to the markdown images places the images in a gallery grouped together based upon the group name provided.\n\n\n\n\n\nAquinnah\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\nVineyard lighthouse"
+  },
+  {
+    "objectID": "photography/index.html#with-computation-code-chunks",
+    "href": "photography/index.html#with-computation-code-chunks",
+    "title": "Example Lightbox Document",
+    "section": "With computation code chunks",
+    "text": "With computation code chunks\nOptions for lightbox can be passed using chunk options.\n\n\nCode\nplot(1:10, rnorm(10))\n\n\n\n\n\nSimple demo R plot\n\n\n\n\n\n\nCode\nplot(cars)\n\n\n\n\n\nPlot about cars data\n\n\n\n\nIt is possible to create several plots, and group them in a lightbox gallery. Use list in YAML for options when you have several plots, on per plot.\n\n\nCode\nplot(mtcars)\n\n\n\n\n\nCaption for first plot\n\n\n\n\nCode\nplot(cars)\n\n\n\n\n\nCaption for second plot\n\n\n\n\nWhen lightbox: auto in main YAML config, you can opt-out lightbox on a plot by setting lightbox: false\n\n\nCode\nplot(mtcars)\n\n\n\n\n\nmtcars"
+  },
+  {
+    "objectID": "photography/index.html#credits",
+    "href": "photography/index.html#credits",
+    "title": "Example Lightbox Document",
+    "section": "Credits",
+    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat"
+  },
+  {
+    "objectID": "photography_hide/index.html",
+    "href": "photography_hide/index.html",
+    "title": "Photography",
+    "section": "",
+    "text": "Test page for imagery.\n\n\n\n\n\nAquinnah\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\nVineyard lighthouse"
   }
 ]

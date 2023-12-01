@@ -71,7 +71,6 @@ format:
     code-block-border-left: "#01272e"
     code-block-bg: true
     anchor-sections: false
-    fig-cap-location: margin
     reference-location: margin
     page-layout: full
     
