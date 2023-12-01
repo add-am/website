@@ -1,0 +1,14 @@
+{
+  "hash": "f909b56b6c82ea445323e53e587abaa7",
+  "result": {
+    "markdown": "---\ntitle: \"Portfolio of Work\"\nlisting:\n  type: default\n  sort: date desc\n  image-height: \"5cm\"\n  date-format: \"DD MMM, YYYY\"\n  fields: [image, date, title, author, description]\nformat: html\n---\n\n\nThroughout my career in academia and government I have made my mark across a number of projects, working and publishing on topics such as artificial intelligence, environmental reports, geospatial stories, and automated data analysis. Below is a snapshot of some of this work.\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

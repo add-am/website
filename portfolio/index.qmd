@@ -1,0 +1,18 @@
+---
+title: "Portfolio of Work"
+listing:
+  type: default
+  sort: date desc
+  image-height: "5cm"
+  date-format: "DD MMM, YYYY"
+  sort-ui: TRUE
+  #contents: #manually list all documents (put in folders with images?)
+  fields: [image, date, title, author, description]
+#format: html
+---
+
+Throughout my career in academia and government I have made my mark across a number of projects, working and publishing on topics such as artificial intelligence, environmental reports, geospatial stories, and automated data analysis. Below is a snapshot of some of this work.
+
+```{r}
+
+```

@@ -161,6 +161,27 @@ a.footer-link[href="https://github.com/add-am/"]:hover {
   color: $orange;
 }
 
+// StoryMap Links
+a.storymap-links {
+  color: $orange;
+}
+
+a.storymap-links:visited {
+  color: $orange;
+  text-decoration: underline;
+}
+
+a.storymap-links:hover {
+  color: $orange;
+  text-decoration: underline;
+}
+
+a.storymap-links:active {
+  color: $orange;
+  text-decoration: underline;
+}
+
+
 // Inline code
 $code-bg: $gray-200 !default;
 $code-color: $gray-900 !default;

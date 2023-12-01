@@ -1,0 +1,14 @@
+---
+title: "StoryMap: Corals of Cleveland Bay"
+subtitle: "Supervisor, Author and Maintainer"
+date: "03/01/2024"
+abstract-title: "ABSTRACT"
+abstract: "A story about the hidden coral world in Cleveland Bay."
+image: "../images/coral.jpg"
+format: html
+---
+
+::: {.callout-tip}
+##
+To be released in March 1st 2024.
+:::

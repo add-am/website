@@ -1,0 +1,36 @@
+---
+title: "Photography"
+format: 
+  html:
+    theme: litera
+    css: ../html/gallery.css
+    page-layout: full
+filters:
+  - lightbox
+lightbox: auto
+---
+
+Test page for imagery.
+
+::: gallery 
+
+::: column-page
+
+![Image 1](image_1.jpg){group="my-gallery"}
+
+![Image 2](image_2.jpg){group="my-gallery"}
+
+![Image 3](image_3.jpg){group="my-gallery"}
+
+![Image 4](image_4.jpg){group="my-gallery"}
+
+![Image 5](image_5.jpg){group="my-gallery"}
+
+![Image 6](image_6.jpg){group="my-gallery"}
+
+![Image 7](image_7.jpg){group="my-gallery"}
+
+![Image 8](image_8.jpg){group="my-gallery"}
+:::
+
+:::

@@ -9,8 +9,22 @@
   {
     "listing": "/projects/index.html",
     "items": [
+      "/projects/corals_of_cleveland.html",
       "/projects/dt_fish_1.html",
-      "/projects/dt_maps_fish.html"
+      "/projects/dt_maps_fish.html",
+      "/projects/hydrology_and_hydrodynamics.html",
+      "/projects/guardians_of_the_bay.html"
+    ]
+  },
+  {
+    "listing": "/portfolio/index.html",
+    "items": [
+      "/portfolio/corals_of_cleveland.html",
+      "/portfolio/dt_maps_fish.html",
+      "/portfolio/hydrology_and_hydrodynamics.html",
+      "/portfolio/out_of_the_shadows.html",
+      "/portfolio/guardians_of_the_bay.html",
+      "/portfolio/dt_fish_1.html"
     ]
   }
 ]

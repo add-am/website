@@ -1,0 +1,16 @@
+---
+title: "Out of the shadows: automatic fish detection from acoustic cameras"
+author: "Adam Shand"
+subtitle: "Co-author"
+date: "05/26/2022"
+abstract-title: "ABSTRACT"
+abstract: "Efficacious monitoring of fish stocks is critical for efficient management. Multibeam acoustic cameras, that use sound-..."
+image: "../images/didson.jpg"
+format: html
+---
+
+::: {.callout-tip}
+##
+<a href="https://link.springer.com/article/10.1007/s10452-022-09967-5" class="storymap-links"> Out of the shadows: automatic fish detection from acoustic cameras: </a> Efficacious monitoring of fish stocks is critical for efficient management. Multibeam acoustic cameras, that use sound-reflectance to generate moving pictures, provide an important alternative to traditional video-based methods that are inoperable in turbid waters. However, acoustic cameras, like standard video monitoring methods, produce large volumes of imagery from which it is time consuming and costly to extract data manually. Deep learning, a form of machine learning, can be used to automate the processing and analysis of acoustic data. We used convolutional neural networks (CNNs) to detect and count fish in a publicly available dual-frequency identification sonar (DIDSON) dataset. We compared three types of detections, direct acoustic, acoustic shadows, and a combination of direct and shadows. The deep learning model was highly reliable at detecting fish to obtain abundance data using acoustic data. Model accuracy for counts-per-image was improved by the inclusion of shadows (F1 scores, a measure of the model accuracy: direct 0.79, shadow 0.88, combined 0.90). Model accuracy for MaxN per video was high for all three types of detections (F1 scores: direct 0.90, shadow 0.90, combined 0.91). Our results demonstrate that CNNs are a powerful tool for automating underwater acoustic data analysis. Given this promise, we suggest broadening the scope of testing to include a wider range of fish shapes, sizes, and abundances, with a view to automating species (or ‘morphospecies’) identification and counts. 
+:::
+
