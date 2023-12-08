@@ -20,15 +20,14 @@
 
 body{
     overscroll-behavior: none;
-    height: 100%;
 }
 
 .gradient_bg {
-  overflow: hidden;
-  position: fixed;
+  overflow: visible;
   width: 100%;
+  background-size: cover;
   margin-top: 0;
-  background: linear-gradient(180deg, rgba(1,39,46,1) 0%, rgba(130, 232, 250, 1) 100%);
+  background: radial-gradient(circle, rgba(0,74,86,1) 0%, rgba(0,0,0,0) 100%);
 }
 
 h1 {
@@ -48,7 +47,7 @@ a {
 }
 
 .section_padding {
-    padding: 2rem 6rem 4rem 6rem;
+    padding: 2rem 6rem 14rem 6rem;
 }
 
 .section_margin {
@@ -167,6 +166,17 @@ a {
     width: 100%;
 }
 
+.hero_content_below_button span {
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    top: 0px;
+    color: white;
+    font-size: 12pt;
+    font-style: italic;
+}
+
+
 .hero_image {
     z-index: 7;
     flex: 1;
@@ -239,4 +249,19 @@ a {
     .hero_content_below_button span{
       font-size: 10px;
     }
+}
+
+
+#dot_container{
+  height: 100%;
+  width: 100%;
+  z-index: 5;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
+.dot{
+  border-radius: 50%;
+  opacity: 50%;
 }

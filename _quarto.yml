@@ -11,7 +11,7 @@ title-meta: "Adam Shand"
 description-meta: "Environmental Scientist | Data Analyst"
 
 website:
-  title: "Adam Shand"
+  title: "ADAM SHAND"
   description: "Environmental Scientist | Data Analyst"
   favicon: "images/logo.svg"
   #site-url: https://www.adamshand22.com
@@ -25,11 +25,13 @@ website:
     type: textbox
     
   page-footer:
-    left: |
-      <a href="https://github.com/add-am/" class="footer-link"> Source Code</a>
+    left: 
+      - text: Source Code
+        href: https://github.com/add-am/
 
   navbar:
     pinned: true
+    background: dark
     logo: "images/logo.svg"
     left:
       - text: CV

@@ -10,5 +10,5 @@ format: html
 
 ::: {.callout-tip}
 ##
-Seagrass, small plants with a big impact. The <a href="https://storymaps.arcgis.com/stories/40fb1343dd8f4a8f9edc3b51e2346943" class="storymap-links"> Guardians of the Bay </a> story explores how seagrass can stabilize the ocean floor, improve water quality, and protect our shores from erosion, it takes you on a journey under the ocean and into the flourishing world of seagrass in Cleveland Bay. 
+Seagrass, small plants with a big impact. The <a href="https://storymaps.arcgis.com/stories/40fb1343dd8f4a8f9edc3b51e2346943" class="main-links"> Guardians of the Bay </a> story explores how seagrass can stabilize the ocean floor, improve water quality, and protect our shores from erosion, it takes you on a journey under the ocean and into the flourishing world of seagrass in Cleveland Bay. 
 :::

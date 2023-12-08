@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Hi, I'm Adam.",
+    "title": "Hi, Im Adam",
     "section": "",
-    "text": "Hi, I'm Adam. \n            I am an Environmental Scientist and Data Analyst. Explore my website to learn about \n            applying data techniques to environmental issues using R. You will find information on \n            water quality modelling and scoring, environmental mapping, satellite monitoring, and \n            spatial science. \n             \n            \n            This website, my CV, and all showcase projects were  built in R."
+    "text": "Hi, Im Adam\n\n This is a link"
   },
   {
     "objectID": "about.html",
@@ -72,9 +72,9 @@
   {
     "objectID": "cv/index.html",
     "href": "cv/index.html",
-    "title": "Adam Shand",
+    "title": "ADAM SHAND",
     "section": "",
-    "text": "Download current CV"
+    "text": "Download Current CV"
   },
   {
     "objectID": "projects/index.html",
@@ -137,7 +137,7 @@
     "href": "portfolio/hydrology_and_hydrodynamics.html",
     "title": "StoryMap: Hydrology and Hydrodynamics of Cleveland Bay",
     "section": "",
-    "text": "Rain comes in massive peaks and troughs, cyclones tear across the ocean, and winds and currents stir the coast into a swirling mix of salt, sand, and sediment. The  Hydrology and Hydrodynamics of Cleveland Bay  story explores, from the very beginnings, the journey of water across Cleveland Bay: where it comes from, where it goes, what it does, and how it does it. It explores the impact of humans on water, what impacts are yet to come, and how we can best prepare for the future."
+    "text": "Rain comes in massive peaks and troughs, cyclones tear across the ocean, and winds and currents stir the coast into a swirling mix of salt, sand, and sediment. The  Hydrology and Hydrodynamics of Cleveland Bay story explores, from the very beginnings, the journey of water across Cleveland Bay: where it comes from, where it goes, what it does, and how it does it. It explores the impact of humans on water, what impacts are yet to come, and how we can best prepare for the future."
   },
   {
     "objectID": "portfolio/index.html",
@@ -158,7 +158,7 @@
     "href": "photography/index.html",
     "title": "Photography",
     "section": "",
-    "text": "Test page for imagery.\n\n\n\n\n\nAquinnah\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\nVineyard lighthouse"
+    "text": "Rules for adding images:\n\nImage ratio must be 16:9.\nImage quality should be at least 1600 x 900 (note the lack of quality in lightbox).\nImages must be added in sets of 4 for the images to appear.\n\nalternatively, a negative space filler can be used in the layout to make “blank” images (see row 3).\n\nImages must have the same group to appear in the same lightbox.\n\nRow 1:\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n\nRow 2:\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n\nRow 3:"
   },
   {
     "objectID": "data/dt_maps_fish/note.html",
