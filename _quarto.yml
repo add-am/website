@@ -64,6 +64,10 @@ number-sections: false
 
 format:
   html:
+    grid: 
+      body-width: 1200px
+      sidebar-width: 100px
+      margin-width: 100px
     fontsize: 1.1em
     theme: 
       - html/styles.scss
@@ -74,5 +78,4 @@ format:
     code-block-bg: true
     anchor-sections: false
     reference-location: margin
-    page-layout: full
     

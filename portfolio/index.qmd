@@ -1,18 +1,29 @@
 ---
-title: "Portfolio of Work"
+title: "Bytes for a Better Earth: Environmental Insights"
 listing:
   type: default
   sort: date desc
   image-height: "5cm"
   date-format: "DD MMM, YYYY"
   sort-ui: TRUE
-  #contents: #manually list all documents (put in folders with images?)
+  contents:
+    - "chronicals_of_the_bay/index.qmd"
+    - "out_of_the_shadows/index.qmd"
   fields: [image, date, title, author, description]
-#format: html
 ---
 
-Throughout my career in academia and government I have made my mark across a number of projects, working and publishing on topics such as artificial intelligence, environmental reports, geospatial stories, and automated data analysis. Below is a snapshot of some of this work.
+::: {.column-screen}
+```{=html}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible content="IE=edge">
+  <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 
-```{r}
+  <div class="project-background"></div>
 
 ```
+
+:::

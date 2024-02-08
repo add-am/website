@@ -12,12 +12,29 @@ format:
 
 ::: {.column-screen}
 ```{=html}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible content="IE=edge">
+  <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 
-<h1>Hi, Im Adam</h1>
-
-<a class="main-links" href="google.com"> This is a link </a>
+<body class="landing-body">
+  <div class="landing-background">
+    <div class="half">
+      <h1 style="font-size:64px;"><span id=hero-landing>Hi, Im </span><span id=hero-adam>Adam</span>.</h1>
+      <i>An environmental data analyst decoding nature's secrets.</i>
+      <br>
+      <br>
+      <p> With experience coding in R, Python, HTML, and CSS, I transform raw environmental data into meaningful narratives. From crafting data-driven solutions to fostering sustainability, I am dedicated to bridging the gap between technology and the environment. Read on to delve into realms such as water quality, climate, and vegetation, where every line of code tells a story of our interconnected world. </p>
+    </div>
+    <div class="half">
+      <img src="./images/profile_svg.svg" alt="Adam Shand">
+    </div>
+  </div>
+</body>
 
 ```
 
 :::
-

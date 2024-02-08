@@ -3,7 +3,7 @@
 $text:        #D7D7D7 !default; //a light grey
 $background:  #00252A !default; //a very dark blue
 $primary:     #e6aa04 !default; //a light orange
-$secondary:   #841818 !default; //a dark muted red
+$secondary:   #743232 !default; //a dark muted red
 $accent:      #54CC98 !default; // a light muted green
 $black:       #000000 !default; //black, duh
 
@@ -48,137 +48,40 @@ $navbar-hl:     $primary !default;
 $footer-bg:     $black !default;
 $footer-fg:     $text !default;
 
-.navbar {
-  border-bottom: 1px solid $text;
-}
+// Fonts
+$font-family-sans-serif:      Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 
-.navbar:hover {
-  border-bottom: 1px solid $primary;
+body {
+  font-family: "Oswald", sans-serif;
+  color: white;
+  background: black;
 }
+    
+section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: centre;
+  min-height: 400px;
+  padding: 100px 20vw;
+}
+      
 
 // Landing page specifics
-
-.landing-body {overflow: hidden;}
-
-#hero-landing {
-  color: $text;
-}
-
 #hero-adam{
   color:  $primary;
 }
 
-.landing-body{
-  background-color: $black;
-}
-
-.cv-body{
-  background-color: $background;
-}
-
-.landing-background{
-  display: flex;
-  width: 100%;
-  height: 70vh;
-  background-image: url("images/landing_page.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  align-items: center;
-}
-
-.cv-background{
-  transform: translateY(-50px);
-  width: 100%;
-  height: 70vh;
-  background-image: url("images/cv_page.svg");
+.spacer{
+  aspect-ratio: 960/300;
+  width: 100;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
-.project-background{
-  transform: translateY(-110px);
-  width: 100%;
-  height: 50vh;
-  background-image: url("images/project_page.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-position-y: 20px;
-  text-align: center;
-  z-index: -1;
-}
-
-.cv-div{
-  transform: translateY(50px);
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 80vh;
-  align-items: center;
-  justify-content: space-between;
-  
-}
-
-.half {
-  flex: 1;
-  box-sizing: border-box;
-  padding: 30px;
-  text-align: center;
-        }
-
-.half img {
-            max-width: 60%;
-            max-height: 60%;
-        }
-
-.cv-half {
-  flex-grow: 10;
-  text-align: center;
-  width: 50%;
-  min-width: 50%;
-        }
-
-.quarto-listing {
-  transform: translateY(-45vh);
-  z-index: 999;
-}
-
-.column-screen {
- z-index: -10; 
-}
-
-#title-block-header {
-  z-index: 999;
-}
-
-.listing-title{
-  color: $accent;
-  text-decoration: underline rgba(0, 0, 0, 0);
-  transition: text-decoration-color 400ms;
-}
-
-.listing-title:hover{
-  color:  $primary;
-  text-decoration: underline;
-}
-
-.listing-subtitle{
-  font-style: italic;
-  font-size: 0.9em;
-}
-
-.listing-description{
-  font-size: 0.9em;
-}
-
-.listing-date{
-  font-size: 0.9em;
-}
-
-.metadata{
-  max-width: 80px;
+.layer1{
+  background-image: url("images/landing_page.svg")
 }
 
 // Inline code
@@ -191,7 +94,8 @@ $footer-fg:     $text !default;
 //Create a div specially for my button
 .div-button{
   width:            100%;
-  position:         relative;
+  position:         absolute;
+  transform:        translateY(-50%);
   text-align:       center;
   
 }
@@ -227,11 +131,11 @@ $footer-fg:     $text !default;
 
 .button:hover #cv-span{
   width:        100%;
-  border:           2px solid $primary;
+  border:        none;
 }
 
 .button:hover {
-  border:           2px solid transparent;
+  border:        none;
 }
 
 //.button1 {background-color: #04AA6D;} /* Green */

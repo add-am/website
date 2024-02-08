@@ -1,5 +1,5 @@
 ---
-layout: page
+page-layout: full
 excerpt: My current CV
 comments: false
 execute:
@@ -9,25 +9,31 @@ cv:
   pdf: "cv.pdf"
 ---
 
-
+::: {.column-screen}
 ```{=html}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible content="IE=edge">
+  <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 
-<br>
-<div class="div-button">
-  <a href="`r rmarkdown::metadata$cv$pdf`" target="_blank">
-    <button class="button"><span id="cv-span"></span>Download Current CV</button>
-  </a>
-</div>
+<body class="cv-body">
+  <div class="cv-background">
+    <div class="cv-div">
+      <div class="div-button half">
+    <a href="`r rmarkdown::metadata$cv$pdf`" target="_blank">
+      <button class="button"><span id="cv-span"></span>Download Current CV</button>
+    </a>
+      </div>
+
+    <iframe src="`r rmarkdown::metadata$cv$pdf`#toolbar=0" class="cv-half" allowtransparency="true" style="background: #FFFFFF;"></iframe>
+
+    </div>
+  </div>
+</body>
 
 ```
 
-
-```{=html}
-
-<div class="embed-container">
-  <iframe src="`r rmarkdown::metadata$cv$pdf`#toolbar=0" style="border: 0.5px"></iframe>
-</div>
-
-</div>
-```
-
+:::

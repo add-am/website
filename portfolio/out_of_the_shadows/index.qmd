@@ -1,11 +1,10 @@
 ---
 title: "Out of the shadows: automatic fish detection from acoustic cameras"
-author: "Adam Shand"
 subtitle: "Co-author"
 date: "05/26/2022"
 abstract-title: "ABSTRACT"
 abstract: "Efficacious monitoring of fish stocks is critical for efficient management. Multibeam acoustic cameras, that use sound-..."
-image: "../images/didson.jpg"
+image: "image.jpg"
 format: html
 ---
 
