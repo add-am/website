@@ -21,22 +21,22 @@ $link-hover-decoration:     none !default;
 
 //This group applies to all <a> tags with the "main-links" class
 .main-links:link {
-  color:                    $accent;
+  color:                    $primary;
   background-color:         transparent;
   text-decoration:          none;
 }
 .main-links:visited {
-  color:                    $accent;
+  color:                    $primary;
   background-color:         transparent;
   text-decoration:          none;
 }
 .main-links:hover {
-  color:                    $primary;
+  color:                    $accent;
   background-color:         transparent;
   text-decoration:          underline;
 }
 .main-links:active {
-  color:                    $primary;
+  color:                    $accent;
   background-color:         transparent;
   text-decoration:          underline;
 }
@@ -154,13 +154,13 @@ $footer-fg:     $text !default;
 }
 
 .listing-title{
-  color: $accent;
+  color: $primary;
   text-decoration: underline rgba(0, 0, 0, 0);
   transition: text-decoration-color 400ms;
 }
 
 .listing-title:hover{
-  color:  $primary;
+  color:  $accent;
   text-decoration: underline;
 }
 

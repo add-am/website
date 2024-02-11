@@ -1,0 +1,20 @@
+---
+title: "Conquering Environmental Reporting Using R"
+subtitle: "Author"
+date: "01/02/2024"
+abstract-title: "ABSTRACT"
+abstract: "Environmental reports are a maze of tedious and minute details, where every step from data collection and collation, to analysis and presentation is time consuming. Here we present an effort to streamline and enhance environmental report writing using the power of R."
+image: "image.jpg"
+format: html
+---
+
+::: {.callout-tip}
+##
+<a href="https://github.com/Northern-3" class="main-links"> Work-In-Progress, no current link. </a> 
+
+This is currently a work in progress stored on a private repository on GitHub. The project has been written for the Dry Tropics Partnership for Healthy Waters, and can be considered my most important body of work thus far. Below is a schematic overview of the repository.
+
+:::
+
+![](image.jpg)
+
