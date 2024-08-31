@@ -9,11 +9,9 @@
   {
     "listing": "/projects/index.html",
     "items": [
-      "/projects/corals_of_cleveland.html",
-      "/projects/dt_fish_1.html",
-      "/projects/dt_maps_fish.html",
-      "/projects/hydrology_and_hydrodynamics.html",
-      "/projects/guardians_of_the_bay.html"
+      "/projects/chronicals_of_the_bay/index.html",
+      "/projects/conquering_reports_with_r/index.html",
+      "/projects/out_of_the_shadows/index.html"
     ]
   },
   {

@@ -3,7 +3,7 @@ title: "Using Artificial Intelligence for Automatic Fish Detection from Acoustic
 subtitle: "Co-author"
 date: "05/26/2022"
 abstract-title: "ABSTRACT"
-abstract: "Efficacious monitoring of fish stocks is critical for efficient management. Multibeam acoustic cameras, that use sound..."
+abstract: "My first ever journal publication! What a journey."
 image: "image.jpg"
 format: html
 ---

@@ -79,9 +79,9 @@
   {
     "objectID": "projects/index.html",
     "href": "projects/index.html",
-    "title": "Projects",
+    "title": "Environmental Bytes for a Better Earth",
     "section": "",
-    "text": "StoryMap: Corals of Cleveland Bay\n\n\nSupervisor, Author and Maintainer\n\n\nA story about the hidden coral world in Cleveland Bay.\n\n\n\n\n\n\nMar 1, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntitle\n\n\nsub title\n\n\nabstract\n\n\n\n\n\n\nOct 2, 2021\n\n\nAuthro\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNorthern Three Spatial Analyses (Freshwater: Fish Sampling Sites)\n\n\nsub title\n\n\n\n\n\n\n\n\n\nInvalid Date\n\n\nAdam Shand\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStoryMap: Hydrology and Hydrodynamics of Cleveland Bay\n\n\nAuthor and Maintainer\n\n\nA story about water and sediment movement in Cleveland Bay.\n\n\n\n\n\n\nNov 13, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStoryMap: Guardians of the Bay\n\n\nMaintainer\n\n\nA story about the importance of seagrass in Cleveland Bay.\n\n\n\n\n\n\nFeb 15, 2022\n\n\n\n\n\n\nNo matching items"
+    "text": "Document\n\n\n  \n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n\n\n\n\n\n\n\n\n\n\nThe Chronicals of Cleveland Bay\n\n\nESRI StoryMaps about Cleveland Bay.\n\n\n\n\n\n\n01 Mar, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConquering Environmental Reporting Using R\n\n\nMapping my environmental spatial analysis workflow in R.\n\n\n\n\n\n\n02 Jan, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Artificial Intelligence for Automatic Fish Detection from Acoustic Cameras\n\n\nMy first ever journal publication! What a journey.\n\n\n\n\n\n\n26 May, 2022\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "projects/dt_maps_fish.html",
@@ -142,7 +142,7 @@
   {
     "objectID": "portfolio/index.html",
     "href": "portfolio/index.html",
-    "title": "Bytes for a Better Earth: Environmental Insights",
+    "title": "Environmental Bytes for a Better Earth",
     "section": "",
     "text": "Document\n\n\n  \n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n\n\n\n\n  \n\n\n\n\nThe Chronicals of Cleveland Bay\n\n\nAuthor, Supervisor, and Maintainer\n\n\nA collection of ESRI StoryMaps about the hidden world of Cleveland Bay. From coral reefs and seagrass meadows, to the dramatic twists and turns of hydrology and hydrodynamics, this page is your guide to the diverse wonders that lie beneath the surface.\n\n\n\n\n\n\n01 Mar, 2024\n\n\n\n\n\n\n  \n\n\n\n\nConquering Environmental Reporting Using R\n\n\nAuthor\n\n\nEnvironmental reports are a maze of tedious and minute details, where every step from data collection and collation, to analysis and presentation is time consuming. Here we present an effort to streamline and enhance environmental report writing using the power of R.\n\n\n\n\n\n\n02 Jan, 2024\n\n\n\n\n\n\n  \n\n\n\n\nUsing Artificial Intelligence for Automatic Fish Detection from Acoustic Cameras\n\n\nCo-author\n\n\nEfficacious monitoring of fish stocks is critical for efficient management. Multibeam acoustic cameras, that use sound…\n\n\n\n\n\n\n26 May, 2022\n\n\n\n\n\n\nNo matching items"
   },
@@ -257,5 +257,12 @@
     "title": "Conquering Environmental Reporting Using R",
     "section": "",
     "text": "Work-In-Progress, no current link. \nThis is currently a work in progress stored on a private repository on GitHub. The project has been written for the Dry Tropics Partnership for Healthy Waters, and can be considered my most important body of work thus far. Below is a schematic overview of the repository."
+  },
+  {
+    "objectID": "projects/chronicals_of_the_bay/index.html",
+    "href": "projects/chronicals_of_the_bay/index.html",
+    "title": "The Chronicals of Cleveland Bay",
+    "section": "",
+    "text": "Corals of Cleveland Bay\n\n\n\nTo be released in March 2024, the Corals of Cleveland Bay StoryMap will unveil the hidden world of coral reefs beneath the surface of Cleveland Bay.\n\n\n\n\n\n\n\n\nHydrology and Hydrodynamics of Cleveland Bay\n\n\n\nReleased in November 2023, the Hydrology and Hydrodynamics of Cleveland Bay StoryMap focus on the movement of water in and around the Bay:\nRain comes in massive peaks and troughs, cyclones tear across the ocean, and winds and currents stir the coast into a swirling mix of salt, sand, and sediment. The  Hydrology and Hydrodynamics of Cleveland Bay story explores, from the very beginnings, the journey of water across Cleveland Bay: where it comes from, where it goes, what it does, and how it does it. It explores the impact of humans on water, what impacts are yet to come, and how we can best prepare for the future.\n\n\n\n\n\n\n\n\nGuardians of the Bay\n\n\n\nReleased in March 2022, the Guardians of the Bay StoryMap explores the importance of seagrass for our daily lives.\nSeagrass, small plants with a big impact. The  Guardians of the Bay  story explores how seagrass can stabilize the ocean floor, improve water quality, and protect our shores from erosion, it takes you on a journey under the ocean and into the flourishing world of seagrass in Cleveland Bay."
   }
 ]

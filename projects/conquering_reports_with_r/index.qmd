@@ -3,7 +3,7 @@ title: "Conquering Environmental Reporting Using R"
 subtitle: "Author"
 date: "01/02/2024"
 abstract-title: "ABSTRACT"
-abstract: "Environmental reports are a maze of tedious and minute details, where every step from data collection and collation, to analysis and presentation is time consuming. Here we present an effort to streamline and enhance environmental report writing using the power of R."
+abstract: "Mapping my environmental spatial analysis workflow in R."
 image: "image.jpg"
 format: html
 ---

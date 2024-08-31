@@ -3,7 +3,7 @@ title: "The Chronicals of Cleveland Bay"
 subtitle: "Author, Supervisor, and Maintainer"
 date: "03/01/2024"
 abstract-title: "ABSTRACT"
-abstract: "A collection of ESRI StoryMaps about the hidden world of Cleveland Bay. From coral reefs and seagrass meadows, to the dramatic twists and turns of hydrology and hydrodynamics, this page is your guide to the diverse wonders that lie beneath the surface."
+abstract: "ESRI StoryMaps about Cleveland Bay."
 image: "image.jpg"
 format: html
 ---

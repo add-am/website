@@ -27,7 +27,7 @@ website:
   page-footer:
     left: 
       - text: Source Code
-        href: https://github.com/add-am/
+        href: https://github.com/add-am/website
 
   navbar:
     pinned: true
@@ -36,10 +36,10 @@ website:
     left:
       - text: CV
         href: cv/index.qmd
-      - text: Portfolio
-        href: portfolio/index.qmd
-      - text: Photography
-        href: photography/index.qmd
+      - text: Projects
+        href: projects/index.qmd
+#      - text: Photography
+#        href: photography/index.qmd
     right:
       - icon: github
         href: https://github.com//add-am
