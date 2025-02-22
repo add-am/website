@@ -39,8 +39,8 @@ website:
         href: cv/index.qmd
       - text: Projects
         href: projects/index.qmd
-#      - text: Photography
-#        href: photography/index.qmd
+#      - text: Presentations
+#        href: presentations/index.qmd
     right:
       - icon: github
         href: https://github.com//add-am

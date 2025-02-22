@@ -27,7 +27,7 @@ format:
       <i>An environmental data analyst decoding nature's secrets.</i>
       <br>
       <br>
-      <p> With experience coding in R, Python, HTML, and CSS, I transform raw environmental data into meaningful narratives. From crafting data-driven solutions to fostering sustainability, I am dedicated to bridging the gap between technology and the environment. </p>
+      <p> With experience in R, Tableau, SQL and GIS, I transform raw environmental data into meaningful narratives with stunning visuals. From crafting data-driven solutions to fostering sustainability, I am dedicated to bridging the gap between technology and the environment. </p>
     </div>
     <div class="half">
       <img src="./images/profile_svg.svg" alt="Adam Shand">
