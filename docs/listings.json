@@ -3,8 +3,18 @@
     "listing": "/projects/index.html",
     "items": [
       "/projects/chronicals_of_the_bay/index.html",
+      "/projects/chronicals_of_the_bay - Copy/index.html",
+      "/projects/chronicals_of_the_bay - Copy (2)/index.html",
       "/projects/conquering_reports_with_r/index.html",
-      "/projects/out_of_the_shadows/index.html"
+      "/projects/conquering_reports_with_r - Copy/index.html",
+      "/projects/conquering_reports_with_r - Copy (2)/index.html",
+      "/projects/out_of_the_shadows/index.html",
+      "/projects/out_of_the_shadows - Copy/index.html",
+      "/projects/out_of_the_shadows - Copy (2)/index.html"
     ]
+  },
+  {
+    "listing": "/presentations/index.html",
+    "items": []
   }
 ]

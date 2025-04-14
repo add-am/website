@@ -10,11 +10,10 @@ listing:
   grid-item-border: true
   date-format: "DD MMM, YYYY"
   sort-ui: TRUE
-  contents:
-    - "chronicals_of_the_bay/index.qmd"
-    - "out_of_the_shadows/index.qmd"
-    - "conquering_reports_with_r/index.qmd"
   fields: [image, date, title, author, description]
+format:
+    html:
+      body-classes: project-page
 ---
 
 ::: {.column-screen}
