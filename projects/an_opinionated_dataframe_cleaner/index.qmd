@@ -1,0 +1,295 @@
+---
+title: "An Opinionated Dataframe Cleaner"
+subtitle: "Adam Shand"
+date: "13/04/2025"
+abstract-title: "ABSTRACT"
+abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
+image: "image.jpg"
+format: html
+---
+
+# Introduction
+
+Inconsistent and illogical naming conventions can ruin even the best analysts flow, cause sneaky errors, and potentially lead to misleading or completely incorrect results. Throughout my time as an environmental data analyst I have come across countless instances where the names used in a dataframe mess up my analysis, and I can guarantee I'm not the only one. Just Google "the importance of file naming" to find countless monologues (just like this one), or "bad naming conventions" to realize, actually it could be worse!
+
+So if this is such a widely acknowledged issue, why is it still an issue? How has it not been fixed? Simply put, because a) its boring, and b) everyone is unique and has their own idea of what a "good" system looks like. This leads to people not bothering, or instances where you might pull together several datasets from a range of sources, each using their own (different) naming conventions. Thankfully, if each dataset is at least internally consistent, we can address these differences.
+
+Below, I introduce my method of addressing this issue. It is a highly opinionated dataframe cleaner that focuses exclusively on ensuring every dataframe I touch receives exactly the same column naming convention. Before we dive it, I believe it is critical to recognise that this method is customized to my needs, it may work for you as well, but I recommend instead that you use this as inspiration to develop your own method.
+
+# The Naming Convention
+
+So what naming convention am I using exactly? "Upper Camel Case" is my choice, however some people may also refer to it as "Pascal Case". If your are unfamiliar, here are some examples of naming conventions:
+
+ - UpperCamelCase
+ - snake_case
+ - kebab-case
+ - UPPERFLATCASE
+ - etc.
+
+Why UpperCamelCase? As noted above, everyone has their own idea of what is good. I find that upper camel case suite my purposes well, it is fairly easy to read, it only contains A-Z, 0-9 (no underscores or dashes), and most importantly it does not class with my object names when coding it R. What I mean by this is that I use snake_case to name my objects, and UpperCamelCase to name columns within my objects. Lets consider the following example.
+
+Lets say I have a dataframe that counts fish:
+
+```{r}
+
+library(dplyr)
+
+fish <- data.frame(fish = c("A", "B", "C", "D", "E"),
+                   fish_count_location_1 = c(6,9,3,5,10),
+                   fish_count_location_2 = c(1,16,3,2,7))
+
+head(fish)
+
+```
+
+(Note that both the object and column names are in snake_case).
+
+Then I decide to figure out the mean number of each species of fish, across all locations:
+
+```{r}
+
+mean_fish <- fish |> 
+  group_by(fish) |> 
+  mutate(mean_fish = mean(fish_count_location_1, fish_count_location_2)) |> 
+  ungroup()
+
+head(mean_fish)
+
+```
+
+Whoops, just by using some logical naming I now accidentally have a dataframe object named "mean_fish", and a column within that dataframe named "mean_fish". Now obviously this is a silly example, but image we have 1000+ lines of code, suddenly we can't remember whats an object and whats a column.
+
+Thus; my final reason for choosing UpperCamelCase:
+
+```{r}
+
+fish <- data.frame(Fish = c("A", "B", "C", "D", "E"),
+                   FishCountLocation1 = c(6,9,3,5,10),
+                   FishCountLocation2 = c(1,16,3,2,7))
+
+mean_fish <- fish |> 
+  group_by(Fish) |> 
+  mutate(MeanFish = mean(FishCountLocation1, FishCountLocation2)) |> 
+  ungroup()
+
+head(mean_fish)
+
+```
+
+# The Function
+
+My custom function takes advantage of the `janitor` R package, which includes a wide range of functions to perform standard cleaning and organisation steps (check out the [janitor documentation](https://cran.r-project.org/web/packages/janitor/vignettes/janitor.html) to see what it can do). Specifically, we are going to use the `clean_names()` function, along with some bells and whistles to catch our edge cases. Lets take a look:
+
+```{r}
+#| eval: FALSE
+
+#create the custom function
+name_cleaning <- function(df){
+
+  #open the core libraries of this function
+  library(janitor)
+  library(dplyr)
+  library(sf)
+  
+  #check if the df is an sf object and if so, apply clean names to every column but the last column
+  if(inherits(df, "sf")){
+    
+    #convert all but the geometry column to upper camel type
+    df_new <- df |> 
+      st_drop_geometry() |>
+      clean_names(case = "upper_camel")
+    
+    #extract the geometry column as it own object
+    extract_geom_col <- st_geometry(df)
+    
+    #bind the column back on with its new name. Note that it should also be named "geom"
+    df_new <- df_new |>
+      dplyr::mutate(geom = extract_geom_col) |> 
+      st_as_sf()
+  
+  } else {
+    
+    #convert ALL columns to upper camel type, don't have to worry about geometry
+    df_new <- df |> 
+      clean_names(case = "upper_camel")
+    
+  }
+  
+  #for every character type column, run a encoding check and fix, then remove weird new line characters
+  df_new <- df_new  |> 
+    mutate(across(where(is.character), ~ iconv(., from = 'UTF-8', to = 'ASCII//TRANSLIT'))) |> 
+    mutate(across(where(is.character), ~str_replace_all(., "\r\n", " ")))
+  
+  return(df_new)
+  
+}
+
+```
+
+Ok, so even though that is a relatively short function, there is still a few things going on. Lets break it down a bit.
+
+1. First we will initialize the function (if you are unfamiliar with creating your own functions check out my other post).
+
+```{r}
+#| eval: FALSE
+
+#initialize the function
+name_cleaning <- function(df){
+  
+```
+
+2. Then we load each of our required packages. Noting that generally we would expect this packages to already have been loaded in by the script calling this function, but we can't be sure.
+
+```{r}
+#| eval: FALSE
+
+  #open the core libraries of this function
+  library(janitor)
+  library(dplyr)
+  library(sf)
+
+```
+
+3. We then check if the dataframe we are cleaning is actually an "sf" object. Sf objects are special types of dataframes using in geospatial analytics that have an extra column containing coordinate information. This special column has its own rules for column naming and therefore sf objects should be handled differently.
+
+```{r}
+#| eval: FALSE
+  
+  #check if the df is an sf object and if so, apply clean names to every column but the last column
+  if(inherits(df, "sf")){
+    
+```
+
+4. If we are looking at an sf object, we **copy** the sf object and remove the geometry column from this copy. Following this, we can then run janitor's `clean_names()` function.
+
+```{r}
+#| eval: FALSE
+    
+    #convert all but the geometry column to upper camel type
+    df_new <- df |> 
+      st_drop_geometry() |>
+      clean_names(case = "upper_camel")
+
+```
+
+
+While also extracting just the geometry column into a separate object.
+
+
+
+
+```{r}
+#| eval: FALSE
+    
+    #extract the geometry column as it own object
+    extract_geom_col <- st_geometry(df)
+    
+    #bind the column back on with its new name. Note that it should also be named "geom"
+    df_new <- df_new |>
+      dplyr::mutate(geom = extract_geom_col) |> 
+      st_as_sf()
+  
+  } else {
+    
+    #convert ALL columns to upper camel type, don't have to worry about geometry
+    df_new <- df |> 
+      clean_names(case = "upper_camel")
+    
+  }
+  
+  #for every character type column, run a encoding check and fix, then remove weird new line characters
+  df_new <- df_new  |> 
+    mutate(across(where(is.character), ~ iconv(., from = 'UTF-8', to = 'ASCII//TRANSLIT'))) |> 
+    mutate(across(where(is.character), ~str_replace_all(., "\r\n", " ")))
+  
+  return(df_new)
+  
+}
+
+
+
+
+```
+
+
+Overview
+ - dataframes often have strange naming conventions, everyone is different, sometimes within a df there is no consistency
+ - these column names can be difficult to work with, particularly when using regex
+ - they can also be confusing when working with objects (object names)
+ - There are R packages written to help with this, such as janitor
+ - I have developed a function using janitor that instill highly opinionated naming
+ - It is opinionated in that it is what I think is best, and works with my repositories. It is not meant to be globally applicable for everyone (but maybe you can learn something)
+ - Lets have a look
+ 
+
+```{r}
+
+#inputs: 
+#df <- every single df that is read should be passed through this function
+
+name_cleaning <- function(df){
+
+  #open the core libraries of this function
+  library(janitor)
+  library(dplyr)
+  library(sf)
+  
+  #check if the df is an sf object and if so, apply clean names to every column but the last column
+  if(inherits(df, "sf")){
+    
+    #convert all but the geometry column to upper camel type
+    df_new <- df |> 
+      st_drop_geometry() |>
+      clean_names(case = "upper_camel")
+    TRUE
+    
+    #extract the geometry column as it own object
+    extract_geom_col <- st_geometry(df)
+    
+    #bind the column back on with its new name. Note that it should also be named "geom"
+    df_new <- df_new |>
+      dplyr::mutate(geom = extract_geom_col) |> 
+      st_as_sf()
+  
+  } else {
+    
+    #convert ALL columns to upper camel type, don't have to worry about geometry
+    df_new <- df |> 
+      clean_names(case = "upper_camel")
+    
+  }
+  
+  #for every character type column, run a encoding check and fix, then remove weird new line characters
+  df_new <- df_new  |> 
+    mutate(across(where(is.character), ~ iconv(., from = 'UTF-8', to = 'ASCII//TRANSLIT'))) |> 
+    mutate(across(where(is.character), ~str_replace_all(., "\r\n", " ")))
+  
+  return(df_new)
+  
+}
+
+
+
+```
+
+
+```{r}
+
+colnames(iris)
+
+```
+
+
+```{r}
+
+colnames(name_cleaning(iris))
+
+```
+
+
+
+
+
+
+ 
+
