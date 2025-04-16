@@ -61,7 +61,7 @@ website:
         aria-label: Email
         
 execute:
-  freeze: true
+  freeze: false
   warning: false
 
 toc: true
