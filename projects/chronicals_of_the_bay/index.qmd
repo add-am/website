@@ -8,6 +8,7 @@ format: html
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 
+::: {.callout-tip}
 ## Corals of Cleveland Bay
 To be released in March 2024, the Corals of Cleveland Bay StoryMap will unveil the hidden world of coral reefs beneath the surface of Cleveland Bay.
 :::
