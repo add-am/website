@@ -11,12 +11,17 @@ project:
 title-meta: "Adam Shand"
 description-meta: "Environmental Scientist | Data Analyst"
 
+header-includes:  | 
+      <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/metropolis" type="text/css"/> 
+#above is the source for the font that the html reports use (metropolis)
+mainfont: MetropolisRegular #then this is also saying what font to use (both are needed for some reason)
+
 website:
   title: "ADAM SHAND"
   description: "Environmental Scientist | Data Analyst"
   favicon: "images/logo.svg"
-  #site-url: https://www.adamshand22.com
-  #image: "images/favicon.ico"
+  site-url: https://www.adamshand22.com
+  image: "images/favicon.ico"
   
   #repo-url: "https://github.com/add-am/tbd"
   #repo-branch: main
@@ -66,9 +71,9 @@ number-sections: false
 format:
   html:
     grid: 
-      body-width: 1200px
-      sidebar-width: 100px
-      margin-width: 100px
+      body-width: 800px
+      sidebar-width: 500px
+      margin-width: 300px
     fontsize: 1.1em
     theme: 
       - html/styles.scss

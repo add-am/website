@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-01-04">
+<meta name="dcterms.date" content="2025-01-04">
 <meta name="description" content="Environmental Scientist | Data Analyst">
 
 <title>An Opinionated Dataframe Cleaner – ADAM SHAND</title>
@@ -73,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0c8af03b2fbd4cf44d6703e337af0e8d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-70ebfce50445dc07f3e77b040b210463.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-841ab822a443ad86f801f704a1dd5621.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,6 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/metropolis" type="text/css"> 
 
 
 </head>
@@ -173,6 +174,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#the-naming-convention" id="toc-the-naming-convention" class="nav-link" data-scroll-target="#the-naming-convention">The Naming Convention</a></li>
   <li><a href="#the-function" id="toc-the-function" class="nav-link" data-scroll-target="#the-function">The Function</a></li>
+  <li><a href="#in-practice" id="toc-in-practice" class="nav-link" data-scroll-target="#in-practice">In Practice</a></li>
+  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats">Caveats</a></li>
   </ul>
 </nav>
     </div>
@@ -193,7 +196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 4, 2026</p>
+      <p class="date">January 4, 2025</p>
     </div>
   </div>
   
@@ -227,76 +230,107 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>UPPERFLATCASE</li>
 <li>etc.</li>
 </ul>
-<p>Why UpperCamelCase? As noted above, everyone has their own idea of what is good. I find that upper camel case suite my purposes well, it is fairly easy to read, it only contains A-Z, 0-9 (no underscores or dashes), and most importantly it does not class with my object names when coding it R. What I mean by this is that I use snake_case to name my objects, and UpperCamelCase to name columns within my objects. Lets consider the following example.</p>
-<p>Lets say I have a dataframe that counts fish:</p>
+<p>Why UpperCamelCase? As noted above, everyone has their own idea of what is good. I find that upper camel case suite my purposes well, it is fairly easy to read, it only contains A-Z, 0-9 (no underscores or dashes), and most importantly it does not clash with my object names when coding it R. What I mean by this is that I use snake_case to name my objects, and UpperCamelCase to name columns within my objects. Lets consider the following example.</p>
+<p>Lets say I have a dataframe that counts fish (called “fish”):</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">fish =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>),</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fish_count_location_1 =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>),</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fish_count_location_2 =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">16</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load the dplyr package</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#create an example dataframe</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">species =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fish_count_location_1 =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fish_count_location_2 =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">16</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#print the dataframe. If you want to learn about this function, check out my pretty tables post!</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cond_form_tables</span>(fish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>  fish fish_count_location_1 fish_count_location_2
-1    A                     6                     1
-2    B                     9                    16
-3    C                     3                     3
-4    D                     5                     2
-5    E                    10                     7</code></pre>
+<div class="cell-output-display">
+<table class="huxtable" data-quarto-disable-processing="true" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; width: 100%; margin-left: auto; margin-right: auto;  ">
+<colgroup><col><col><col></colgroup><tbody><tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">species</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">fish_count_location_1</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">fish_count_location_2</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">A</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">6</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">1</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">B</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">9</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">16</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">C</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">D</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">5</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">2</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">E</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">10</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">7</td></tr>
+</tbody></table>
+
 </div>
 </div>
 <p>(Note that both the object and column names are in snake_case).</p>
-<p>Then I decide to figure out the mean number of each species of fish, across all locations:</p>
+<p>Then I decide to figure out the mean number of each species of fish, across all locations (called “mean_fish”):</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mean_fish <span class="ot">&lt;-</span> fish <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fish) <span class="sc">|&gt;</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mean_fish =</span> <span class="fu">mean</span>(fish_count_location_1, fish_count_location_2)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mean_fish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get the rowwise mean of the fish counts per species</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mean_fish <span class="ot">&lt;-</span> fish <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mean_fish =</span> <span class="fu">mean</span>(<span class="fu">c</span>(fish_count_location_1, fish_count_location_2))) <span class="sc">|&gt;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print the dataframe</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cond_form_tables</span>(mean_fish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 4
-  fish  fish_count_location_1 fish_count_location_2 mean_fish
-  &lt;chr&gt;                 &lt;dbl&gt;                 &lt;dbl&gt;     &lt;dbl&gt;
-1 A                         6                     1         6
-2 B                         9                    16         9
-3 C                         3                     3         3
-4 D                         5                     2         5
-5 E                        10                     7        10</code></pre>
+<div class="cell-output-display">
+<table class="huxtable" data-quarto-disable-processing="true" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; width: 100%; margin-left: auto; margin-right: auto;  ">
+<colgroup><col><col><col><col></colgroup><tbody><tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">species</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">fish_count_location_1</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">fish_count_location_2</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">mean_fish</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">A</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">6</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">1</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3.5</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">B</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">9</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">16</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">12.5</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">C</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3&nbsp;&nbsp;</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">D</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">5</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">2</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3.5</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">E</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">10</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">7</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">8.5</td></tr>
+</tbody></table>
+
 </div>
 </div>
-<p>Whoops, just by using some logical naming I now accidentally have a dataframe object named “mean_fish”, and a column within that dataframe named “mean_fish”. Now obviously this is a silly example, but image we have 1000+ lines of code, suddenly we can’t remember whats an object and whats a column.</p>
+<p>Whoops, just by using some logical naming I now accidentally have a dataframe object named “mean_fish”, and a column within that dataframe named “mean_fish”. Now obviously this is a silly example, but image we have 1000+ lines of code, and we need to know something about the mean number of fish. Suddenly we can’t remember whats an object and whats a column and we can run into subtle errors, or have very confusing lines of codes.</p>
 <p>Thus; my final reason for choosing UpperCamelCase:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Fish =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>),</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">FishCountLocation1 =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">FishCountLocation2 =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">16</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>mean_fish <span class="ot">&lt;-</span> fish <span class="sc">|&gt;</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Fish) <span class="sc">|&gt;</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">MeanFish =</span> <span class="fu">mean</span>(FishCountLocation1, FishCountLocation2)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mean_fish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new example dataframe</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Species =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">FishCountLocation1 =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">FishCountLocation2 =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">16</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#get the rowwise mean of the fish counts per species</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mean_fish <span class="ot">&lt;-</span> fish <span class="sc">|&gt;</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mean_fish =</span> <span class="fu">mean</span>(<span class="fu">c</span>(FishCountLocation1, FishCountLocation2))) <span class="sc">|&gt;</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#print the dataframe</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cond_form_tables</span>(mean_fish)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 4
-  Fish  FishCountLocation1 FishCountLocation2 MeanFish
-  &lt;chr&gt;              &lt;dbl&gt;              &lt;dbl&gt;    &lt;dbl&gt;
-1 A                      6                  1        6
-2 B                      9                 16        9
-3 C                      3                  3        3
-4 D                      5                  2        5
-5 E                     10                  7       10</code></pre>
+<div class="cell-output-display">
+<table class="huxtable" data-quarto-disable-processing="true" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; width: 100%; margin-left: auto; margin-right: auto;  ">
+<colgroup><col><col><col><col></colgroup><tbody><tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">Species</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">FishCountLocation1</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">FishCountLocation2</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">mean_fish</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">A</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">6</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">1</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3.5</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">B</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">9</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">16</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">12.5</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">C</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3&nbsp;&nbsp;</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">D</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">5</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">2</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3.5</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">E</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">10</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">7</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">8.5</td></tr>
+</tbody></table>
+
 </div>
 </div>
 </section>
@@ -306,195 +340,319 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create the custom function</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>name_cleaning <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#open the core libraries of this function</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(janitor)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(sf)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check if the df is an sf object and if so, apply clean names to every column but the last column</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">inherits</span>(df, <span class="st">"sf"</span>)){</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert all but the geometry column to upper camel type</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#extract the geometry column as it own object</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    extract_geom_col <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(df)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#bind the column back on with its new name. Note that it should also be named "geom"</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df_new <span class="sc">|&gt;</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">geom =</span> extract_geom_col) <span class="sc">|&gt;</span> </span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_as_sf</span>()</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert ALL columns to upper camel type, don't have to worry about geometry</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">#for every character type column, run a encoding check and fix, then remove weird new line characters</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  df_new <span class="ot">&lt;-</span> df_new  <span class="sc">|&gt;</span> </span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span> <span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">'UTF-8'</span>, <span class="at">to =</span> <span class="st">'ASCII//TRANSLIT'</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">"</span><span class="sc">\r\n</span><span class="st">"</span>, <span class="st">" "</span>)))</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df_new)</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create the custom function</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>name_cleaning <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#load and install (if required) the pacman package handler package, which we will use for all future package downloads</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>)){<span class="fu">install.packages</span>(<span class="st">"pacman"</span>)}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#use the pacman function to load and install (if required) all other packages</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  pacman<span class="sc">::</span><span class="fu">p_load</span>(janitor, dplyr, sf, stringr)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check if the df is an sf object and if so, apply clean names to every column but the last column</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">inherits</span>(df, <span class="st">"sf"</span>)){</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert all but the geometry column to upper camel type</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#bind the geometry column back on with its new name. Note that it should also be named "geom"</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df_new <span class="sc">|&gt;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">geom =</span> <span class="fu">st_geometry</span>(df)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_as_sf</span>()</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert ALL columns to upper camel type, don't have to worry about geometry</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#for every character type column, run a encoding check and fix, then remove weird new line characters</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  df_new <span class="ot">&lt;-</span> df_new  <span class="sc">|&gt;</span> </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span> <span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">'UTF-8'</span>, <span class="at">to =</span> <span class="st">'ASCII//TRANSLIT'</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">"</span><span class="sc">\r\n</span><span class="st">"</span>, <span class="st">" "</span>)))</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df_new)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Ok, so even though that is a relatively short function, there is still a few things going on. Lets break it down a bit.</p>
 <ol type="1">
-<li>First we will initialize the function (if you are unfamiliar with creating your own functions check out my other post).</li>
+<li>First we will initialize the function (if you are unfamiliar with creating your own functions check out my functions post).</li>
 </ol>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#initialize the function</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>name_cleaning <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#initialize the function</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>name_cleaning <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="2" type="1">
-<li>Then we load each of our required packages. Noting that generally we would expect this packages to already have been loaded in by the script calling this function, but we can’t be sure.</li>
+<li>Then we load each of our required packages. Noting that generally we would expect these packages to already have been loaded in by the script calling this function, but we can’t be sure. Here we use the <code>pacman</code> package to make the install/load steps a bit more streamline, documentation for pacman can be found <a href="https://trinker.github.io/pacman/vignettes/Introduction_to_pacman.html">here</a>.</li>
 </ol>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#open the core libraries of this function</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(janitor)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#load and install (if required) the pacman package handler package, which we will use for all future package downloads</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>)){<span class="fu">install.packages</span>(<span class="st">"pacman"</span>)}</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#use the pacman function to load and install (if required) all other packages</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  pacman<span class="sc">::</span><span class="fu">p_load</span>(janitor, dplyr, sf, stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="3" type="1">
-<li>We then check if the dataframe we are cleaning is actually an “sf” object. Sf objects are special types of dataframes using in geospatial analytics that have an extra column containing coordinate information. This special column has its own rules for column naming and therefore sf objects should be handled differently.</li>
+<li>We then check if the dataframe we are cleaning is actually an “sf” object. Sf objects are special types of dataframes using in geospatial analytics that have an extra column containing coordinate information. This special column has its own rules for column naming and therefore sf objects should be handled differently. In my work I encounter sf bjects very often.</li>
 </ol>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check if the df is an sf object and if so, apply clean names to every column but the last column</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">inherits</span>(df, <span class="st">"sf"</span>)){</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check if the df is an sf object and if so, apply clean names to every column but the last column</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">inherits</span>(df, <span class="st">"sf"</span>)){</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="4" type="1">
-<li>If we are looking at an sf object, we <strong>copy</strong> the sf object and remove the geometry column from this copy. Following this, we can then run janitor’s <code>clean_names()</code> function.</li>
+<li>If we are looking at an sf object, we <strong>copy</strong> the sf object and remove the geometry column from this copy. Following this, we can then run janitor’s <code>clean_names()</code> function on the copy with no geometry column. The reason we do this is that the janitor package has no precedent for sf objects. In the <code>clean_names()</code> function, we specify that we want the column names to follow the “upper_camel” format. This will convert all our column names to the desired format.</li>
 </ol>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert all but the geometry column to upper camel type</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert all but the geometry column to upper camel type</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>While also extracting just the geometry column into a separate object.</p>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">#extract the geometry column as it own object</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    extract_geom_col <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(df)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#bind the column back on with its new name. Note that it should also be named "geom"</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df_new <span class="sc">|&gt;</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">geom =</span> extract_geom_col) <span class="sc">|&gt;</span> </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_as_sf</span>()</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span> <span class="cf">else</span> {</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert ALL columns to upper camel type, don't have to worry about geometry</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#for every character type column, run a encoding check and fix, then remove weird new line characters</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  df_new <span class="ot">&lt;-</span> df_new  <span class="sc">|&gt;</span> </span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span> <span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">'UTF-8'</span>, <span class="at">to =</span> <span class="st">'ASCII//TRANSLIT'</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">"</span><span class="sc">\r\n</span><span class="st">"</span>, <span class="st">" "</span>)))</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df_new)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<ol start="5" type="1">
+<li>Once we have cleaned the names of every column in the SF object, we can the add the special geometry column back on to the dataset. At this point we also need to convert the object back to the “SF” type.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Overview - dataframes often have strange naming conventions, everyone is different, sometimes within a df there is no consistency - these column names can be difficult to work with, particularly when using regex - they can also be confusing when working with objects (object names) - There are R packages written to help with this, such as janitor - I have developed a function using janitor that instill highly opinionated naming - It is opinionated in that it is what I think is best, and works with my repositories. It is not meant to be globally applicable for everyone (but maybe you can learn something) - Lets have a look</p>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#inputs: </span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#df &lt;- every single df that is read should be passed through this function</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>name_cleaning <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#open the core libraries of this function</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(janitor)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(sf)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check if the df is an sf object and if so, apply clean names to every column but the last column</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">inherits</span>(df, <span class="st">"sf"</span>)){</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert all but the geometry column to upper camel type</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#extract the geometry column as it own object</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    extract_geom_col <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(df)</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#bind the column back on with its new name. Note that it should also be named "geom"</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df_new <span class="sc">|&gt;</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">geom =</span> extract_geom_col) <span class="sc">|&gt;</span> </span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_as_sf</span>()</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert ALL columns to upper camel type, don't have to worry about geometry</span></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>  <span class="co">#for every character type column, run a encoding check and fix, then remove weird new line characters</span></span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  df_new <span class="ot">&lt;-</span> df_new  <span class="sc">|&gt;</span> </span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span> <span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">'UTF-8'</span>, <span class="at">to =</span> <span class="st">'ASCII//TRANSLIT'</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">"</span><span class="sc">\r\n</span><span class="st">"</span>, <span class="st">" "</span>)))</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df_new)</span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You may notice that this special geometry column is called “geom” rather than “Geom”… which doesn’t adhere to our naming convention. Unfortunately, this is an annoying quirk of spatial datasets. When they are loaded, the geometry column can take on 1 of 3 different names depending on the source of the data; “geom”, “geometry”, or “shape”. In all cases the name is lowercase, even when the data is saved in uppercase, it will be reloaded in lowercase. Thus, for this issue, we simply ensure that the 3 different possibilities are all just converted to the “geom” option.</p>
+</div>
 </div>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">#bind the geometry column back on with its new name. Note that it should also be named "geom"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df_new <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">geom =</span> <span class="fu">st_geometry</span>(df)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_as_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="6" type="1">
+<li>If the object is a simple dataframe (not an sf object), we can just move straight to the <code>clean_names()</code> step that we explained above.</li>
+</ol>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span> <span class="cf">else</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#convert ALL columns to upper camel type, don't have to worry about geometry</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    df_new <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">clean_names</span>(<span class="at">case =</span> <span class="st">"upper_camel"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="7" type="1">
+<li>Next we look to catch strange edge cases related to the encoding column of columns. You are likely familiar with the concept of a column being of type “character” or “numeric” or “boolean”, etc. Our strange edge case is similar to this. What we have found is that in some instances the character column type is encoded as “UTF-8”, while other times it is encoded as “ASCII”. Much like how you can’t combine character and numeric columns, you also can’t combine columns encoded as UTF-8 and ASCII. Below we convert all columns encoded as UTF-8 to ASCII to avoid this issue.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Please note that these encodings are hidden from the user and you will never normally need to interact with them, the reason this happens doesn’t matter, and is frankly some mysterious property of excel. Broadly, you probably don’t need to ever understand why/how this step works.</p>
+</div>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#for every character type column, run a encoding check and fix, then remove weird new line characters</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  df_new <span class="ot">&lt;-</span> df_new  <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span> <span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">'UTF-8'</span>, <span class="at">to =</span> <span class="st">'ASCII//TRANSLIT'</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">"</span><span class="sc">\r\n</span><span class="st">"</span>, <span class="st">" "</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="8" type="1">
+<li>The object is then returned and the function is complete.</li>
+</ol>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df_new)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="in-practice" class="level1">
+<h1>In Practice</h1>
+<p>Now that we understand how the function works, lets demonstrate its use with another example dataset that has a wide range of column names. Here is before:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create an example table with example names</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>example_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"column 1"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"column-2"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"column_3"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"column-four"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"1A"</span>, <span class="st">"2B"</span>, <span class="st">"3C"</span>, <span class="st">"4D"</span>, <span class="st">"5E"</span>),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Column Five"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#print the table</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(example_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Sepal.Length" "Sepal.Width"  "Petal.Length" "Petal.Width"  "Species"     </code></pre>
+<pre><code>  column.1 column.2 column_3 column.four Column.Five
+1        1        A       NA          1A        TRUE
+2        2        B       NA          2B       FALSE
+3        3        C       NA          3C        TRUE
+4        4        D       NA          4D       FALSE
+5        5        E       NA          5E        TRUE</code></pre>
 </div>
 </div>
+<p>And after:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">name_cleaning</span>(iris))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#run the clean name functions</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>example_df_cleaned <span class="ot">&lt;-</span> <span class="fu">name_cleaning</span>(example_df)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print the cleaned dataset</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cond_form_tables</span>(example_df_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "SepalLength" "SepalWidth"  "PetalLength" "PetalWidth"  "Species"    </code></pre>
+<div class="cell-output-display">
+<table class="huxtable" data-quarto-disable-processing="true" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; width: 100%; margin-left: auto; margin-right: auto;  ">
+<colgroup><col><col><col><col><col></colgroup><tbody><tr>
+<th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">Column1</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">Column2</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">Column3</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">ColumnFour</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold; font-size: 9pt;">ColumnFive</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">1</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">A</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;"></td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">1A</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">TRUE</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">2</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">B</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;"></td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">2B</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">FALSE</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">C</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;"></td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">3C</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">TRUE</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">4</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">D</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;"></td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">4D</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">FALSE</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">5</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">E</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;"></td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">5E</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal; font-size: 9pt;">TRUE</td></tr>
+</tbody></table>
+
 </div>
 </div>
+</section>
+<section id="caveats" class="level1">
+<h1>Caveats</h1>
+<p>It is also important to acknowledge the caveats of your own work. To my knowledge the only caveat of this function is that it relies on a sensible preexisting column name, even if the format is horrible. What I mean by this is that a column named “Mean-fish_in Townsville” can be cleaned, but a column with no name… well how can you rename that to something appropriate? As a side note R does generally replace empty column names with “X1”, “X2”, etc. however this still does not provide any information about the column.</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<style>
+
+        .icon {
+
+            width: 1.2em;
+
+            height: 1.2em;
+
+            vertical-align: middle;
+
+            fill: #27ced7;
+
+            margin:0 2px;
+
+            display: inline-block;
+
+            transition: transform 0.3s ease;
+
+        }
+
+        .icon:hover {
+
+        transform: scale(1.2); /* Increase the size slightly on hover */
+
+        }
+
+        .image {
+
+          width: 100%;
+
+          height: auto;
+
+          vertical-align: middle;
+
+        }
+
+</style>
+
+
+
+  <h1>Our Partners</h1>
+
+  <p>Please visit our website for a list of <a href="https://www.drytropicshealthywaters.org/partners" target="_blank">HWP Partners.</a></p>
+
+  <a href="https://www.drytropicshealthywaters.org/partners" target="_blank">
+
+    <img src="../system_formatting/hwp_partners.png" alt="Icons of all HWP partners" class="image">
+
+  </a>
+
+  &nbsp;
+  <hr>
+
+  <p style="text-align: center;">A work by <a href="https://github.com/add-am/">Adam Shand.</a> Reuse: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en">CC-BY-NC-ND.</a></p>
+
+  <p style="text-align: center;"><span style="color: #808080;"><em>to@drytropicshealthywaters.org</em></span></p>
+
+  
+
+  <!-- Add font awesome icons -->
+
+  <p style="text-align: center;">
+
+    <a href="https://github.com/add-am/" target="_blank" style="text-decoration: none;">
+
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+
+    </a>
+
+    <a href="https://www.linkedin.com/in/adam-shand-a2257117b/" target="_blank" style="text-decoration: none;">
+
+             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></svg>
+
+    </a>
+
+  </p>
+
+  &nbsp;
+  <hr>
+
+  <p style="text-align: center;"><span style="color: #808080;">This work should be cited as: <br>
+
+  <em>Adam Shand, "[document title]", 2024, Healthy Waters Partnership for the Dry Tropics.</em></span></p>
+
+
+
+
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -580,7 +738,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/www\.adamshand22\.com");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

@@ -1,11 +1,12 @@
 ---
 title: "An Opinionated Dataframe Cleaner"
 subtitle: "Adam Shand"
-date: "13/04/2025"
+date: "01/04/2025"
 abstract-title: "ABSTRACT"
 abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
 image: "image.jpg"
 format: html
+include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 
 # Introduction
@@ -15,6 +16,34 @@ Inconsistent and illogical naming conventions can ruin even the best analysts fl
 So if this is such a widely acknowledged issue, why is it still an issue? How has it not been fixed? Simply put, because a) its boring, and b) everyone is unique and has their own idea of what a "good" system looks like. This leads to people not bothering, or instances where you might pull together several datasets from a range of sources, each using their own (different) naming conventions. Thankfully, if each dataset is at least internally consistent, we can address these differences.
 
 Below, I introduce my method of addressing this issue. It is a highly opinionated dataframe cleaner that focuses exclusively on ensuring every dataframe I touch receives exactly the same column naming convention. Before we dive it, I believe it is critical to recognise that this method is customized to my needs, it may work for you as well, but I recommend instead that you use this as inspiration to develop your own method.
+
+```{r}
+#| label: hidden set up code for our page
+#| output: FALSE
+#| echo: FALSE
+#| code-fold: TRUE
+
+library(huxtable)
+
+cond_form_tables <- function(df, header_rows = 1){
+  
+  #convert input dataframe to a huxtable type
+  df <- as_hux(df)
+  
+  #style the hux table into our desired look
+  df <- df |> 
+    set_bold(row = 1:header_rows, col = everywhere) |> #make header(s) bold
+    set_top_border(row = 1, col = everywhere) |> #add border to top of row one
+    set_bottom_border(row = header_rows, col = everywhere) |> #add border to bottom of header(s) row
+    set_bottom_border(row = nrow(df), col = everywhere) |> #add border to very bottom of table
+    set_width(1) |> #set width depending on page orientation
+    set_font_size(row = everywhere, col = everywhere, value = 9)#set the font size
+  
+  return(df)
+  
+}
+
+```
 
 # The Naming Convention
 
@@ -26,53 +55,61 @@ So what naming convention am I using exactly? "Upper Camel Case" is my choice, h
  - UPPERFLATCASE
  - etc.
 
-Why UpperCamelCase? As noted above, everyone has their own idea of what is good. I find that upper camel case suite my purposes well, it is fairly easy to read, it only contains A-Z, 0-9 (no underscores or dashes), and most importantly it does not class with my object names when coding it R. What I mean by this is that I use snake_case to name my objects, and UpperCamelCase to name columns within my objects. Lets consider the following example.
+Why UpperCamelCase? As noted above, everyone has their own idea of what is good. I find that upper camel case suite my purposes well, it is fairly easy to read, it only contains A-Z, 0-9 (no underscores or dashes), and most importantly it does not clash with my object names when coding it R. What I mean by this is that I use snake_case to name my objects, and UpperCamelCase to name columns within my objects. Lets consider the following example.
 
-Lets say I have a dataframe that counts fish:
+Lets say I have a dataframe that counts fish (called "fish"):
 
 ```{r}
 
+#load the dplyr package
 library(dplyr)
 
-fish <- data.frame(fish = c("A", "B", "C", "D", "E"),
+#create an example dataframe
+fish <- data.frame(species = c("A", "B", "C", "D", "E"),
                    fish_count_location_1 = c(6,9,3,5,10),
                    fish_count_location_2 = c(1,16,3,2,7))
 
-head(fish)
+#print the dataframe. If you want to learn about this function, check out my pretty tables post!
+cond_form_tables(fish)
 
 ```
 
 (Note that both the object and column names are in snake_case).
 
-Then I decide to figure out the mean number of each species of fish, across all locations:
+Then I decide to figure out the mean number of each species of fish, across all locations (called "mean_fish"):
 
 ```{r}
 
+#get the rowwise mean of the fish counts per species
 mean_fish <- fish |> 
-  group_by(fish) |> 
-  mutate(mean_fish = mean(fish_count_location_1, fish_count_location_2)) |> 
+  rowwise() |> 
+  mutate(mean_fish = mean(c(fish_count_location_1, fish_count_location_2))) |> 
   ungroup()
 
-head(mean_fish)
+#print the dataframe
+cond_form_tables(mean_fish)
 
 ```
 
-Whoops, just by using some logical naming I now accidentally have a dataframe object named "mean_fish", and a column within that dataframe named "mean_fish". Now obviously this is a silly example, but image we have 1000+ lines of code, suddenly we can't remember whats an object and whats a column.
+Whoops, just by using some logical naming I now accidentally have a dataframe object named "mean_fish", and a column within that dataframe named "mean_fish". Now obviously this is a silly example, but image we have 1000+ lines of code, and we need to know something about the mean number of fish. Suddenly we can't remember whats an object and whats a column and we can run into subtle errors, or have very confusing lines of codes.
 
 Thus; my final reason for choosing UpperCamelCase:
 
 ```{r}
 
-fish <- data.frame(Fish = c("A", "B", "C", "D", "E"),
+#create a new example dataframe
+fish <- data.frame(Species = c("A", "B", "C", "D", "E"),
                    FishCountLocation1 = c(6,9,3,5,10),
                    FishCountLocation2 = c(1,16,3,2,7))
 
+#get the rowwise mean of the fish counts per species
 mean_fish <- fish |> 
-  group_by(Fish) |> 
-  mutate(MeanFish = mean(FishCountLocation1, FishCountLocation2)) |> 
+  rowwise() |> 
+  mutate(mean_fish = mean(c(FishCountLocation1, FishCountLocation2))) |> 
   ungroup()
 
-head(mean_fish)
+#print the dataframe
+cond_form_tables(mean_fish)
 
 ```
 
@@ -81,16 +118,16 @@ head(mean_fish)
 My custom function takes advantage of the `janitor` R package, which includes a wide range of functions to perform standard cleaning and organisation steps (check out the [janitor documentation](https://cran.r-project.org/web/packages/janitor/vignettes/janitor.html) to see what it can do). Specifically, we are going to use the `clean_names()` function, along with some bells and whistles to catch our edge cases. Lets take a look:
 
 ```{r}
-#| eval: FALSE
 
 #create the custom function
 name_cleaning <- function(df){
 
-  #open the core libraries of this function
-  library(janitor)
-  library(dplyr)
-  library(sf)
-  
+  #load and install (if required) the pacman package handler package, which we will use for all future package downloads
+  if(!require("pacman")){install.packages("pacman")}
+
+  #use the pacman function to load and install (if required) all other packages
+  pacman::p_load(janitor, dplyr, sf, stringr)
+
   #check if the df is an sf object and if so, apply clean names to every column but the last column
   if(inherits(df, "sf")){
     
@@ -99,12 +136,9 @@ name_cleaning <- function(df){
       st_drop_geometry() |>
       clean_names(case = "upper_camel")
     
-    #extract the geometry column as it own object
-    extract_geom_col <- st_geometry(df)
-    
-    #bind the column back on with its new name. Note that it should also be named "geom"
+    #bind the geometry column back on with its new name. Note that it should also be named "geom"
     df_new <- df_new |>
-      dplyr::mutate(geom = extract_geom_col) |> 
+      dplyr::mutate(geom = st_geometry(df)) |> 
       st_as_sf()
   
   } else {
@@ -128,7 +162,7 @@ name_cleaning <- function(df){
 
 Ok, so even though that is a relatively short function, there is still a few things going on. Lets break it down a bit.
 
-1. First we will initialize the function (if you are unfamiliar with creating your own functions check out my other post).
+1. First we will initialize the function (if you are unfamiliar with creating your own functions check out my functions post).
 
 ```{r}
 #| eval: FALSE
@@ -138,19 +172,20 @@ name_cleaning <- function(df){
   
 ```
 
-2. Then we load each of our required packages. Noting that generally we would expect this packages to already have been loaded in by the script calling this function, but we can't be sure.
+2. Then we load each of our required packages. Noting that generally we would expect these packages to already have been loaded in by the script calling this function, but we can't be sure. Here we use the `pacman` package to make the install/load steps a bit more streamline, documentation for pacman can be found [here](https://trinker.github.io/pacman/vignettes/Introduction_to_pacman.html).
 
 ```{r}
 #| eval: FALSE
 
-  #open the core libraries of this function
-  library(janitor)
-  library(dplyr)
-  library(sf)
+  #load and install (if required) the pacman package handler package, which we will use for all future package downloads
+  if(!require("pacman")){install.packages("pacman")}
 
+  #use the pacman function to load and install (if required) all other packages
+  pacman::p_load(janitor, dplyr, sf, stringr)
+  
 ```
 
-3. We then check if the dataframe we are cleaning is actually an "sf" object. Sf objects are special types of dataframes using in geospatial analytics that have an extra column containing coordinate information. This special column has its own rules for column naming and therefore sf objects should be handled differently.
+3. We then check if the dataframe we are cleaning is actually an "sf" object. Sf objects are special types of dataframes using in geospatial analytics that have an extra column containing coordinate information. This special column has its own rules for column naming and therefore sf objects should be handled differently. In my work I encounter sf bjects very often.
 
 ```{r}
 #| eval: FALSE
@@ -160,7 +195,7 @@ name_cleaning <- function(df){
     
 ```
 
-4. If we are looking at an sf object, we **copy** the sf object and remove the geometry column from this copy. Following this, we can then run janitor's `clean_names()` function.
+4. If we are looking at an sf object, we **copy** the sf object and remove the geometry column from this copy. Following this, we can then run janitor's `clean_names()` function on the copy with no geometry column. The reason we do this is that the janitor package has no precedent for sf objects. In the `clean_names()` function, we specify that we want the column names to follow the "upper_camel" format. This will convert all our column names to the desired format.
 
 ```{r}
 #| eval: FALSE
@@ -172,23 +207,27 @@ name_cleaning <- function(df){
 
 ```
 
+5. Once we have cleaned the names of every column in the SF object, we can the add the special geometry column back on to the dataset. At this point we also need to convert the object back to the "SF" type.
 
-While also extracting just the geometry column into a separate object.
-
-
-
+::: {.callout-note}
+You may notice that this special geometry column is called "geom" rather than "Geom"... which doesn't adhere to our naming convention. Unfortunately, this is an annoying quirk of spatial datasets. When they are loaded, the geometry column can take on 1 of 3 different names depending on the source of the data; "geom", "geometry", or "shape". In all cases the name is lowercase, even when the data is saved in uppercase, it will be reloaded in lowercase. Thus, for this issue, we simply ensure that the 3 different possibilities are all just converted to the "geom" option.
+:::
 
 ```{r}
 #| eval: FALSE
     
-    #extract the geometry column as it own object
-    extract_geom_col <- st_geometry(df)
-    
-    #bind the column back on with its new name. Note that it should also be named "geom"
+    #bind the geometry column back on with its new name. Note that it should also be named "geom"
     df_new <- df_new |>
-      dplyr::mutate(geom = extract_geom_col) |> 
+      dplyr::mutate(geom = st_geometry(df)) |> 
       st_as_sf()
-  
+
+```
+
+6. If the object is a simple dataframe (not an sf object), we can just move straight to the `clean_names()` step that we explained above.
+
+```{r}
+#| eval: FALSE
+
   } else {
     
     #convert ALL columns to upper camel type, don't have to worry about geometry
@@ -196,97 +235,69 @@ While also extracting just the geometry column into a separate object.
       clean_names(case = "upper_camel")
     
   }
+
+```
+
+7. Next we look to catch strange edge cases related to the encoding column of columns. You are likely familiar with the concept of a column being of type "character" or "numeric" or "boolean", etc. Our strange edge case is similar to this. What we have found is that in some instances the character column type is encoded as "UTF-8", while other times it is encoded as "ASCII". Much like how you can't combine character and numeric columns, you also can't combine columns encoded as UTF-8 and ASCII. Below we convert all columns encoded as UTF-8 to ASCII to avoid this issue.
+
+::: {.callout-note}
+Please note that these encodings are hidden from the user and you will never normally need to interact with them, the reason this happens doesn't matter, and is frankly some mysterious property of excel. Broadly, you probably don't need to ever understand why/how this step works.
+:::
+
+```{r}
+#| eval: FALSE
   
   #for every character type column, run a encoding check and fix, then remove weird new line characters
   df_new <- df_new  |> 
     mutate(across(where(is.character), ~ iconv(., from = 'UTF-8', to = 'ASCII//TRANSLIT'))) |> 
     mutate(across(where(is.character), ~str_replace_all(., "\r\n", " ")))
   
+```
+
+8. The object is then returned and the function is complete.
+
+```{r}
+#| eval: FALSE
+
   return(df_new)
   
 }
 
-
-
-
 ```
 
+# In Practice
 
-Overview
- - dataframes often have strange naming conventions, everyone is different, sometimes within a df there is no consistency
- - these column names can be difficult to work with, particularly when using regex
- - they can also be confusing when working with objects (object names)
- - There are R packages written to help with this, such as janitor
- - I have developed a function using janitor that instill highly opinionated naming
- - It is opinionated in that it is what I think is best, and works with my repositories. It is not meant to be globally applicable for everyone (but maybe you can learn something)
- - Lets have a look
- 
+Now that we understand how the function works, lets demonstrate its use with another example dataset that has a wide range of column names. Here is before:
 
 ```{r}
 
-#inputs: 
-#df <- every single df that is read should be passed through this function
+#create an example table with example names
+example_df <- data.frame("column 1" = c(1,2,3,4,5),
+                         "column-2" = c("A", "B", "C", "D", "E"),
+                         "column_3" = c(NA, NA, NA, NA, NA),
+                         "column-four" = c("1A", "2B", "3C", "4D", "5E"),
+                         "Column Five" = c(TRUE, FALSE, TRUE, FALSE, TRUE))
 
-name_cleaning <- function(df){
-
-  #open the core libraries of this function
-  library(janitor)
-  library(dplyr)
-  library(sf)
-  
-  #check if the df is an sf object and if so, apply clean names to every column but the last column
-  if(inherits(df, "sf")){
-    
-    #convert all but the geometry column to upper camel type
-    df_new <- df |> 
-      st_drop_geometry() |>
-      clean_names(case = "upper_camel")
-    TRUE
-    
-    #extract the geometry column as it own object
-    extract_geom_col <- st_geometry(df)
-    
-    #bind the column back on with its new name. Note that it should also be named "geom"
-    df_new <- df_new |>
-      dplyr::mutate(geom = extract_geom_col) |> 
-      st_as_sf()
-  
-  } else {
-    
-    #convert ALL columns to upper camel type, don't have to worry about geometry
-    df_new <- df |> 
-      clean_names(case = "upper_camel")
-    
-  }
-  
-  #for every character type column, run a encoding check and fix, then remove weird new line characters
-  df_new <- df_new  |> 
-    mutate(across(where(is.character), ~ iconv(., from = 'UTF-8', to = 'ASCII//TRANSLIT'))) |> 
-    mutate(across(where(is.character), ~str_replace_all(., "\r\n", " ")))
-  
-  return(df_new)
-  
-}
-
-
+#print the table
+print(example_df)
 
 ```
 
+And after:
 
 ```{r}
 
-colnames(iris)
+#run the clean name functions
+example_df_cleaned <- name_cleaning(example_df)
+
+#print the cleaned dataset
+cond_form_tables(example_df_cleaned)
 
 ```
 
+# Caveats
 
-```{r}
-
-colnames(name_cleaning(iris))
-
-```
-
-
+It is also important to acknowledge the caveats of your own work. To my knowledge the only caveat of this function is that it relies on a sensible preexisting column name, even if the format is horrible. What I mean by this is that a column named "Mean-fish_in Townsville" can be cleaned, but a column with no name... well how can you rename that to something appropriate? As a side note R does generally replace empty column names with "X1", "X2", etc. however this still does not provide any information about the column.
 
 
 
