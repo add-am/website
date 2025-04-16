@@ -10,10 +10,6 @@ project:
 
 title-meta: "Adam Shand"
 description-meta: "Environmental Scientist | Data Analyst"
-header-includes:  | 
-      <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/metropolis" type="text/css"/> 
-#above is the source for the font that the html reports use (metropolis)
-mainfont: MetropolisRegular #then this is also saying what font to use (both are needed for some reason)
 
 website:
   title: "ADAM SHAND"
@@ -61,30 +57,24 @@ execute:
   freeze: false
   warning: false
 
-toc: true
-toc-location: right
-number-sections: false
-
 format:
   html:
     grid: 
       body-width: 800px
       sidebar-width: 500px
       margin-width: 300px
-    fontsize: 1em
     theme: 
       - html/styles.scss
     code-fold: show
     code-overflow: wrap
-    code-tools: true
     code-copy: true
-    code-block-border-left: "#54CC98" #a light muted green
+    code-block-border-left: "#e6aa04" #a light orange
     code-block-bg: "#00252A20" #a dark muted green at 20% opacity
-    code-summary: "Expand to view code."
     embed-resources: true
+    toc: true
     toc-title: "Jump To:"
+    toc-location: right
     number-sections: true
-    monobackgroundcolor: "transparent"
     anchor-sections: false
     reference-location: margin
    

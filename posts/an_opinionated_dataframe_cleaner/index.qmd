@@ -5,7 +5,7 @@ abstract-title: "ABSTRACT"
 abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
 image: "image.png"
 format: html
-title-block-banner: true #(This is our banner
+title-block-banner: true #This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 
@@ -15,7 +15,7 @@ Inconsistent and illogical naming conventions can ruin even the best analysts fl
 
 So if this is such a widely acknowledged issue, why is it still an issue? How has it not been fixed? Simply put, because a) its boring, and b) everyone is unique and has their own idea of what a "good" system looks like. This leads to people not bothering, or instances where you might pull together several datasets from a range of sources, each using their own (different) naming conventions. Thankfully, if each dataset is at least internally consistent, we can address these differences.
 
-Below, I introduce my method of addressing this issue. It is a highly opinionated dataframe cleaner that focuses exclusively on ensuring every dataframe I touch receives exactly the same column naming convention. Before we dive it, I believe it is critical to recognise that this method is customized to my needs, it may work for you as well, but I recommend instead that you use this as inspiration to develop your own method.
+Below, I introduce my method of addressing this issue. It is a highly opinionated dataframe cleaner that focuses exclusively on ensuring every dataframe I touch receives exactly the same column naming convention. Before we dive into it, I believe it is critical to recognise that this method is customized to my needs, it may work for you as well, but I recommend instead that you use this as inspiration to develop your own method.
 
 ```{r}
 #| label: hidden set up code for our page
@@ -55,7 +55,7 @@ So what naming convention am I using exactly? "Upper Camel Case" is my choice, h
  - UPPERFLATCASE
  - etc.
 
-Why UpperCamelCase? As noted above, everyone has their own idea of what is good. I find that upper camel case suite my purposes well, it is fairly easy to read, it only contains A-Z, 0-9 (no underscores or dashes), and most importantly it does not clash with my object names when coding it R. What I mean by this is that I use snake_case to name my objects, and UpperCamelCase to name columns within my objects. Lets consider the following example.
+Why UpperCamelCase? As noted above, everyone has their own idea of what is good. I find that upper camel case suite my purposes well, it is fairly easy to read, it only contains A-Z, 0-9 (no underscores or dashes), and most importantly it does not clash with my object names when coding it in R. What I mean by this is that I use snake_case to name my objects, and UpperCamelCase to name columns within my objects. Lets consider the following example.
 
 Lets say I have a dataframe that counts fish (called "fish"):
 
@@ -91,7 +91,7 @@ cond_form_tables(mean_fish)
 
 ```
 
-Whoops, just by using some logical naming I now accidentally have a dataframe object named "mean_fish", and a column within that dataframe named "mean_fish". Now obviously this is a silly example, but image we have 1000+ lines of code, and we need to know something about the mean number of fish. Suddenly we can't remember whats an object and whats a column and we can run into subtle errors, or have very confusing lines of codes.
+Whoops, just by using some logical naming I now accidentally have a dataframe object named "mean_fish", and a column within that dataframe named "mean_fish". Now obviously this is a silly example, but imaging we have 1000+ lines of code, and we need to know something about the mean number of fish. Suddenly we can't remember whats an object and whats a column and we can run into subtle errors, or have very confusing lines of codes.
 
 Thus; my final reason for choosing UpperCamelCase:
 
@@ -185,7 +185,7 @@ name_cleaning <- function(df){
   
 ```
 
-3. We then check if the dataframe we are cleaning is actually an "sf" object. Sf objects are special types of dataframes using in geospatial analytics that have an extra column containing coordinate information. This special column has its own rules for column naming and therefore sf objects should be handled differently. In my work I encounter sf bjects very often.
+3. We then check if the dataframe we are cleaning is actually an "sf" (simple feature) object. Sf objects are special types of dataframes used in geospatial analytics that have an extra column containing coordinate information. This special column has its own rules for column naming and therefore sf objects should be handled differently. In my work I encounter sf objects very often.
 
 ```{r}
 #| eval: FALSE
@@ -207,7 +207,7 @@ name_cleaning <- function(df){
 
 ```
 
-5. Once we have cleaned the names of every column in the SF object, we can the add the special geometry column back on to the dataset. At this point we also need to convert the object back to the "SF" type.
+5. Once we have cleaned the names of every column in the sf object, we can then add the special geometry column back on to the dataset. At this point we also need to convert the object back to the "sf" type.
 
 ::: {.callout-note}
 You may notice that this special geometry column is called "geom" rather than "Geom"... which doesn't adhere to our naming convention. Unfortunately, this is an annoying quirk of spatial datasets. When they are loaded, the geometry column can take on 1 of 3 different names depending on the source of the data; "geom", "geometry", or "shape". In all cases the name is lowercase, even when the data is saved in uppercase, it will be reloaded in lowercase. Thus, for this issue, we simply ensure that the 3 different possibilities are all just converted to the "geom" option.

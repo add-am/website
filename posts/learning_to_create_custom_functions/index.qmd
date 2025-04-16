@@ -5,6 +5,6 @@ abstract-title: "ABSTRACT"
 abstract: "TBD."
 image: "image.png"
 format: html
-title-block-banner: true #(This is our banner
+title-block-banner: true #This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---

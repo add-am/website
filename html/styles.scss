@@ -3,29 +3,32 @@
 $text:        #121212 !default; //just off black
 $background:  #F2F2F2 !default; //a light grey
 $primary:     #e6aa04 !default; //a light orange
-$secondary:   #841818 !default; //a dark muted red
-$accent:      #54CC98 !default; //a light muted green
-$accent2:     #00252A !default; //a dark muted green
-$black:       #000000 !default; //black, duh
+$accent:      #00252A !default; //a dark muted green
 
 // Base document colours
 $body-bg:        $background !default;
 $body-color:     $text !default;
+$code-bg:        $background !default;
+$code-color:     $primary !default;
 
 
 // Callout bubbles used by Quarto Documents
-$callout-color-note: #54CC98; //a light muted green
-$callout-color-tip: #27ced7; //aqua (bubble)
-$callout-color-caution: #841818; //a dark muted red
-$callout-color-warning: #27ced7; //aqua (bubble)
-$callout-color-important: #e6aa04;  //a light orange
+//$callout-color-note: #54CC98; //a light muted green
+//$callout-color-tip: #27ced7; //aqua (bubble)
+//$callout-color-caution: #841818; //a dark muted red
+//$callout-color-warning: #27ced7; //aqua (bubble)
+//$callout-color-important: #e6aa04;  //a light orange
 
 .quarto-title, .quarto-title-banner, h1, h2, h3, h4, h5, h6 {
-  color:  #00252A !important; //a dark muted green
+  color:  $accent !important;
+}
+
+h1 > .header-section-number {
+  color:  $accent !important; 
 }
 
 .quarto-title-meta-heading, .header-section-number {
-  color:  #00252A; //a dark muted green
+  color:  $accent; 
 }
 
 .subtitle.lead, .description, .quarto-title-meta-contents, .btn.code-tools-button.dropdown-toggle {
@@ -39,14 +42,14 @@ $callout-color-important: #e6aa04;  //a light orange
   background-repeat: no-repeat;
   padding-left: 10px;
   background-origin: content-box;
-  background-color: #F2F2F2;
-  color: #00252A; //a dark muted green
+  background-color: $background;
+  color: $accent; 
 }
 
 //Navbar and Footer
-$navbar-bg:     $accent2 !default; //The bar itself
+$navbar-bg:     $accent !default; //The bar itself
 $navbar-fg:     $background !default; //The text/symbols on the bar
-$footer-bg:     $accent2 !default; //The bar itself
+$footer-bg:     $accent !default; //The bar itself
 $footer-fg:     $background !default; //The text/symbols on the bar
 
 .navbar {
@@ -68,7 +71,7 @@ $footer-fg:     $background !default; //The text/symbols on the bar
 }
 
 .landing-body{ //this is the container for the background image
-  background-color: $accent2;
+  background-color: $accent;
   height: 100vh;
   background-image: url("images/landing_page.svg");
   background-repeat: no-repeat;
@@ -87,7 +90,7 @@ $footer-fg:     $background !default; //The text/symbols on the bar
 // CV page specifics
 
 .cv-body{ //this is the container for the background image
-  background-color: $accent2;
+  background-color: $accent;
   height: 100vh;
   background-image: url("images/cv_page.svg");
   background-repeat: no-repeat;
@@ -137,8 +140,8 @@ $footer-fg:     $background !default; //The text/symbols on the bar
   width:            300px;
   padding:          10px 0;
   text-align:       center;
-  border:           2px solid $accent2;
-  color:            $accent2;
+  border:           2px solid $accent;
+  color:            $accent;
   background:       transparent;
   border-radius:    10px;
   font-size:        1.3rem;
@@ -168,7 +171,7 @@ $footer-fg:     $background !default; //The text/symbols on the bar
 // Project page specifics
 
 .project-page .quarto-container { //this is the container for the background image. Note it is the generic quarto-container, but only on the project page
-  background-color: $accent2;
+  background-color: $accent;
   background: transparent;
   background-image: url("images/project_page.svg");
   background-repeat: no-repeat;
