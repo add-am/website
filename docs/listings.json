@@ -1,11 +1,9 @@
 [
   {
-    "listing": "/projects/index.html",
+    "listing": "/posts/index.html",
     "items": [
-      "/projects/an_opinionated_dataframe_cleaner/index.html",
-      "/projects/chronicals_of_the_bay/index.html",
-      "/projects/conquering_reports_with_r/index.html",
-      "/projects/out_of_the_shadows/index.html"
+      "/posts/an_opinionated_dataframe_cleaner/index.html",
+      "/posts/learning_to_create_custom_functions/index.html"
     ]
   }
 ]

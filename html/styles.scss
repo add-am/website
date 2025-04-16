@@ -1,7 +1,7 @@
 /*-- scss:defaults --*/
 
 $text:        #121212 !default; //just off black
-$background:  #cccccc !default; //a light grey
+$background:  #F2F2F2 !default; //a light grey
 $primary:     #e6aa04 !default; //a light orange
 $secondary:   #841818 !default; //a dark muted red
 $accent:      #54CC98 !default; //a light muted green
@@ -12,45 +12,11 @@ $black:       #000000 !default; //black, duh
 $body-bg:        $background !default;
 $body-color:     $text !default;
 
-// Links
-
-//This group applies to the Navbar and Footer (we want this seperate so there is no underline or initial colour for these ones.)
-//IM NOT SURE WE NEED THIS ANYMORE
-//$link-color:                $background !default; //Note link is "background" because it its on an accent2 background
-//$link-decoration:           none !default;
-//$link-hover-color:          $primary !default;
-//$link-hover-decoration:     none !default;
-
-//This group applies to all <a> tags with the "main-links" class
-//IM NOT SURE WE NEED THIS ANYMORE
-//.main-links:link {
-//  color:                    $text;
-//  background-color:         transparent;
-//  text-decoration:          none;
-//}
-//.main-links:visited {
-//  color:                    $text;
-//  background-color:         transparent;
-//  text-decoration:          none;
-//}
-//.main-links:hover {
-//  color:                    $accent;
-//  background-color:         transparent;
-//  text-decoration:          underline;
-//}
-//.main-links:active {
-//  color:                    $accent;
-//  background-color:         transparent;
-//  text-decoration:          underline;
-//}
-
 //Navbar and Footer
 $navbar-bg:     $accent2 !default; //The bar itself
 $navbar-fg:     $background !default; //The text/symbols on the bar
-//$navbar-hl:     $primary !default; //what colour should things be when hovered
 $footer-bg:     $accent2 !default; //The bar itself
 $footer-fg:     $background !default; //The text/symbols on the bar
-//$footer-hl:     $primary !default; //what colour should things be when hovered
 
 .navbar {
   border-bottom: 1px solid $background;

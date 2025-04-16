@@ -6,7 +6,7 @@ listing:
   type: default
   sort: date desc
   image-height: "2cm"
-  image-placeholder: "../../images/place_holder.png"
+  image-placeholder: "../images/place_holder.png"
   date-format: "DD MMM, YYYY"
   sort-ui: TRUE
   fields: [image, date, title, author, description]

@@ -6,10 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-03-01">
 <meta name="description" content="Environmental Scientist | Data Analyst">
 
-<title>The Chronicals of Cleveland Bay – ADAM SHAND</title>
+<title>Environmental Bytes for a Better Earth – ADAM SHAND</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,21 +24,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<link href="../../images/logo.svg" rel="icon" type="image/svg+xml">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0c8af03b2fbd4cf44d6703e337af0e8d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-0cd44937a8493a98527e9f63bb9318f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/logo.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0c8af03b2fbd4cf44d6703e337af0e8d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-cb52104a426e3fd14cacb5215d6566cf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -66,22 +67,80 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/metropolis" type="text/css"> 
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed project-page">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo.svg" alt="" class="navbar-logo">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/logo.svg" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ADAM SHAND</span>
     </a>
   </div>
@@ -92,12 +151,12 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../cv/index.html"> 
+    <a class="nav-link" href="../cv/index.html"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../projects/index.html"> 
-<span class="menu-text">Projects</span></a>
+    <a class="nav-link active" href="../posts/index.html" aria-current="page"> 
+<span class="menu-text">Posts</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -136,11 +195,11 @@ ul.task-list li input[type="checkbox"] {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Chronicals of Cleveland Bay</h1>
+<h1 class="title">Environmental Bytes for a Better Earth</h1>
 </div>
 
 
@@ -148,20 +207,14 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">March 1, 2024</p>
-    </div>
-  </div>
   
     
   </div>
   
 <div>
   <div class="abstract">
-    <div class="block-title">ABSTRACT</div>
-    ESRI StoryMaps about Cleveland Bay.
+    <div class="block-title"></div>
+    As each of my projects come to completion and are cleared for public release my thought process and findings will be published here. Below you can find a wide range of topics, from the feeling of my first publication and future publications since, to current analysis workflows I use and new techniques I am trying out.
   </div>
 </div>
 
@@ -169,137 +222,100 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Corals of Cleveland Bay
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>To be released in March 2024, the Corals of Cleveland Bay StoryMap will unveil the hidden world of coral reefs beneath the surface of Cleveland Bay.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Hydrology and Hydrodynamics of Cleveland Bay
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Released in November 2023, the Hydrology and Hydrodynamics of Cleveland Bay StoryMap focus on the movement of water in and around the Bay:</p>
-<p>Rain comes in massive peaks and troughs, cyclones tear across the ocean, and winds and currents stir the coast into a swirling mix of salt, sand, and sediment. The <a href="https://storymaps.arcgis.com/stories/40fb1343dd8f4a8f9edc3b51e2346943" class="main-links"> Hydrology and Hydrodynamics of Cleveland Bay</a> story explores, from the very beginnings, the journey of water across Cleveland Bay: where it comes from, where it goes, what it does, and how it does it. It explores the impact of humans on water, what impacts are yet to come, and how we can best prepare for the future.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Guardians of the Bay
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Released in March 2022, the Guardians of the Bay StoryMap explores the importance of seagrass for our daily lives.</p>
-<p>Seagrass, small plants with a big impact. The <a href="https://storymaps.arcgis.com/stories/1955ed7dd4c440639bb34f8a430aa054" class="main-links"> Guardians of the Bay </a> story explores how seagrass can stabilize the ocean floor, improve water quality, and protect our shores from erosion, it takes you on a journey under the ocean and into the flourishing world of seagrass in Cleveland Bay.</p>
-</div>
+<div class="column-screen">
+
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible content=" ie="edge&quot;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+  <div class="project-background"></div>
+
 </div>
 
 
 
-</main> <!-- /main -->
-<style>
 
-        .icon {
-
-            width: 1.2em;
-
-            height: 1.2em;
-
-            vertical-align: middle;
-
-            fill: #121212;
-
-            margin:0 2px;
-
-            display: inline-block;
-
-            transition: transform 0.3s ease;
-
-        }
-
-        .icon:hover {
-
-        transform: scale(1.2); /* Increase the size slightly on hover */
-
-        fill: #e6aa04;
-
-        }
-
-        .image {
-
-          width: 100%;
-
-          height: auto;
-
-          vertical-align: middle;
-
-        }
-
-</style>
-
-
-
-  <h1>Thanks For Reading!</h1>
-
-  <p>Please stick around, and have a read of several of my other posts. You'll find work on everything from simple data management and organisation skills, all the way to writting custom functions, tackling complex environmental problems, and my journey when learning new environmental data analyst skills.
-
-  <img src="../images/footer_logo.svg" alt="Footer Logo" class="image">
-
-  &nbsp;
-  </p><hr>
-
-  <p style="text-align: center;">A work by <a href="https://github.com/add-am/">Adam Shand.</a> Reuse: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en">CC-BY-NC-ND.</a></p>
-
-  <p style="text-align: center;"><span style="color: #808080;"><em>adamshand22@gmail.com</em></span></p>
-
-  
-
-  <!-- Add font awesome icons -->
-
-  <p style="text-align: center;">
-
-    <a href="https://github.com/add-am/" target="_blank" style="text-decoration: none;">
-
-              <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
-
-    </a>
-
-    <a href="https://www.linkedin.com/in/adam-shand-a2257117b/" target="_blank" style="text-decoration: none;">
-
-             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></svg>
-
-    </a>
-
-  </p>
-
-  &nbsp;
-  <hr>
-
-  <p style="text-align: center;"><span style="color: #808080;">This work should be cited as: <br>
-
-  <em>Adam Shand, "[Insert Document Title]", "[Insert Year]".</em></span></p>
-
-
-
-
-
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-author" data-direction="asc">
+          Author
+        </option>
+     </select>
+  </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1735912800000" data-listing-file-modified-sort="1744778605043" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2250">
+<div class="thumbnail">
+<p><a href="../posts/an_opinionated_dataframe_cleaner/index.html" class="no-external"></a></p><a href="../posts/an_opinionated_dataframe_cleaner/index.html" class="no-external">
+<p><img loading="lazy" src="../posts/an_opinionated_dataframe_cleaner/image.png" class="thumbnail-image" style="height: 2cm;"></p>
+</a><p><a href="../posts/an_opinionated_dataframe_cleaner/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../posts/an_opinionated_dataframe_cleaner/index.html" class="no-external">An Opinionated Dataframe Cleaner</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../posts/an_opinionated_dataframe_cleaner/index.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../posts/an_opinionated_dataframe_cleaner/index.html" class="no-external">Naming your dataframe columns doesn’t have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../posts/an_opinionated_dataframe_cleaner/index.html" class="no-external">
+<div class="listing-date">
+04 Jan, 2025
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1735912800000" data-listing-file-modified-sort="1744784245270" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail">
+<p><a href="../posts/learning_to_create_custom_functions/index.html" class="no-external"></a></p><a href="../posts/learning_to_create_custom_functions/index.html" class="no-external">
+<p><img loading="lazy" src="../posts/learning_to_create_custom_functions/image.png" class="thumbnail-image" style="height: 2cm;"></p>
+</a><p><a href="../posts/learning_to_create_custom_functions/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../posts/learning_to_create_custom_functions/index.html" class="no-external">Learning To Create Your Own Custom Functions</a>
+</h3>
+<div class="listing-subtitle">
+<a href="../posts/learning_to_create_custom_functions/index.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="../posts/learning_to_create_custom_functions/index.html" class="no-external">TBD.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="../posts/learning_to_create_custom_functions/index.html" class="no-external">
+<div class="listing-date">
+04 Jan, 2025
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

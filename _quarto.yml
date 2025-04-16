@@ -42,10 +42,8 @@ website:
     left:
       - text: CV
         href: cv/index.qmd
-      - text: Projects
-        href: projects/index.qmd
-#      - text: Presentations
-#        href: presentations/index.qmd
+      - text: Posts
+        href: posts/index.qmd
     right:
       - icon: github
         href: https://github.com//add-am
@@ -80,7 +78,7 @@ format:
     code-fold: show
     code-overflow: wrap
     code-tools: false
-    code-block-border-left: "#01272e"
+    code-block-border-left: "#00252A"
     code-block-bg: true
     anchor-sections: false
     reference-location: margin
