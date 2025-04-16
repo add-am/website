@@ -74,7 +74,7 @@ format:
       body-width: 800px
       sidebar-width: 500px
       margin-width: 300px
-    fontsize: 1.1em
+    fontsize: 1em
     theme: 
       - html/styles.scss
     code-fold: show

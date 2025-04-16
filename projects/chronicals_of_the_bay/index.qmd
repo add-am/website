@@ -1,14 +1,13 @@
 ---
 title: "The Chronicals of Cleveland Bay"
-subtitle: "Author, Supervisor, and Maintainer"
 date: "03/01/2024"
 abstract-title: "ABSTRACT"
 abstract: "ESRI StoryMaps about Cleveland Bay."
-image: "image.jpg"
+image: "image.png"
 format: html
+include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 
-::: {.callout-tip}
 ## Corals of Cleveland Bay
 To be released in March 2024, the Corals of Cleveland Bay StoryMap will unveil the hidden world of coral reefs beneath the surface of Cleveland Bay.
 :::

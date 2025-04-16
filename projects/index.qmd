@@ -3,11 +3,10 @@ title: "Environmental Bytes for a Better Earth"
 abstract-title: ""
 abstract: "As each of my projects come to completion and are cleared for public release my thought process and findings will be published here. Below you can find a wide range of topics, from the feeling of my first publication and future publications since, to current analysis workflows I use and new techniques I am trying out."
 listing:
-  type: grid
+  type: default
   sort: date desc
-  image-height: "5cm"
-  grid-columns: 4
-  grid-item-border: true
+  image-height: "2cm"
+  image-placeholder: "../../images/place_holder.png"
   date-format: "DD MMM, YYYY"
   sort-ui: TRUE
   fields: [image, date, title, author, description]

@@ -1,10 +1,9 @@
 ---
 title: "An Opinionated Dataframe Cleaner"
-subtitle: "Adam Shand"
 date: "01/04/2025"
 abstract-title: "ABSTRACT"
 abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
-image: "image.jpg"
+image: "image.png"
 format: html
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---

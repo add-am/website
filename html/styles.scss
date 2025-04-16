@@ -8,48 +8,49 @@ $accent:      #54CC98 !default; //a light muted green
 $accent2:     #00252A !default; //a dark muted green
 $black:       #000000 !default; //black, duh
 
-
 // Base document colours
 $body-bg:        $background !default;
 $body-color:     $text !default;
 
 // Links
 
-//This group applies to the Navbar and footer (we want this seperate so there is no underline or initial colour for these ones.)
-$link-color:                $background !default;
-$link-decoration:           none !default;
-$link-hover-color:          $primary !default;
-$link-hover-decoration:     none !default;
+//This group applies to the Navbar and Footer (we want this seperate so there is no underline or initial colour for these ones.)
+//IM NOT SURE WE NEED THIS ANYMORE
+//$link-color:                $background !default; //Note link is "background" because it its on an accent2 background
+//$link-decoration:           none !default;
+//$link-hover-color:          $primary !default;
+//$link-hover-decoration:     none !default;
 
 //This group applies to all <a> tags with the "main-links" class
-.main-links:link {
-  color:                    $primary;
-  background-color:         transparent;
-  text-decoration:          none;
-}
-.main-links:visited {
-  color:                    $primary;
-  background-color:         transparent;
-  text-decoration:          none;
-}
-.main-links:hover {
-  color:                    $accent;
-  background-color:         transparent;
-  text-decoration:          underline;
-}
-.main-links:active {
-  color:                    $accent;
-  background-color:         transparent;
-  text-decoration:          underline;
-}
+//IM NOT SURE WE NEED THIS ANYMORE
+//.main-links:link {
+//  color:                    $text;
+//  background-color:         transparent;
+//  text-decoration:          none;
+//}
+//.main-links:visited {
+//  color:                    $text;
+//  background-color:         transparent;
+//  text-decoration:          none;
+//}
+//.main-links:hover {
+//  color:                    $accent;
+//  background-color:         transparent;
+//  text-decoration:          underline;
+//}
+//.main-links:active {
+//  color:                    $accent;
+//  background-color:         transparent;
+//  text-decoration:          underline;
+//}
 
 //Navbar and Footer
-$navbar-bg:     $accent2 !default;
-$navbar-fg:     $background !default;
-$navbar-hl:     $primary !default;
-$footer-bg:     $accent2 !default;
-$footer-fg:     $background !default;
-$footer-hl:     $primary !default;
+$navbar-bg:     $accent2 !default; //The bar itself
+$navbar-fg:     $background !default; //The text/symbols on the bar
+//$navbar-hl:     $primary !default; //what colour should things be when hovered
+$footer-bg:     $accent2 !default; //The bar itself
+$footer-fg:     $background !default; //The text/symbols on the bar
+//$footer-hl:     $primary !default; //what colour should things be when hovered
 
 .navbar {
   border-bottom: 1px solid $background;
@@ -62,14 +63,14 @@ $footer-hl:     $primary !default;
 // Landing page specifics
 
 #hero-landing {
-  color: $text;
+  color: $text; //the normal text colour
 }
 
 #hero-adam{
-  color:  $primary;
+  color:  $primary; //the text colour for "adam" on the landing page
 }
 
-.landing-body{
+.landing-body{ //this is the container for the background image
   background-color: $accent2;
   height: 100vh;
   background-image: url("images/landing_page.svg");
@@ -79,7 +80,7 @@ $footer-hl:     $primary !default;
   align-items: center;
 }
 
-.landing-background{
+.landing-background{ //this is the container for the text and image
   display: flex;
   width: 100%;
   height: 70vh;
@@ -88,7 +89,7 @@ $footer-hl:     $primary !default;
 
 // CV page specifics
 
-.cv-body{
+.cv-body{ //this is the container for the background image
   background-color: $accent2;
   height: 100vh;
   background-image: url("images/cv_page.svg");
@@ -98,7 +99,7 @@ $footer-hl:     $primary !default;
   align-items: center;
 }
 
-.cv-div{
+.cv-div{ //this is the container for the CV scroll box and button
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -108,6 +109,7 @@ $footer-hl:     $primary !default;
   
 }
 
+// These three help position the button and CV
 .half {
   flex: 1;
   box-sizing: border-box;
@@ -127,19 +129,19 @@ $footer-hl:     $primary !default;
   min-width: 50%;
 }
 
-.div-button{
+.div-button{// the container for the button only
   width:            100%;
   position:         relative;
   text-align:       center;
   
 }
 
-.button {
+.button { //the actual button, before any interactions
   width:            300px;
   padding:          10px 0;
   text-align:       center;
-  border:           2px solid $primary;
-  color:            $primary;
+  border:           2px solid $accent2;
+  color:            $accent2;
   background:       transparent;
   border-radius:    10px;
   font-size:        1.3rem;
@@ -149,7 +151,7 @@ $footer-hl:     $primary !default;
   overflow:         hidden;
 }
 
-.button #cv-span{
+.button #cv-span{ //how the transition will happen
   background:       $primary;
   height:           100%;
   width:            0%;
@@ -161,21 +163,14 @@ $footer-hl:     $primary !default;
   transition:       0.5s;
 }
 
-.button:hover #cv-span{
-  width:        100%;
+.button:hover #cv-span{ // what the end state is
+  width:            100%;
   border:           2px solid $primary;
 }
 
-.button:hover {
-  border:           2px solid transparent;
-  color:            $text;
-}
+// Project page specifics
 
-// Project Page specifics
-
-
-
-.project-page .quarto-container {
+.project-page .quarto-container { //this is the container for the background image. Note it is the generic quarto-container, but only on the project page
   background-color: $accent2;
   background: transparent;
   background-image: url("images/project_page.svg");
@@ -196,7 +191,7 @@ $footer-hl:     $primary !default;
   color: $text;
   text-decoration: underline rgba(0, 0, 0, 0);
   transition: text-decoration-color 400ms;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 .listing-title:hover{
@@ -204,19 +199,9 @@ $footer-hl:     $primary !default;
   text-decoration: underline;
 }
 
-.listing-date{
-  font-size: 0.9em;
-}
-
-.quarto-grid-item.card{
-  background-color: rgba(0,0,0,0.1);
-  border-color: $text;
+.listing-description{
+  color: $text;
   font-size: 0.8em;
-}
-
-.quarto-grid-item.card:hover{
-  background-color: rgba(0,0,0,0.1);
-  border-color: $primary;
 }
 
 

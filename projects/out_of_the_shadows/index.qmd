@@ -1,11 +1,12 @@
 ---
 title: "Using Artificial Intelligence for Automatic Fish Detection from Acoustic Cameras"
-subtitle: "Co-author"
 date: "05/26/2022"
 abstract-title: "ABSTRACT"
 abstract: "My first ever journal publication! What a journey."
-image: "image.jpg"
+image: "image.png"
+image-placeholder: "../images/place_holder.png"
 format: html
+include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 
 ::: {.callout-tip}
