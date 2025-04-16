@@ -5,6 +5,7 @@ abstract-title: "ABSTRACT"
 abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
 image: "image.png"
 format: html
+title-block-banner: true #(This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 

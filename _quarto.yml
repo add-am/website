@@ -10,7 +10,6 @@ project:
 
 title-meta: "Adam Shand"
 description-meta: "Environmental Scientist | Data Analyst"
-
 header-includes:  | 
       <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/metropolis" type="text/css"/> 
 #above is the source for the font that the html reports use (metropolis)
@@ -77,9 +76,18 @@ format:
       - html/styles.scss
     code-fold: show
     code-overflow: wrap
-    code-tools: false
-    code-block-border-left: "#00252A"
-    code-block-bg: true
+    code-tools: true
+    code-copy: true
+    code-block-border-left: "#54CC98" #a light muted green
+    code-block-bg: "#00252A20" #a dark muted green at 20% opacity
+    code-summary: "Expand to view code."
+    embed-resources: true
+    toc-title: "Jump To:"
+    number-sections: true
+    monobackgroundcolor: "transparent"
     anchor-sections: false
     reference-location: margin
+   
+
+   
     

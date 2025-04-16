@@ -12,6 +12,37 @@ $black:       #000000 !default; //black, duh
 $body-bg:        $background !default;
 $body-color:     $text !default;
 
+
+// Callout bubbles used by Quarto Documents
+$callout-color-note: #54CC98; //a light muted green
+$callout-color-tip: #27ced7; //aqua (bubble)
+$callout-color-caution: #841818; //a dark muted red
+$callout-color-warning: #27ced7; //aqua (bubble)
+$callout-color-important: #e6aa04;  //a light orange
+
+.quarto-title, .quarto-title-banner, h1, h2, h3, h4, h5, h6 {
+  color:  #00252A !important; //a dark muted green
+}
+
+.quarto-title-meta-heading, .header-section-number {
+  color:  #00252A; //a dark muted green
+}
+
+.subtitle.lead, .description, .quarto-title-meta-contents, .btn.code-tools-button.dropdown-toggle {
+  color: black;
+}
+
+.quarto-title-block .quarto-title-banner{
+  background-image: url(images/logo.svg);
+  background-size: calc(100% / 4.5);
+  background-position: left;
+  background-repeat: no-repeat;
+  padding-left: 10px;
+  background-origin: content-box;
+  background-color: #F2F2F2;
+  color: #00252A; //a dark muted green
+}
+
 //Navbar and Footer
 $navbar-bg:     $accent2 !default; //The bar itself
 $navbar-fg:     $background !default; //The text/symbols on the bar
