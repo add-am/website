@@ -1,0 +1,312 @@
+---
+title: "Going Loopy for For Loops"
+date: "01/04/2025"
+abstract-title: "ABSTRACT"
+abstract: "TBD."
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+---
+
+```{r}
+#| label: hidden set up code for our page
+#| output: FALSE
+#| echo: FALSE
+#| code-fold: TRUE
+
+library(sf)
+library(tmap)
+library(dplyr)
+library(glue)
+library(here)
+
+source(here("functions/cond_form_tables.R"))
+
+tmap_mode("view")
+
+```
+
+# Introduction
+
+Here's the scene, you've started on your R coding journey, know how to create an object, how to discern between vectors and lists, maybe even written a few short scripts. Then all of a sudden your professor/teacher/boss pulls a fast one on you and introduces for loops. For loops? What are they? How's that work? Whats going on? You struggle through and complete the task, but didn't quite understand what was going on when they explained it to you... Well at least that's how it went for me.
+
+In this I wanted to quickly talk about for loops in R, specifically, I'm looking to cover:
+
+ - What is really happening in a for loop
+ - Where you can go to read about for loops in much (much) more detail
+ - Why you might want to write a for loop
+ - How you can start to write your own loops
+ - And ironically, why I actually try to avoid using for loops
+ 
+# For Loops
+
+Realistically, all a for loop does, is say "do this bit of code again and again until i say stop". Lets imagine a completely unrealistic scenario where your boss asks you to write out the numbers 1 to 10. Why are they asking you to do this? I don't know, that's not really the point. So you do it:
+
+```{r}
+
+#manually write out a list of numbers from 1 to 10
+my_list_numbers <- c(1,2,3,4,5,6)
+
+#print these numbers
+print(my_list_numbers)
+
+```
+
+Ok, clearly this is a dumb way to do this, I'm not even going to write out the whole thing. So lets use a for loop:
+
+```{r}
+
+#write a for loop to print the numbers 1 to 10
+for (i in 1:10){print(i)}
+
+```
+
+In this really simply (very unrealistic) example. I think it is much easier to see what is happening. The for loop, usually denoted like this: `for (i in n){do a thing each time}` simply runs the `print()` function n times. Which in our example is 10 times. Where things start to get a bit more confusing usually is the introduction of "i", as well as the different ways people structure their code.
+
+Lets tackle structure first. This:
+
+```{r}
+#| eval: FALSE
+
+#write a for loop to print the numbers 1 to 10
+for (i in 1:10){print(i)}
+
+```
+
+Is the same as this:
+
+```{r}
+#| eval: FALSE
+
+#write a for loop to print the numbers 1 to 10
+for (i in 1:10){
+  print(i)
+}
+
+```
+
+Generally, I opt for the second option as I find it cleaner.
+
+Now lets explore "i" in more detail. "i" can be anything, which is not super helpful (sorry). What might be helpful is just seeing an example of this. Once again, this:
+
+```{r}
+#| eval: FALSE
+
+#write a for loop to print the numbers 1 to 10
+for (PotatoSalad in 1:10){
+  print(PotatoSalad)
+}
+
+```
+
+Is the same as this:
+
+```{r}
+#| eval: FALSE
+
+#write a for loop to print the numbers 1 to 10
+for (i in 1:10){
+  print(i)
+}
+
+```
+
+We use "i" as an **i**teration counter (hence usually getting called "i") that keeps track of what loop we are on with respect to n. For our example above, n is 10. So on the first loop "i" is 1, on the second loop "i" is 2, on the third loop "i" is three..., all the way until "i" is 10. At that point, the for loop finishes. Hopefully it is now intuitive to see how `print(i)` produces the numbers it does.
+
+But what is "n"? In our example n is 10. But that's actually not quite right, n is actually **1 to 10**. This is an important distinction to make because it is usually one of the first places we make errors. Lets take a look:
+
+```{r}
+
+#write a for loop to print the number 10 (spot the issue)
+for (i in 10){
+  print(i)
+}
+
+```
+
+As you can see, when "n" is just 10, then the output is only the value "10". So a good way to think of "n" is that it is a range, it has a point you want to start at, and a point you want to end at. Here is a simple demonstration:
+
+```{r}
+
+#write a for loop to print the numbers 15 to 22
+for (i in 15:22){
+  print(i)
+}
+
+```
+
+In this case, we started at 15 and ended at 22. So on the first loop, "i" is 15, second loop "i" is 16, etc.
+
+The last critical piece of information that I have found essential to know when trying to understand for loops is that "n" range does not have to be numeric! It look me a while to realize this, but it can allow you to do some cool things. Here is another quick example:
+
+```{r}
+
+#create a vector of character elements
+n_range <- c("PotatoSalad", "FishFingers", "Im... Kinda Hungry")
+
+#write a for loop to print this vector one element at a time
+for (i in n_range){
+  print(i)
+}
+
+```
+
+This does through a minor curve ball though. Did you notice that the code is now `for (i in n_range)`, there is no "1:" in front of "n_range", this is just because the object "n_range" already has a range of elements that we can loop over. If you can remember these core things about for loops you will get very, very far with them.
+
+# For Loops in Action
+
+So far all i have done is demonstrate a very silly example of a for loop. So lets go through a loop that I have written for my work instead.
+
+## The Scenario
+
+Something I do almost every day is make maps. Usually fairly simple maps, often they show sample site locations, or coral monitoring locations, or the size of a seagrass meadow, things like that. These maps are included in static word documents and are often relevant over large chunks of areas. However, the combination of a large area and a high quantity of sample site locations means that instead of one large map, I need to create lots of small maps for each sub region.
+
+Below is a mock up of the code I would use for this, noting that I have used made up sampling locations for data privacy, and created interactive maps for user enjoyment. We will see the full code in action first, then break it down step by step.
+
+```{r}
+#| output: FALSE
+
+#read in some example data that I made up
+example_sites <- st_read("example_data.gpkg")
+
+#extract an object that contains the three unique locations we are looking at
+locations <- unique(example_sites$Location)
+
+#create a list that will store my maps
+list_of_maps <- setNames(vector("list", length(locations)), locations)
+
+#initialize the for loop
+for (i in locations){
+  
+  #filter our dataset
+  sub_set_of_sites <- example_sites |> 
+    filter(Location == i)
+  
+  #create a simple map
+  single_map <- tm_shape(sub_set_of_sites) +
+    tm_dots(shape = "Site", size = 1, col = "Site", fill = "Site") +
+    tm_text("Site", size = 2, ymod = 1) +
+    tm_layout(legend.show = F)
+  
+  #add each map to the list
+  list_of_maps[[i]] <- single_map
+  
+}
+
+```
+
+Here is how one of the maps looks as well:
+
+```{r}
+
+#view the map
+list_of_maps[["Alligator Creek"]]
+
+```
+
+## The Breakdown
+
+Time to take a closer look at whats happening here.
+
+1. First of all, i use a function called `st_read()` from the `sf` package to load in my dataset. For the purposes of this post, we don't need to worry about this package and its functions. Check out my other posts for more details on this area. What I will do here though, is show a sneak peak of the data.
+
+```{r}
+#| eval: FALSE
+
+#read in some example data that I made up
+example_sites <- st_read("example_data.gpkg")
+
+```
+
+
+```{r}
+#| output: TRUE
+#| echo: FALSE
+
+#use my custom function to print the table nicely, also do some wizardly to force coordinates to play nice
+cond_form_tables(cbind(st_drop_geometry(example_sites), st_coordinates(example_sites)))
+
+```
+
+2. From this dataset I then extract a vector of unique locations, which in this case we can easily see is just the four (Alligator Creek, The Strand, Town Common, Magnetic Island).
+
+```{r}
+#| eval: FALSE
+
+#extract an object that contains the three unique locations we are looking at
+locations <- unique(example_sites$Location)
+
+```
+
+3. I then create a list to store the outputs of my for loop. This step can be done a wide range of ways, for example you could store each output as a separate object, if you know the number of outputs you could pre-define a list of that length to store the outputs (like I did), or if the number of outputs is a mystery you can grow the list as you go. There is no "best" way to do this, however it is generally frowned upon to grow the list as you go, as this can be computationally quite expensive. My recommendation would be to use the first two options, favouring a list with a pre-defined length if you can.
+
+```{r}
+#| eval: FALSE
+
+#create a list that will store my maps
+list_of_maps <- setNames(vector("list", length(locations)), locations)
+
+```
+
+4. The set up is done and it is now time to begin the for loop. This section of the code is a good time to review what we discussed above. We can see that I am going to loop over "locations", and for each loop "i" will become of the elements in "locations".
+
+```{r}
+#| eval: FALSE
+
+#initialize the for loop
+for (i in locations){
+  
+```
+
+5. We are now working within the for loop. Remember, this section of the code will be run again and again and again. The first thing we do inside the for loop is take a subset of our data. We can filter the data by "i" because "i" has taken on the first element of "location".
+
+```{r}
+#| eval: FALSE
+  
+  #filter our dataset
+  sub_set_of_sites <- example_sites |> 
+    filter(Location == i)
+
+```
+
+6. Using the subset of the data, which will now only contains rows from one location thanks to our filter. We then create the map. I like to use the `tmap` package, however there is a wide range of options available. Maybe I will write a post on mapping with tmap one day... we will see.
+
+```{r}
+#| eval: FALSE
+  
+  #create a simple map
+  single_map <- tm_shape(sub_set_of_sites) +
+    tm_dots(shape = "Site", size = 1, col = "Site", fill = "Site") +
+    tm_text("Site", size = 2, ymod = 1) +
+    tm_layout(legend.show = F)
+
+```
+
+7. The final step of our for loop is to save the output of the loop somewhere. This step can catch alot of people off guard, they write the perfect loop, they check everything runs properly, and then they forgot to save the output each loop. Shame.
+
+In my case, I have put the map into the list that we defined earlier. Notice that because I named each item in the list, I can then place the map under the correct item using "i".
+
+```{r}
+#| eval: FALSE
+  
+  #add each map to the list
+  list_of_maps[[i]] <- single_map
+  
+}
+
+```
+
+# Writing Your Own For Loop
+
+
+
+# Caveats 
+
+
+
+ - warnings, don't over do it with your new power
+ - push to look at vectorised funcs
+ 
+ 
+ 

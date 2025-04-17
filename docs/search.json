@@ -1,5 +1,19 @@
 [
   {
+    "objectID": "posts/loops_and_vectorised_functions/index.html",
+    "href": "posts/loops_and_vectorised_functions/index.html",
+    "title": "An Epic Battle Between For Loops and Vectorised Functions",
+    "section": "",
+    "text": "Main points to hit\n\nkey: this is the natural follow up from writing your own function AND from creating for loops\nthe comparison between for loops and vectorised functions, why should you try to move over to vectorised functions\n\nimproved run time (usually)\nhuman time (more important) - although sometimes I doubt readability\n\nhow did I learn to understand vectorised functions\nwhat is a compelling reason to try/learn"
+  },
+  {
+    "objectID": "posts/index.html",
+    "href": "posts/index.html",
+    "title": "Environmental Bytes for a Better Earth",
+    "section": "",
+    "text": "Document\n\n\n  \n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n\n\n\n\n\n\n\n\n\n\nAn Opinionated Dataframe Cleaner\n\n\n\n\n\nNaming your dataframe columns doesn’t have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised.\n\n\n\n\n\n04 Jan, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nGoing Loopy for For Loops\n\n\n\n\n\nTBD.\n\n\n\n\n\n04 Jan, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nLearning To Create Your Own Custom Functions\n\n\n\n\n\nTBD.\n\n\n\n\n\n04 Jan, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nAn Epic Battle Between For Loops and Vectorised Functions\n\n\n\n\n\nTBD.\n\n\n\n\n\n04 Jan, 2025\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "posts/an_opinionated_dataframe_cleaner/index.html",
     "href": "posts/an_opinionated_dataframe_cleaner/index.html",
     "title": "An Opinionated Dataframe Cleaner",
@@ -21,10 +35,31 @@
     "text": "Document\n\n\n\n  \n    \n      Hi, Im Adam.\n      An environmental data analyst decoding nature's secrets.\n      \n      \n       With experience in R, Tableau, SQL and GIS, I transform raw environmental data into meaningful narratives with stunning visuals. From crafting data-driven solutions to fostering sustainability, I am dedicated to bridging the gap between technology and the environment."
   },
   {
-    "objectID": "posts/index.html",
-    "href": "posts/index.html",
-    "title": "Environmental Bytes for a Better Earth",
+    "objectID": "posts/going_loopy_for_for_loops/index.html",
+    "href": "posts/going_loopy_for_for_loops/index.html",
+    "title": "Going Loopy for For Loops",
     "section": "",
-    "text": "Document\n\n\n  \n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n\n\n\n\n\n\n\n\n\n\nAn Opinionated Dataframe Cleaner\n\n\n\n\n\nNaming your dataframe columns doesn’t have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised.\n\n\n\n\n\n04 Jan, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nLearning To Create Your Own Custom Functions\n\n\n\n\n\nTBD.\n\n\n\n\n\n04 Jan, 2025\n\n\n\n\n\n\nNo matching items"
+    "text": "Here’s the scene, you’ve started on your R coding journey, know how to create an object, how to discern between vectors and lists, maybe even written a few short scripts. Then all of a sudden your professor/teacher/boss pulls a fast one on you and introduces for loops. For loops? What are they? How’s that work? Whats going on? You struggle through and complete the task, but didn’t quite understand what was going on when they explained it to you… Well at least that’s how it went for me.\nIn this I wanted to quickly talk about for loops in R, specifically, I’m looking to cover:\n\nWhat is really happening in a for loop\nWhere you can go to read about for loops in much (much) more detail\nWhy you might want to write a for loop\nHow you can start to write your own loops\nAnd ironically, why I actually try to avoid using for loops"
+  },
+  {
+    "objectID": "posts/going_loopy_for_for_loops/index.html#the-scenario",
+    "href": "posts/going_loopy_for_for_loops/index.html#the-scenario",
+    "title": "Going Loopy for For Loops",
+    "section": "3.1 The Scenario",
+    "text": "3.1 The Scenario\nSomething I do almost every day is make maps. Usually fairly simple maps, often they show sample site locations, or coral monitoring locations, or the size of a seagrass meadow, things like that. These maps are included in static word documents and are often relevant over large chunks of areas. However, the combination of a large area and a high quantity of sample site locations means that instead of one large map, I need to create lots of small maps for each sub region.\nBelow is a mock up of the code I would use for this, noting that I have used made up sampling locations for data privacy, and created interactive maps for user enjoyment. We will see the full code in action first, then break it down step by step.\n\n\nCode\n#read in some example data that I made up\nexample_sites &lt;- st_read(\"example_data.gpkg\")\n\n#extract an object that contains the three unique locations we are looking at\nlocations &lt;- unique(example_sites$Location)\n\n#create a list that will store my maps\nlist_of_maps &lt;- setNames(vector(\"list\", length(locations)), locations)\n\n#initialize the for loop\nfor (i in locations){\n  \n  #filter our dataset\n  sub_set_of_sites &lt;- example_sites |&gt; \n    filter(Location == i)\n  \n  #create a simple map\n  single_map &lt;- tm_shape(sub_set_of_sites) +\n    tm_dots(shape = \"Site\", size = 1, col = \"Site\", fill = \"Site\") +\n    tm_text(\"Site\", size = 2, ymod = 1) +\n    tm_layout(legend.show = F)\n  \n  #add each map to the list\n  list_of_maps[[i]] &lt;- single_map\n  \n}\n\n\nHere is how one of the maps looks as well:\n\n\nCode\n#view the map\nlist_of_maps[[\"Alligator Creek\"]]"
+  },
+  {
+    "objectID": "posts/going_loopy_for_for_loops/index.html#the-breakdown",
+    "href": "posts/going_loopy_for_for_loops/index.html#the-breakdown",
+    "title": "Going Loopy for For Loops",
+    "section": "3.2 The Breakdown",
+    "text": "3.2 The Breakdown\nTime to take a closer look at whats happening here.\n\nFirst of all, i use a function called st_read() from the sf package to load in my dataset. For the purposes of this post, we don’t need to worry about this package and its functions. Check out my other posts for more details on this area. What I will do here though, is show a sneak peak of the data.\n\n\n\nCode\n#read in some example data that I made up\nexample_sites &lt;- st_read(\"example_data.gpkg\")\n\n\n\n\n\n\nLocationSiteXY\n\nAlligator CreekSite 1147-19.3\n\nAlligator CreekSite 2147-19.3\n\nAlligator CreekSite 3147-19.3\n\nThe StrandSite 1147-19.2\n\nTown CommonSite 1147-19.2\n\nTown CommonSite 2147-19.2\n\nTown CommonSite 3147-19.2\n\nMagnetic IslandSite 1147-19.2\n\nMagnetic IslandSite 2147-19.2\n\n\n\n\n\nFrom this dataset I then extract a vector of unique locations, which in this case we can easily see is just the four (Alligator Creek, The Strand, Town Common, Magnetic Island).\n\n\n\nCode\n#extract an object that contains the three unique locations we are looking at\nlocations &lt;- unique(example_sites$Location)\n\n\n\nI then create a list to store the outputs of my for loop. This step can be done a wide range of ways, for example you could store each output as a separate object, if you know the number of outputs you could pre-define a list of that length to store the outputs (like I did), or if the number of outputs is a mystery you can grow the list as you go. There is no “best” way to do this, however it is generally frowned upon to grow the list as you go, as this can be computationally quite expensive. My recommendation would be to use the first two options, favouring a list with a pre-defined length if you can.\n\n\n\nCode\n#create a list that will store my maps\nlist_of_maps &lt;- setNames(vector(\"list\", length(locations)), locations)\n\n\n\nThe set up is done and it is now time to begin the for loop. This section of the code is a good time to review what we discussed above. We can see that I am going to loop over “locations”, and for each loop “i” will become of the elements in “locations”.\n\n\n\nCode\n#initialize the for loop\nfor (i in locations){\n\n\n\nWe are now working within the for loop. Remember, this section of the code will be run again and again and again. The first thing we do inside the for loop is take a subset of our data. We can filter the data by “i” because “i” has taken on the first element of “location”.\n\n\n\nCode\n  #filter our dataset\n  sub_set_of_sites &lt;- example_sites |&gt; \n    filter(Location == i)\n\n\n\nUsing the subset of the data, which will now only contains rows from one location thanks to our filter. We then create the map. I like to use the tmap package, however there is a wide range of options available. Maybe I will write a post on mapping with tmap one day… we will see.\n\n\n\nCode\n  #create a simple map\n  single_map &lt;- tm_shape(sub_set_of_sites) +\n    tm_dots(shape = \"Site\", size = 1, col = \"Site\", fill = \"Site\") +\n    tm_text(\"Site\", size = 2, ymod = 1) +\n    tm_layout(legend.show = F)\n\n\n\nThe final step of our for loop is to save the output of the loop somewhere. This step can catch alot of people off guard, they write the perfect loop, they check everything runs properly, and then they forgot to save the output each loop. Shame.\n\nIn my case, I have put the map into the list that we defined earlier. Notice that because I named each item in the list, I can then place the map under the correct item using “i”.\n\n\nCode\n  #add each map to the list\n  list_of_maps[[i]] &lt;- single_map\n  \n}"
+  },
+  {
+    "objectID": "posts/learning_to_create_custom_functions/index.html",
+    "href": "posts/learning_to_create_custom_functions/index.html",
+    "title": "Learning To Create Your Own Custom Functions",
+    "section": "",
+    "text": "Main points to hit\n\nwhat are functions really\nwhy would you want to make one\nhow can you go about making a functions\nwhat is a compelling reason - note that often the big ideas are “already taken”, usually your first function is something super specific"
   }
 ]

@@ -1,0 +1,20 @@
+---
+title: "An Epic Battle Between For Loops and Vectorised Functions"
+date: "01/04/2025"
+abstract-title: "ABSTRACT"
+abstract: "TBD."
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+---
+
+
+Main points to hit
+
+ - key: this is the natural follow up from writing your own function AND from creating for loops
+ - the comparison between for loops and vectorised functions, why should you try to move over to vectorised functions
+    - improved run time (usually)
+    - human time (more important) - although sometimes I doubt readability
+ - how did I learn to understand vectorised functions
+ - what is a compelling reason to try/learn
