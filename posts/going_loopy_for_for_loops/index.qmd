@@ -2,7 +2,7 @@
 title: "Going Loopy for For Loops"
 date: "01/04/2025"
 abstract-title: "ABSTRACT"
-abstract: "TBD."
+abstract: "Whats the point of For Loops? Well for looping of course. In this post I break down how to write for loops in R, how you can easily understand them, and compelling reasons that you might want to learn them yourself!"
 image: "image.png"
 format: html
 title-block-banner: true #This is our banner
