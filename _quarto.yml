@@ -77,8 +77,4 @@ format:
     number-sections: true
     anchor-sections: false
     reference-location: margin
-    header-includes: |
-       <script type="text/javascript" src="https://cdn.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="adamshand22" data-color="#00252a" data-emoji="☕" data-font="Lato" data-text="Buy me a coffee" data-outline-color="#ffffff" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
-
    
-    

@@ -204,6 +204,45 @@ $footer-fg:     $background !default; //The text/symbols on the bar
   font-size: 0.8em;
 }
 
+// Html footer styles for blog posts
 
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  fill: #121212;
+  margin:0 2px;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
 
+.icon:hover {
+  transform: scale(1.2); /* Increase the size slightly on hover */
+  fill: #e6aa04;
+}
 
+.image {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.bmc-fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: $background;
+  color: #00252a;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 9999;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Lato', sans-serif;
+}
+.bmc-fixed:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}

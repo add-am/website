@@ -6,11 +6,7 @@ abstract: "TBD."
 image: "image.png"
 title-block-banner: true #This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer
-format:
-  html:
-    header-includes: |
-       <script type="text/javascript" src="https://cdn.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="adamshand22" data-color="#00252a" data-emoji="☕" data-font="Lato" data-text="Buy me a coffee" data-outline-color="#ffffff" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
-
+format: html
 ---
 
 
@@ -22,7 +18,7 @@ Main points to hit
  - what is a compelling reason - note that often the big ideas are "already taken", usually your first function is something super specific
  
  
- # Introduction
+# Introduction
  
 If you're anything like me, when you first thought of creating functions it seemed so wildly out of your comfort zone that you decided against it. Well hopefully this post does something to dissuade the fear, and push you to start creating your own custom functions in your every day work. The topic of functions might seem really big and scary at first, but the reality is far from that, and hopefully the short length of this post confirms that. Below, we cover the essentials;
 
