@@ -40,6 +40,8 @@ website:
       - text: Posts
         href: posts/index.qmd
     right:
+      - text: "![](images/coffee_icon.svg){height=1.5em style='vertical-align: -0.1em;'}"
+        href: https://www.buymeacoffee.com/adamshand22
       - icon: github
         href: https://github.com//add-am
         aria-label: GitHub

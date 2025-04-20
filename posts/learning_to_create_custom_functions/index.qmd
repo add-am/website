@@ -9,24 +9,82 @@ include-after-body: "../../html/html_footer.html" #This is our footer
 format: html
 ---
 
-
-Main points to hit
-
- - what are functions really
- - why would you want to make one
- - how can you go about making a functions
- - what is a compelling reason - note that often the big ideas are "already taken", usually your first function is something super specific
- 
- 
 # Introduction
  
-If you're anything like me, when you first thought of creating functions it seemed so wildly out of your comfort zone that you decided against it. Well hopefully this post does something to dissuade the fear, and push you to start creating your own custom functions in your every day work. The topic of functions might seem really big and scary at first, but the reality is far from that, and hopefully the short length of this post confirms that. Below, we cover the essentials;
+If you're anything like me, when you first thought of creating your own custom functions in R it felt so wildly out of your comfort zone that you decided against it. They seemed big and scary, and only something the "really good" R coders did. The reality is far from that, and I hope this post does something to dissuade the fear and push you to start creating your own functions. Below, I'd like to discuss the essentials:
 
- - What are functions really,
- - Why you should consider making custom functions,
- - How you can make your own functions,
- - and some compelling reasons for functions.
+ - What are functions really?
+ - Why you should consider making custom functions.
+ - How you can make your own functions.
+ - some compelling reasons for functions.
  
 :::{.callout-note}
 Want to see a function in action? I've already written an entire blog post about a function I use almost every day! Check it out [here](../an_opinionated_dataframe_cleaner/index.qmd), it is all about cleaning and organizing dataframes.
 :::
+
+# Functionable Functions
+
+Lets cut to chase, straight up what is a function? A function is just more code. You see the function `mean()`, that's just more code, the function `mutate()`? - more code, `SuperAwesomeCustomFunctionXXY()`? - just more code. 
+
+![](always_has_been.png)
+
+What do I mean by that? Well if you were to take a look inside the function and see what it is doing, you would see that in a lot of cases what it is doing is running extra R code. For instance if you run the following code in your R console:
+
+```{r}
+#| output: FALSE
+
+#load the required library for the function
+library(flextable)
+
+#run a function without the brackets to see what it is doing
+add_body
+
+```
+You would receive an output that looks like this: (minus the highlighting of course).
+
+![](add_body_function.png)
+
+Now, if you look closely at the orange section... hang on that looks just like R code! And wait, actually, it looks like this function is running functions. If you do the same thing on one of these functions you will find that they too are just running more code!
+
+Here, fixed that meme for you:
+
+![](always_has_been_p2.png)
+
+:::{.callout-note}
+A small side note, the code in a function is not always R code, but that doesn't really matter for us.
+:::
+
+So whats the take away here?
+
+ - Takeaway 1: Leave the Computer Science geeks alone, those guys are freaks (in a good way).
+ - Takeaway 2: You are already using functions in your code every day.
+ - Takeaway 3: Its all just code, and if you are reading this you probably already code, and if you already code you can write your own functions no sweat!
+
+Jokes aside, if it is all just code, why have functions? Generally speaking, functions are written because the thing they are doing gets done a whole lot. For example, I have take the mean of a bunch of numbers in my job more times that I can count, and if I had to write out the mean function every time, I'd pull my hair out more times that I can count. 
+
+Functions usually fill a specific niche, they do one thing really well, and nothing else. This also means that they are relatively simple, and if you felt like it you might even be able to dissect the function like we did above to see exactly how it works. (Although it is also perfectly fine to never worry about looking inside, don't stress). In some cases you will encounter massive over complicated functions that do lots of seemingly unconnected things, but that is rarely true.
+
+Functions that work well together, such as a whole heap of functions that work on tables, get bundled up together into "packages". These is where the idea of "packages" comes from in R - you are just downloading a whole bunch of functions, which is just a whole bunch of code.
+
+# Making Your Own Functions
+
+Okay its time to start talking about making your own functions. As we have covered, functions (particularly the ones you are going to write) are just R code. 
+
+What are functions?
+
+ - they are bits of code that get reused lots
+ - you are already using functions in R
+ - functions often fill a specific niche, most of the time they do one thing really well, and nothing else
+ - sometimes functions are super complex and can do a variety of things that don't really seem connected
+ - but alot of the time they are fairly simple
+ - you can actually look inside functions if you want to
+ 
+ 
+ Why make your own
+ 
+  - save time
+  - better readability
+  - ... hang on this is sounding alot like for loops (side track, how are they different?)
+  - flex on your friends
+  - improve skill
+  

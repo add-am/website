@@ -19,24 +19,22 @@ $code-color:     $primary !default;
 //$callout-color-warning: #27ced7; //aqua (bubble)
 //$callout-color-important: #e6aa04;  //a light orange
 
-.quarto-title, .quarto-title-banner, h1, h2, h3, h4, h5, h6 {
-  color:  $accent !important;
-}
-
-h1 > .header-section-number {
-  color:  $accent !important; 
-}
-
-.quarto-title-meta-heading, .header-section-number {
-  color:  $accent; 
+.quarto-title, .quarto-title-banner, h1, h2, h3, h4, h5, h6, .quarto-title-meta-heading, .header-section-number {
+  color:  $accent !important; //Make the heading in the blog posts dark green
 }
 
 .subtitle.lead, .description, .quarto-title-meta-contents, .btn.code-tools-button.dropdown-toggle {
-  color: black;
+  color: $accent; //Make other aspects dark green
 }
 
+h1 > .header-section-number { //Make the numbers of each heading in the blog posts dark green
+  color:  $accent !important; 
+}
+
+
+//The top banner in the blog post pages
 .quarto-title-block .quarto-title-banner{
-  background-image: url(images/logo.svg);
+  background-image: url(images/logo.svg); //This is my circle logo
   background-size: calc(100% / 4.5);
   background-position: left;
   background-repeat: no-repeat;
@@ -58,6 +56,16 @@ $footer-fg:     $background !default; //The text/symbols on the bar
 
 .navbar:hover {
   border-bottom: 1px solid $primary;
+}
+
+.menu-text [role="img"] { //this is the coffee icon, I want it to get bigger on hover
+  transition: transform 0.2s ease, fill 0.2s ease;
+  height: 1.5em;
+  vertical-align: -0.2em;
+}
+
+.nav-link:hover [role="img"] { //the second stage of the coffee cup hover
+  transform: scale(1.2);
 }
 
 // Landing page specifics
