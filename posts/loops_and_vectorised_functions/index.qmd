@@ -9,6 +9,7 @@ title-block-banner: true #This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 
+This is going to be a different kind of blog. Less about teaching, and more about the explorative process as I try to understand myself the differences between loops and vectorised functions.
 
 Main points to hit
 

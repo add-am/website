@@ -17,6 +17,8 @@ format: html
 
 library(here)
 library(ggplot2)
+library(dplyr)
+library(glue)
 
 source(here("functions/cond_form_tables.R"))
 
@@ -148,7 +150,7 @@ custom_function_2(y = 2, x = 1)
 
 ```
 
-## A Example of A Useful Custom Function
+## An Example of A Useful Custom Function
 
 Anyway, lets actually create our own (useful) function. When I first understood how to create a function I was super excited to get started, but I quickly realized that I didn't actually have a good reason to write a function. I find this is the case with a lot of intermediate coders, you might know the theory, but then finding places to implement it presents a whole new challenge. So lets refresh and hopefully come up with some good ideas:
 
@@ -161,9 +163,9 @@ Using these points, here are some ideas relevant to me (I encourage you to think
  - A function that cleans tables how **I** specifically like them to look (see [here](../an_opinionated_dataframe_cleaner/index.qmd)).
  - A function that run specific statistical calculates I use for my scientific reports.
  - A function that calculates landuse change by class (check out my long-form projects to read about this one).
- - A function that calculate important summary statistics about fish observations.
+ - A function that calculates important summary statistics about fish observations.
  
-For demonstration purposes, lets learn together how to create that fourth function, calculating summary stats for fish observation data. First, here is some example data:
+For demonstration purposes, lets learn together how to create that fourth function; calculating summary stats for fish observation data. First, here is some example data that I made up. It has observation counts for three different fish species across four different locations:
 
 ```{r}
 
@@ -182,16 +184,432 @@ ggplot(fish_obs_df) +
   geom_density(aes(x=Observations, color = Species, fill = Species), bw = 0.4, alpha = 0.5) +
   scale_fill_manual(values = c("#e6aa04", "#00252A", "#8E3B46")) +
   scale_colour_manual(values = c("#e6aa04", "#00252A", "#8E3B46")) +
-  facet_wrap(~Site)
+  theme_bw() +
+  facet_wrap(~Location)
 
 ```
  
+The data looks fairly standard. Normally, we probably then proceed to calculate some basic stats like the mean, median, min, max, etc. So lets do that:
  
- Why make your own
+```{r}
+
+#generic summary stats
+summary_table <- fish_obs_df |> 
+  group_by(Location, Species) |> 
+  summarise(Mean = round(mean(Observations),2),
+            Median = median(Observations),
+            Min = min(Observations),
+            Max = max(Observations),
+            Range = Max - Min) |> 
+  ungroup()
+
+#print the table
+cond_form_tables(summary_table)
+
+```
+
+Cool, and for fun, lets also say that we are interested to know how many times the observation count of the species was above 10 at each site:
+
+```{r}
+
+#number of observations above n
+summary_table_2 <- fish_obs_df |> 
+  filter(Observations > 10) |> 
+  group_by(Location, Species) |> 
+  summarise(CountAbove10 = n()) |> 
+  ungroup()
+
+#add the count to the main table
+summary_table <- left_join(summary_table, summary_table_2)
+
+#print the table
+cond_form_tables(summary_table)
+
+```
  
-  - save time
-  - better readability
-  - ... hang on this is sounding alot like for loops (side track, how are they different?)
-  - flex on your friends
-  - improve skill
+Now, for the purposes of this learning experience, lets say that this initial analysis above is something that I will need to do every time I load a dataset, and is therefore a perfect time to write a function to do the analysis for me. So do I go from the code I have written to a function? Like this:
+
+ 1. Identify the code to go in the function (we've done this).
+ 2. Put the code inside the function wrapper `my_custom_function <- function(input){right here!}`:
+
+```{r}
+#| output: FALSE
+
+my_custom_function <- function(inputs){
   
+  #generic summary stats
+  summary_table <- fish_obs_df |> 
+    group_by(Location, Species) |> 
+    summarise(Mean = round(mean(Observations),2),
+              Median = median(Observations),
+              Min = min(Observations),
+              Max = max(Observations),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- fish_obs_df |> 
+    filter(Observations > 10) |> 
+    group_by(Location, Species) |> 
+    summarise(CountAbove10 = n()) |> 
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+
+}
+
+```
+
+3. Identify the inputs required for the code to run:
+
+```{r}
+#| output: FALSE
+
+my_custom_function <- function(inputs){
+  
+  #generic summary stats
+  summary_table <- fish_obs_df |> #the fish_obs_df dataset is an input, we need to tell the function what dataset to use
+    group_by(Location, Species) |> #the Location and Species columns are inputs, we need to tell the function what columns to group by
+    summarise(Mean = round(mean(Observations),2), #the Observation column is an input, we need to tell the function what columns calculate on
+              Median = median(Observations),
+              Min = min(Observations),
+              Max = max(Observations),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- fish_obs_df |> 
+    filter(Observations > 10) |> #the value 10 is an input, we need to tell the function what cut off value to use
+    group_by(Location, Species) |> 
+    summarise(CountAbove10 = n()) |> 
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+
+}
+
+```
+
+4. Looks like we have five different inputs, next we give each of those inputs their own placeholder:
+
+```{r}
+#| output: FALSE
+
+my_custom_function <- function(x,y,z,a,b){
+  
+  #generic summary stats
+  summary_table <- x |> #the fish_obs_df dataset is now "x"
+    group_by({{y}}, {{z}}) |> #the Location and Species columns are now "y" and "z" we need to use curly-curly brackets for column names provided externally
+    summarise(Mean = round(mean({{a}}),2), #the Observation column is now "a"
+              Median = median({{a}}),
+              Min = min({{a}}),
+              Max = max({{a}}),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- x |> 
+    filter({{a}} > {{b}}) |> #the value is now "b"
+    group_by({{y}}, {{z}}) |> 
+    summarise(CountAbove10 = n()) |> 
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+
+}
+
+```
+
+5. Specify the output of the function:
+
+```{r}
+#| output: FALSE
+
+my_custom_function <- function(x,y,z,a,b){
+  
+  #generic summary stats
+  summary_table <- x |> 
+    group_by({{y}}, {{z}}) |> 
+    summarise(Mean = round(mean({{a}}),2), 
+              Median = median({{a}}),
+              Min = min({{a}}),
+              Max = max({{a}}),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- x |> 
+    filter({{a}} > {{b}}) |> 
+    group_by({{y}}, {{z}}) |> 
+    summarise(CountAbove10 = n()) |> 
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+
+  #what should be returned?
+  return(summary_table)
+
+}
+
+```
+
+6. Run the function:
+
+```{r}
+
+my_custom_function <- function(x,y,z,a,b){
+  
+  #generic summary stats
+  summary_table <- x |> 
+    group_by({{y}}, {{z}}) |> 
+    summarise(Mean = round(mean({{a}}),2), 
+              Median = median({{a}}),
+              Min = min({{a}}),
+              Max = max({{a}}),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- x |> 
+    filter({{a}} > {{b}}) |> #the value is now "b"
+    group_by({{y}}, {{z}}) |> 
+    summarise(CountAbove10 = n()) |> 
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+  
+  #what should be returned?
+  return(summary_table)
+
+}
+
+```
+
+now, if we run the code, the function will appear in your global environment on the right. Congratulations, you just made a function. Lets see if it works:
+
+```{r}
+
+#run the function
+my_custom_function(x = fish_obs_df,
+                   y = Location,
+                   z = Species,
+                   a = Observations,
+                   b = 10) 
+
+```
+
+Too Easy!
+
+Ok, spoiler, we are not actually done yet. First of all, lets make those place holders more helpful:
+
+```{r}
+
+my_custom_function <- function(df, group_col_1, group_col_2, value, cut_off_value){
+  
+  #generic summary stats
+  summary_table <- df |> 
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(Mean = round(mean({{value}}),2), 
+              Median = median({{value}}),
+              Min = min({{value}}),
+              Max = max({{value}}),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- df |> 
+    filter({{value}} > {{cut_off_value}}) |>
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(CountAbove10 = n()) |> 
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+  
+  #what should be returned?
+  return(summary_table)
+
+}
+
+```
+
+Secondly, lets make the column name for the cut off value adaptive to the actual cut off value:
+
+```{r}
+
+my_custom_function <- function(df, group_col_1, group_col_2, value, cut_off_value){
+  
+  #generic summary stats
+  summary_table <- df |> 
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(Mean = round(mean({{value}}),2), 
+              Median = median({{value}}),
+              Min = min({{value}}),
+              Max = max({{value}}),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- df |> 
+    filter({{value}} > {{cut_off_value}}) |> 
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(!!sym(glue("CountAbove{cut_off_value}")) := n()) |> #we have to use !!sym() when the name is not named col. We also use ":=" in place of the normal equals
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+  
+  #what should be returned?
+  return(summary_table)
+
+}
+
+```
+
+Third, lets identify what kind of dependencies this function has, i.e., what kind of functions does it rely on and what packages would we have to load for it to work:
+
+```{r}
+
+my_custom_function <- function(df, group_col_1, group_col_2, value, cut_off_value){
+  
+  #load the required packages
+  library(dplyr)
+  library(glue)
+  
+  #generic summary stats
+  summary_table <- df |> 
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(Mean = round(mean({{value}}),2), 
+              Median = median({{value}}),
+              Min = min({{value}}),
+              Max = max({{value}}),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- df |> 
+    filter({{value}} > {{cut_off_value}}) |> #the value is now "b"
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(!!sym(glue("CountAbove{cut_off_value}")) := n()) |> 
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+  
+  #what should be returned?
+  return(summary_table)
+
+}
+
+```
+
+Forth, what if the packages haven't been installed? Lets add a check and warning for this:
+
+```{r}
+
+my_custom_function <- function(df, group_col_1, group_col_2, value, cut_off_value){
+  
+  #set a vector of names of packages we need
+  pkg <- c("dplyr", "glue")
+  
+  # Loop through each package
+  for (p in pkg) {
+    if (!requireNamespace(p, quietly = TRUE)) {
+      warning(sprintf("The package '%s' is not installed. Please install it with install.packages('%s')", p, p))
+    } else {
+      library(p, character.only = TRUE)
+    }
+  }
+  
+  #generic summary stats
+  summary_table <- df |> 
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(Mean = round(mean({{value}}),2), 
+              Median = median({{value}}),
+              Min = min({{value}}),
+              Max = max({{value}}),
+              Range = Max - Min) |> 
+    ungroup()
+
+  #number of observations above n
+  summary_table_2 <- df |> 
+    filter({{value}} > {{cut_off_value}}) |> #the value is now "b"
+    group_by({{group_col_1}}, {{group_col_2}}) |> 
+    summarise(!!sym(glue("CountAbove{cut_off_value}")) := n()) |>  
+    ungroup()
+  
+  #add the count to the main table
+  summary_table <- left_join(summary_table, summary_table_2)
+  
+  #what should be returned?
+  return(summary_table)
+
+}
+
+```
+
+Now this is starting to look like a real function! Lets do some testing to make sure those adjustments worked fine:
+
+```{r}
+
+cut_off_is_10 <- my_custom_function(df = fish_obs_df,
+                                    group_col_1 = Location,
+                                    group_col_2 = Species,
+                                    value = Observations,
+                                    cut_off_value = 10)
+
+cond_form_tables(cut_off_is_10)
+
+```
+
+```{r}
+
+cut_off_is_20 <- my_custom_function(df = fish_obs_df,
+                                    group_col_1 = Location,
+                                    group_col_2 = Species,
+                                    value = Observations,
+                                    cut_off_value = 20) 
+
+cond_form_tables(cut_off_is_20)
+
+```
+
+Looking good to me. What we have now is our very own custom function that:
+
+ - takes a dataframe, two grouping columns, a value column, and a cut-off/objective value
+ - and returns a summary dataframe as well as the number of observations that were above the cut-off
+ 
+However, there is still one glaring gap that I find alot of tutorials skip over... this code is still in the same script! All we have really done is make it longer and slightly abstracted so far!
+
+The final stage of creating our custom function is saving and tucking away the function somewhere else so we can then refer to it later as we need. Doing this is not to hard:
+
+ 1. Open a new R script. Not a .qmd file, or a markdown file, a pure R script.
+ 2. Copy and paste the custom function into the new R script.
+ 3. Save this script somewhere relevant, I like to create a folder in my work space called "functions".
+ 
+Done. To access the function that we just put inside the script we then write the following code:
+
+```{r}
+#| eval: FALSE
+
+source("path_to_script/script_name.R")
+
+```
+ 
+This will load the function into your global environment ready for use.
+
+# Additional Resources
+
+Ok so I will admit, that is a lot. No matter which way you slice it, the first time you start getting into functions there is going to be a lot to learn. Its an continual process, and one of the best things you can do is have a good amount of material to refer back to anytime you get stuck. One of my favourite resources for learning everything there is to know about functions would be the [R for Data Science](https://r4ds.had.co.nz/functions.html) book by Hadley Wickham. Second to this, for quick fixes you can of course use chatGPT. ChatGPT is quite good at puzzling out semantic and grammatical errors - of which functions can have plenty.
+
+# Caveats
+
+While functions can be powerful, they can also be dangerous - driving the unwary coder insane while trying to debug their own poorly written work (guilty). It is often tossed around that "any code repeated more than once should be put in a function or loop". Personally I think this is an over simplification that can lead to significant time losses in the wrong situation. In some cases, sure you should probably put that repeated code in a function, but other times the repeat is so simple that the added complexity of a function is unnecessary. Equally, there are also instances in which the "repeated" code is a convoluted web of moving parts that creating a function to adequately encompass it all is a nightmare. All this is to say, don't get drunk on your new found power and try to put everything you do into a function - you'll quickly burn out and maybe even be turned away from functions for ever. Be pragmatic about your implementation, and enjoy it.
+
+
+
