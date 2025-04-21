@@ -9,6 +9,19 @@ include-after-body: "../../html/html_footer.html" #This is our footer
 format: html
 ---
 
+```{r}
+#| label: hidden set up code for our page
+#| output: FALSE
+#| echo: FALSE
+#| code-fold: TRUE
+
+library(here)
+library(ggplot2)
+
+source(here("functions/cond_form_tables.R"))
+
+```
+
 # Introduction
  
 If you're anything like me, when you first thought of creating your own custom functions in R it felt so wildly out of your comfort zone that you decided against it. They seemed big and scary, and only something the "really good" R coders did. The reality is far from that, and I hope this post does something to dissuade that fear and push you to start creating your own functions. Below, I'd like to discuss the essentials:
@@ -150,7 +163,28 @@ Using these points, here are some ideas relevant to me (I encourage you to think
  - A function that calculates landuse change by class (check out my long-form projects to read about this one).
  - A function that calculate important summary statistics about fish observations.
  
-For demonstration purposes, lets learn together how to create that fourth function.
+For demonstration purposes, lets learn together how to create that fourth function, calculating summary stats for fish observation data. First, here is some example data:
+
+```{r}
+
+#read in the example dataset
+fish_obs_df <- read.csv("fish_obs_df.csv")
+
+#view the dataframe
+cond_form_tables(head(fish_obs_df, 10))
+
+```
+
+```{r}
+
+#plot the data
+ggplot(fish_obs_df) +
+  geom_density(aes(x=Observations, color = Species, fill = Species), bw = 0.4, alpha = 0.5) +
+  scale_fill_manual(values = c("#e6aa04", "#00252A", "#8E3B46")) +
+  scale_colour_manual(values = c("#e6aa04", "#00252A", "#8E3B46")) +
+  facet_wrap(~Site)
+
+```
  
  
  Why make your own
