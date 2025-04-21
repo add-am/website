@@ -55,7 +55,7 @@ add_body
 ```
 You would receive an output that looks like this: (minus the highlighting of course).
 
-![](image.png)
+![](add_body_function.png)
 
 Look closely at the orange section and you will see that it is actually R code! Look even closer and you will see that it is running its own functions!
 
@@ -82,7 +82,7 @@ Functions that work well together, such as a whole heap of functions that work o
 
 Okay its time to start talking about making your own functions. As we have covered, functions (particularly the ones you are going to write) are just R code. But obviously there is a little bit more to it than that. Lets look at the inside of a function again:
 
-![](image.png)
+![](add_body_function.png)
 
 Overall, a function can be denoted as follows: `your_function_name <- function(inputs){code}` As we have covered, the orange part is the R code, that is the bit of code that gets executed when you use a function, and it goes inside the curly brackets. The dark green section at the top is the inputs section, where you tell the function what inputs to take, and what inputs are required. The red section at the bottom, for our purposes we can ignore that, it is metadata about the function and where it comes from. 
 
