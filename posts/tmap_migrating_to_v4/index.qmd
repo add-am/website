@@ -41,3 +41,13 @@ map <- tm_shape(seagrass, is.master = T) +
             legend.position = c("left", "bottom"))
  
 ```
+
+things i have noticed
+
+ - is.master is now is.main. doesn't seem to be a note of that one
+ - organisation is much cleaner now, all the fill.xyz can be put together and it is easy to spot which arguments relate to one another
+ - text shadow seems to be a legacy aspect
+ - setting colours and styles makes much more sense now. doing the cat vs cont, and setting the palette etc.
+ - my preferred lay out has changed. I now like to list each argument under the next - helps with grouping but does make code have more lines
+ 
+ 

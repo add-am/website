@@ -55,6 +55,7 @@ library(flextable)
 add_body
 
 ```
+
 You would receive an output that looks like this: (minus the highlighting of course).
 
 ![](add_body_function.png)
@@ -86,7 +87,7 @@ Okay its time to start talking about making your own functions. As we have cover
 
 ![](add_body_function.png)
 
-Overall, a function can be denoted as follows: `your_function_name <- function(inputs){code}` As we have covered, the orange part is the R code, that is the bit of code that gets executed when you use a function, and it goes inside the curly brackets. The dark green section at the top is the inputs section, where you tell the function what inputs to take, and what inputs are required. The red section at the bottom, for our purposes we can ignore that, it is metadata about the function and where it comes from. 
+Overall, a function can be denoted as follows: `your_function_name <- function(inputs){code}` As we have covered, the orange part is the R code, that is the bit of code that gets executed when you use a function, and it goes inside the curly brackets. The dark green section at the top is the inputs section, where you tell the function what inputs to take, and what inputs are required. Inputs can also be called arguments. The red section at the bottom, for our purposes we can ignore that, it is metadata about the function and where it comes from. 
 
 The function as denoted above, then needs to be assigned to an object using the `<-` symbol. This makes the function like any other object in R where we can call it up later from our global environment. Lets make our first function to understand this better.
 
