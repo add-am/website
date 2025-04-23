@@ -2,7 +2,7 @@
 title: "Learning To Create Your Own Custom Functions"
 date: "01/04/2025"
 abstract-title: "ABSTRACT"
-abstract: "TBD."
+abstract: "Having the ability to create functions is both a blessing and a curse. You are gifted with limitless potential, but absolutely limited power supply (AKA your brain). In this post I discuss how I learnt to make my own functions and the trials I faced along the way."
 image: "image.png"
 title-block-banner: true #This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer

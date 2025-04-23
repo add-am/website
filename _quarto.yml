@@ -70,7 +70,7 @@ format:
     code-fold: show
     code-overflow: wrap
     code-copy: true
-    code-block-border-left: "#e6aa04" #a light orange
+    code-block-border-left: "#00252A" #a dark muted green
     code-block-bg: "#00252A20" #a dark muted green at 20% opacity
     embed-resources: true
     toc: true

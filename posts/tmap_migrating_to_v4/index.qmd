@@ -2,12 +2,65 @@
 title: "Migrating to Version 4 of the tmap R Package"
 date: "01/04/2025"
 abstract-title: "ABSTRACT"
-abstract: "TBD."
+abstract: "My favourite mapping package just released a major update! In this post I discuss the changes made as they relate to my work, and provide some tips and tricks I have learnt so far when migration from Version 3.0 to Version 4.0."
 image: "image.png"
 format: html
 title-block-banner: true #This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---
+
+# Introduction
+
+The tmap package is one of my all time favourite R packages, and this latest update only solidified this opinion. I highly recommend that you check out the main page [here](https://r-tmap.github.io/tmap/index.html), and take the time to read over some of the documents in each of the tabs.
+
+As of 2025-01-27, tmap version 4.0 was released, and with it came some BIG changes. The authors have done a great job making sure that the update is backwards compatible with your current code, however moving forward it is very important to start doing things the "new" way. One of the most impactful in my opinion is changes to the syntax used with a lot of the core functions. This new syntax makes things easier to understand, cleaner, and provides greater flexibility  in the creation of your maps. New datasets have also been added for demonstration purposes as well as the ability to extent tmap (to do things like map very unique spatial data types, or creating map overlays in a 3D environment).
+
+# How things Used to Look
+
+:::{.callout-note}
+For the purposes of this blog I will assume a basic understanding of the tmap package.
+:::
+
+Right, so in version 3.0, how did things look? Well, if I'm honest they looked a little messy. Unfortunately I can't provide the datasets I used in my day-to-day, but lets roughly recreate how my code would have looked using some example data.
+
+```{r}
+
+library(tmap)
+library(dplyr)
+
+data <- NLD_muni |> 
+  filter(province == "Fryslan")#|> 
+ # slice_head(n = 10)
+
+tm_shape(data) +
+  tm_polygons(col = "name", border.col = "black", alpha = 0.8, palette = "Pastel1", legend.show = T) +
+  tm_text("name", shadow = T, auto.placement = T, size = 0.6) +
+  tm_layout(legend.bg.color = "white", legend.frame = "black", asp = 1.1,
+            legend.outside = TRUE, legend.outside.position = "top")
+
+
+#map <- tm_shape(seagrass, is.master = T) +
+#  tm_borders(alpha = 0) +
+#  tm_shape(qld) +
+#  tm_polygons(col = "grey80") +
+#  tm_shape(dt_background) +
+#  tm_polygons(col = "grey90", border.col = "black") +
+#  tm_shape(dt_marine) +
+#  tm_polygons(col = "Geographic Area: All", border.col = "black", alpha = 0.3, palette = "Pastel1", legend.show = T) +
+#  water_map +
+#  tm_shape(tsv) +
+#  tm_symbols(size = 0.3, col = "white", border.col = "black", border.lwd = 1, shape = 23) +
+#  tm_text("PlaceName", shadow = T, auto.placement = T, size = 0.6) +
+#  tm_shape(seagrass) +
+#  tm_polygons(col = "Meadow ID", palette = "Set3", border.col = "black", legend.show = F) +
+#  tm_text("Meadow ID", shadow = T, auto.placement = T, size = 1.5) +
+#  tm_layout(legend.bg.color = "white", legend.frame = "black", asp = 1.1,
+#            legend.position = c("left", "bottom"))
+
+
+
+```
+
 
 
 Main points to hit
@@ -22,23 +75,7 @@ Main points to hit
 ```{r}
  
  #build on these two layers with customization
-map <- tm_shape(seagrass, is.master = T) +
-  tm_borders(alpha = 0) +
-  tm_shape(qld) +
-  tm_polygons(col = "grey80") +
-  tm_shape(dt_background) +
-  tm_polygons(col = "grey90", border.col = "black") +
-  tm_shape(dt_marine) +
-  tm_polygons(col = "Geographic Area: All", border.col = "black", alpha = 0.3, palette = "Pastel1", legend.show = T) +
-  water_map +
-  tm_shape(tsv) +
-  tm_symbols(size = 0.3, col = "white", border.col = "black", border.lwd = 1, shape = 23) +
-  tm_text("PlaceName", shadow = T, auto.placement = T, size = 0.6) +
-  tm_shape(seagrass) +
-  tm_polygons(col = "Meadow ID", palette = "Set3", border.col = "black", legend.show = F) +
-  tm_text("Meadow ID", shadow = T, auto.placement = T, size = 1.5) +
-  tm_layout(legend.bg.color = "white", legend.frame = "black", asp = 1.1,
-            legend.position = c("left", "bottom"))
+
  
 ```
 
