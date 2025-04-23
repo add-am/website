@@ -15,3 +15,29 @@ Main points to hit
  - demonstrate I can do mapping
  - show some things i used to do
  - show how i have updated those things
+ 
+ 
+ Here is an example of what i used to do:
+ 
+```{r}
+ 
+ #build on these two layers with customization
+map <- tm_shape(seagrass, is.master = T) +
+  tm_borders(alpha = 0) +
+  tm_shape(qld) +
+  tm_polygons(col = "grey80") +
+  tm_shape(dt_background) +
+  tm_polygons(col = "grey90", border.col = "black") +
+  tm_shape(dt_marine) +
+  tm_polygons(col = "Geographic Area: All", border.col = "black", alpha = 0.3, palette = "Pastel1", legend.show = T) +
+  water_map +
+  tm_shape(tsv) +
+  tm_symbols(size = 0.3, col = "white", border.col = "black", border.lwd = 1, shape = 23) +
+  tm_text("PlaceName", shadow = T, auto.placement = T, size = 0.6) +
+  tm_shape(seagrass) +
+  tm_polygons(col = "Meadow ID", palette = "Set3", border.col = "black", legend.show = F) +
+  tm_text("Meadow ID", shadow = T, auto.placement = T, size = 1.5) +
+  tm_layout(legend.bg.color = "white", legend.frame = "black", asp = 1.1,
+            legend.position = c("left", "bottom"))
+ 
+```
