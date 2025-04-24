@@ -82,9 +82,171 @@ Main points to hit
 things i have noticed
 
  - is.master is now is.main. doesn't seem to be a note of that one
+ - auto.placement is now under opt_tm_text(point.label = T)
+ - shadow is now under opt_tm_text(shadow = T)
  - organisation is much cleaner now, all the fill.xyz can be put together and it is easy to spot which arguments relate to one another
- - text shadow seems to be a legacy aspect
  - setting colours and styles makes much more sense now. doing the cat vs cont, and setting the palette etc.
  - my preferred lay out has changed. I now like to list each argument under the next - helps with grouping but does make code have more lines
  
  
+ rasters have also changed alot.
+ 
+ before:
+ 
+```{r}
+ 
+map <- tm_shape(qld) +
+        tm_polygons(col = "grey80", border.col = "black") +
+        tm_shape(get(bas_map_type[j]), is.master = T) +
+        tm_raster(legend.reverse = T, palette = pal_type[j], midpoint = mid_type[[j]], style = "fixed", breaks = get(break_type[j])) 
+
+ 
+```
+ 
+ 
+after:
+
+```{r}
+
+
+  tm_shape(qld) +
+      tm_polygons(fill = "grey80", 
+                  col = "black") +
+      tm_shape(get(reg_map_type[j]), is.main = T) +
+      tm_raster(col.scale = tm_scale_intervals(style = "fixed",
+                                               breaks = get(break_type[j]),
+                                               midpoint = mid_type[[j]],
+                                               values = pal_type[j]),
+                col.legend = tm_legend(reverse = T))
+
+```
+ 
+
+facet is much easier.
+
+before:
+
+```{r}
+
+#using unique regions
+for (i in n3_marine_names) {
+  
+  #filter all basins by region
+  region_basins <- n3_marine_region |> filter(Region == i)
+  
+  #get the associated basins
+  basins <- n3_basins |> filter(Region == i)
+  
+  #create counter for j loop
+  count <- 0
+  
+  #using years vector created by data sourcing script
+  for (j in time(n3_dhw_5y)){
+    
+    #track counter
+    count <- count + 1
+    
+    #mask to the specific region and year
+    single_year_region <- trim(mask(n3_dhw_5y[[time(n3_dhw_5y) == j]], vect(region_basins)))
+  
+    #for the first map make a legend
+    if (count == 1){
+      
+      #plot
+      map <- tm_shape(single_year_region) +
+        tm_raster(palette = dhw_cols, breaks = c(1:6), labels = dhw_lab) +
+        tm_shape(qld) +
+        tm_polygons(col = "grey80", border.col = "black") +
+        tm_shape(region_basins, is.master = T) +
+        tm_borders(col = "black") +
+        tm_shape(basins) +
+        tm_polygons(col = "grey90", border.col = "black") +
+        tm_layout(asp = 5, legend.show = F, main.title = year(time(single_year_region)), main.title.position = "centre")
+      
+      #save the map
+      assign(glue("map{count}"), map)
+      
+      #make a legend map
+      legend_map <- tm_shape(single_year_region) + 
+        tm_raster(palette = dhw_cols, breaks = c(1:6), labels = dhw_lab, legend.reverse = T, 
+                  title = "Coral bleaching likelihood \n and number of DHW's") +
+        tm_layout(legend.only = T, legend.title.size = 3,
+                  legend.text.size = 1.6, legend.position = c(0, 0.3))
+      
+    #otherwise, no legend
+    } else {
+        
+      #plot
+      map <- tm_shape(single_year_region) +
+        tm_raster(palette = dhw_cols, breaks = c(1:6), labels = dhw_lab) +
+        tm_shape(qld) +
+        tm_polygons(col = "grey80", border.col = "black") +
+        tm_shape(region_basins, is.master = T) +
+        tm_borders(col = "black") +
+        tm_shape(basins) +
+        tm_polygons(col = "grey90", border.col = "black") +
+        tm_layout(asp = 5, legend.show = F, main.title = year(time(single_year_region)), main.title.position = "centre")
+      
+      #save the map
+      assign(glue("map{count}"), map)
+        
+    }
+  }  
+  
+  #arrange into two rows
+  facet_map <- tmap_arrange(map1, map2, map3, map4, map5, nrow = 2)
+  
+  #edit variable name for better save path
+  i_lower <- tolower(gsub(" ", "-", i))
+ 
+  #save the map as a png
+  tmap_save(facet_map, filename = glue("{output_path}/plots/{i_lower}_dhw_fyear-{current_fyear}-to-{current_fyear-4}.png"))
+  
+  #save the legend seperately
+  tmap_save(legend_map, glue("{output_path}/plots/{i_lower}_dhw_fyear-{current_fyear}-to-{current_fyear-4}_legend.png"))
+  
+}
+
+
+```
+
+after:
+
+
+```{r}
+
+#plot
+  facet_map <- tm_shape(all_year_region) +
+    tm_raster(col.scale = tm_scale_intervals(values = dhw_cols, 
+                                             breaks = c(1:6),
+                                             labels = dhw_lab),
+              col.free = FALSE,
+              col.legend = tm_legend(title = "Coral bleaching likelihood and number of DHW's")) +
+    tm_shape(qld) +
+    tm_polygons(fill = "grey80",
+                col = "black") +
+    tm_shape(region_basins, is.main = T) +
+    tm_borders(col = "black") +
+    tm_shape(basins) +
+    tm_polygons(fill = "grey90", 
+                col = "black") +
+    tm_layout(panel.labels = year(time(n3_dhw_5y))) +
+    tm_facets_hstack()
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
