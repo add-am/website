@@ -21,9 +21,9 @@ library(dplyr)
 
 # Introduction
 
-The tmap package is one of my all time favourite R packages, and this latest update only solidified this opinion. I highly recommend that you check out the main page [here](https://r-tmap.github.io/tmap/index.html), and take the time to read over some of the documents in each of the tabs.
+The tmap package is one of my all time favourite R packages, and this latest update only solidified this opinion. I highly recommend that you check out the main page [here](https://r-tmap.github.io/tmap/index.html), and take the time to read over some of the documents in each of the tabs. 
 
-As of the 27th of January, 2025, tmap version 4.0 was released, and with it came some BIG changes. The authors have done a great job making sure that the update is backwards compatible with your current code, however moving forward it is very important to start doing things the "new" way, as the "old" way will no longer be receiving updates. One of the most impactful updates in my opinion, is changes to the syntax used within a lot of the core functions. This new syntax makes things easier to understand, cleaner, and provides greater flexibility in the creation of your maps. However it can be a confusing journey to undergo the transition. The authors have also done a great job providing warning/pop-up messages to help you with the transition, but I think it is sometimes just easier to see some examples. Below I run through how my code for making maps using tmap used to look, and then discuss the changes that have happened and how things look now! 
+As of the 27th of January, 2025, tmap version 4.0 was released, and with it came some BIG changes. The authors have done a great job making sure that the update is backwards compatible with your current code, however moving forward it is very important to start doing things the "new" way, as the "old" way will no longer be receiving updates. One of the most impactful updates in my opinion, is changes to the syntax used within a lot of the core functions. This new syntax makes things easier to understand, cleaner, and provides greater flexibility in the creation of your maps. However it can be a confusing journey to undergo the transition. You will find that for alot of the old v3 code there are now warning/pop-up messages to help you with the transition, but there are a few things that slip few the cracks and I think it is sometimes just easier to see some examples. Below I run through how my code for making maps using tmap used to look, and then discuss the changes that have happened and how things look now! 
 
 :::{.callout-note}
 New datasets have also been added for demonstration purposes as well as the ability to extent tmap (to do things like map very unique spatial data types, or creating map overlays in a 3D environment). We won't be covering those in this blog, but they are very interesting in their own right.
@@ -44,10 +44,14 @@ tm_polygons(col,
             border.col,
             alpha,
             palette,
-            legend.show)
+            legend.show,
+            ...)
 
 ```
 
+:::{.callout-note}
+There are many more arguments in `tm_polygons()` than what I have listed above, but the general idea remains the same for the arguments I haven't listed.
+:::
 
 ... seems fine I guess. But what if I now add in the `tm_borders()` function:
 
@@ -78,7 +82,7 @@ v3_map <- tm_shape(example_data) +
   tm_text("name", shadow = T, auto.placement = T, size = 0.6) +
   tm_shape(example_data) +
   tm_borders("name") +
-  tm_layout(legend.bg.color = "white", legend.frame = "black", asp = 1.1,
+  tm_layout(legend.bg.color = "white", legend.frame.color = "black", asp = 1.1,
             legend.outside = TRUE)
 
 ```
@@ -90,16 +94,18 @@ v3_map
 
 ```
 
-In comparison to the version 3 code required to produce this map, the new syntax available with tmap version 4 is much more consistent, concise, and also somehow does more. For example, lets look at the arguments in the `tm_polygons()` function again:
+# How Things Look Now
+
+In comparison to the version 3 code required to produce this map, the new syntax available with tmap version 4 is much more consistent, concise, and also somehow does more with less. For example, lets look at the arguments in the `tm_polygons()` function again, right now we will just replace 1 to 1 the arguments we looked at before:
 
 ```{r}
 #| eval: FALSE
 
-tm_polygons(fill,
-            col,
-            fill_alpha,
-            fill.scale,
-            fill.legend,
+tm_polygons(fill, #this was "col"
+            col, #this was "border.col"
+            fill_alpha, #this was "alpha"
+            fill.scale, #this was "palette"
+            fill.legend, #this was "legend.show"
             ...)
 
 ```
@@ -109,12 +115,12 @@ At first glance this doesn't seem a whole lot better, there are now just a lot o
 ```{r}
 #| eval: FALSE
 
-tm_borders(col,
+tm_borders(col, #this was "col", and still is "col"
            ...)
 
 ```
 
-Right away we can see the first problem has been addressed. "Col" now always refers to the colour of the line/outline/border, whereas "fill" always refers to the inside/fill of the shape. Secondly, the confusion around alpha has been removed, we can see that "alpha" is now "fill_alpha", but even cooler, there is also a "col_alpha", the alpha are now independent! The same logic has been applied to "palette", which is now "fill.scale" (we will cover the change from palette to scale later), and the legend arguments, which now have "fill" in front of them. So what we have now is something like this:
+Right away we can see the first problem has been addressed. "Col" now always refers to the colour of the line/outline/border, whereas "fill" always refers to the inside/fill of the shape. Secondly, the confusion around alpha has been removed, we can see that "alpha" is now "fill_alpha", but even cooler, there is actually also a "col_alpha" now, the alphas' are independent! The same logic has been applied to "palette", which is now "fill.scale" (we will cover the change from palette to scale later), and the legend arguments, which now have "fill" in front of them. So what we have now is something like this:
 
 ```{r}
 #| eval: FALSE
@@ -152,7 +158,7 @@ v4_map <- tm_shape(example_data) +
           options = opt_tm_text(shadow = TRUE, 
                                 point.label = TRUE)) +
   tm_layout(legend.bg.color = "white",
-            legend.frame = "black",
+            legend.frame.color = "black",
             legend.outside.position = tm_pos_out("right", "top"),
             asp = 1.1)
     
@@ -165,6 +171,197 @@ v4_map
 
 ```
 
+Ignoring the fact that this isn't the most visually appealing map, it is now very easy to isolate exactly what each argument does and how we can adjust different aspects of the map.
+
+# A Visually Appealing Map
+
+I think it is now about time to produce a map that is actually visually appealing!
+
+:::{.callout-note}
+There is a lot happening in the code for this map. If you're interested in learning whats going on, I break it down in detail over in my other blog post: [LINK]
+:::
+
+## Prepare the Datasets
+
+### Background
+
+```{r}
+
+library(sf)
+
+#load in the background data
+background <- read_sf("Europe_coastline_poly.shp")
+
+#change the crs of the background data to match our Netherlands dataset
+background <- st_transform(background, st_crs(NLD_prov))
+                      
+#create a single polygon of the province dataset
+NLD_prov_single <- st_union(NLD_prov)
+
+#remove any holes within the polygon then make the shape valid
+NLD_prov_single <- nngeo::st_remove_holes(NLD_prov_single) |> 
+  st_make_valid()
+                      
+#take the full background dataset and cut a hole out of the same as the single polygon of the NLD_prov
+background_no_NLD <- st_difference(background, NLD_prov_single)
+
+#take the background with a hole in in, a crop it to a buffered bbox of the NLD_prov dataset (reduce file size)
+background_final <- st_intersection(background_no_NLD, st_as_sfc(st_bbox(st_buffer(NLD_prov_single, 20000))))
+
+```
+
+### France/World
+
+```{r}
+
+world_background <- World
+
+france_test <- world_background |> 
+  filter(name == "France") |> 
+  st_cast("POLYGON") |> 
+  mutate(ID = row_number())
+
+
+tm_shape(france_test) +
+  tm_polygons(fill = "ID",
+              fill.scale = tm_scale_categorical())
+
+
+france_test <- france_test |> 
+  select(name, iso_a3)
+
+
+world_no_france <- world_background |> 
+  filter(name != "France") |> 
+  select(name, iso_a3)
+
+world_final <- rbind(world_no_france, france_test)
+
+```
+
+## Create the Inset Map
+
+```{r}
+
+library(grid)
+
+#create a bounding box of the municipality dataset
+NLD_bbox <- st_as_sfc(st_bbox(NLD_muni))
+
+#create a much larger buffer of the municipality dataset to set the perspective of the map
+NLD_positioning <- st_as_sfc(st_bbox(st_buffer(NLD_muni, dist = 1000000)))
+
+#create the map that will be put into the viewport
+inset_map <- tm_shape(NLD_positioning, is.main = TRUE) +
+  tm_polygons(fill_alpha = 0,
+              col_alpha = 0) +
+  tm_shape(world_final) +
+  tm_polygons(fill = "#99B5B1") +
+  tm_text(text = "iso_a3",
+          size = 0.3,
+          options = opt_tm_text(shadow = T,
+                                shadow.offset.x = 0.01,
+                                shadow.offset.y = 0.01)) +
+  tm_shape(NLD_bbox) +
+  tm_borders(lwd = 2, 
+             col = "#8E3B46") +
+  tm_layout(asp = 0,
+            bg.color = "#C1DEEA",
+            outer.bg.color = "#F2F2F2") 
+
+```
+
+
+
+```{r}
+
+inset_map
+
+tmap_save(inset_map, "inset_map.png")
+
+```
+
+## Create the Main Map
+
+```{r}
+  
+# install.packages("remotes")
+#remotes::install_github("r-tmap/tmap")
+
+prov_2 <- NLD_prov |> 
+  mutate(UseMe = "Province")
+
+dist_2 <- NLD_dist |> 
+  mutate(population = population+1)
+
+muni_2 <- NLD_muni |> 
+  mutate(UseMe = "Municipality")
+
+
+map <- tm_shape(background_final) +
+  tm_polygons(fill = "#99B5B1") +
+  tm_shape(dist_2, is.main = T) +
+  tm_polygons(fill = "population",
+              fill.scale = tm_scale_continuous_log(values = c("#FFFFFF", "#00252A"),
+                                                   ticks = c(1, 10000, 100000)),
+              fill.legend = tm_legend(title = "Population",
+                                      position = tm_pos_out("right", "center"),
+                                      title.color = "black",
+                                      reverse = TRUE),
+              col_alpha = 0) +
+  tm_shape(muni_2) +
+  tm_borders(col = "UseMe",
+             col.scale = tm_scale_categorical(values = "#e6aa04"),
+             col.legend = tm_legend(title = "",
+                                    position = tm_pos_out("right", "center"),
+                                    lwd = 2),
+             lwd = 1) +
+  tm_shape(prov_2) +
+  tm_borders(col = "UseMe", 
+             col.scale = tm_scale_categorical(values = "#8E3B46"),
+             col.legend = tm_legend(title = "",
+                                    position = tm_pos_out("right", "center")),
+             lwd = 2) +
+  tm_layout(bg.color = "#C1DEEA",
+            legend.bg.color = "white",
+            asp = 0,
+            outer.bg.color = "#F2F2F2") +
+  tm_credits("Credits Text", 
+             position = c("left", "bottom")) +
+  tm_compass(type = "rose", 
+             position = c("LEFT", "TOP"),
+             color.dark = "black", 
+             color.light = "white",
+             size = 3.5)
+
+```
+
+
+
+```{r}
+
+map
+
+```
+
+## Arrange Maps
+
+```{r}
+
+
+#figure out where to place the view port
+inset_viewport <- viewport(y = 0.015, x = 0.98, width = 0.33, height = 0.33, just = c("right", "bottom"))
+
+
+#save map
+tmap_save(map, "test.png", insets_tm = inset_map, insets_vp = inset_viewport, height = 6, width = 8)
+
+
+tmap_save(map, "test.png", height = 6, width = 8)
+
+```
+
+# Some Other Subtle Changes
 
 ```{r}
 
