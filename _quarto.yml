@@ -56,7 +56,7 @@ website:
         aria-label: Email
         
 execute:
-  freeze: false
+  freeze: auto
   warning: false
 
 format:
