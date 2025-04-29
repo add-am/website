@@ -171,284 +171,33 @@ v4_map
 
 ```
 
-Ignoring the fact that this isn't the most visually appealing map, it is now very easy to isolate exactly what each argument does and how we can adjust different aspects of the map.
+Ignoring the fact that this isn't the most visually appealing map, it is now very easy to isolate exactly what each argument does and how we can adjust different aspects of the map. 
+
+Things to write more about: 
+
+ - the "options" argument for tm_text (shadow and placement)
+ - whats the go with the "tm_scale_xy", tm_legend, and tm_pos_out functions (these are helper functions)
+    - in particular the values, breaks, labels, etc. is much easier to work with as everything is grouped together
+ - changing how i write the code to ake it more obvious what arguments should be paired together (new line for each argument)
+
+Overall I highly recommend switching to the version 4 method.
 
 # A Visually Appealing Map
 
-I think it is now about time to produce a map that is actually visually appealing!
+I think it is now about time to produce a map that is actually visually appealing! Here is one I prepared earlier:
 
 :::{.callout-note}
-There is a lot happening in the code for this map. If you're interested in learning whats going on, I break it down in detail over in my other blog post: [LINK]
+There is a lot of code that happens to produce this map, if you're interested in learning whats going on, I break it down in detail over in my other blog post: [Making Beautiful Maps in R](../making_beauiful_maps_in_r/index.qmd)
 :::
 
-## Prepare the Datasets
+![Beautiful Map of Netherlands](../making_beautiful_maps_in_r/final_map.png)
 
-### Background
 
-```{r}
+# Some Other Changes
 
-#load packages required
-library(sf)
+Not only is the syntax of version 4 better, or just the visuals of the maps better. But the method for a bunch of other aspects has been improved as well. This includes things such as mapping raster data types, and faceting maps. Lets cover both at once!
 
-#load in the background data
-background <- read_sf("Europe_coastline_poly.shp")
 
-#change the crs of the background data to match our Netherlands dataset
-background <- st_transform(background, st_crs(NLD_prov))
-                      
-#create a single polygon of the province dataset
-NLD_prov_single <- st_union(NLD_prov)
-
-#remove any holes within the polygon then make the shape valid
-NLD_prov_single <- nngeo::st_remove_holes(NLD_prov_single) |> 
-  st_make_valid()
-                      
-#take the full background dataset and cut a hole out of the same as the single polygon of the NLD_prov
-background_no_NLD <- st_difference(background, NLD_prov_single)
-
-#take the background with a hole in in, a crop it to a buffered bbox of the NLD_prov dataset (reduce file size)
-background_final <- st_intersection(background_no_NLD, st_as_sfc(st_bbox(st_buffer(NLD_prov_single, 60000))))
-
-```
-
-### France/World
-
-```{r}
-
-#get the full world dataset
-world_background <- World
-
-#extract France from the dataset
-france_test <- world_background |> 
-  filter(name == "France")
-
-#view the france dataset (to demonstrate the naming issue)
-tm_shape(france_test) +
-  tm_polygons(fill.scale = tm_scale_categorical()) +
-  tm_text(text = "iso_a3",
-          size = 1,
-          options = opt_tm_text(shadow = T))
-
-#convert france to a individual polygons
-france_test <- france_test |> 
-  st_cast("POLYGON") |> 
-  mutate(ID = row_number())
-
-#view the france dataset (to demonstrate the naming issue)
-tm_shape(france_test) +
-  tm_polygons(fill = "ID",
-              fill.scale = tm_scale_categorical()) +
-  tm_text(text = "iso_a3",
-          size = 1,
-          options = opt_tm_text(shadow = T))
-
-#select the core columns we need
-france_test <- france_test |> 
-  select(name, iso_a3)
-
-#remove france from the original world dataset and select the core columns we need
-world_no_france <- world_background |> 
-  filter(name != "France") |> 
-  select(name, iso_a3)
-
-#join france back to the world dataset (sans france)
-world_final <- rbind(world_no_france, france_test)
-
-```
-
-## Create the Inset Map
-
-```{r}
-
-#load the required packages
-library(grid)
-
-#create a bounding box of the municipality dataset
-NLD_bbox <- st_as_sfc(st_bbox(NLD_muni))
-
-#create a much larger buffer of the municipality dataset to set the perspective of the inset map
-NLD_positioning <- st_as_sfc(st_bbox(st_buffer(NLD_muni, dist = 1500000)))
-
-#create the inset map that will be put into the viewport
-inset_map <- tm_shape(NLD_positioning, is.main = TRUE) +
-  tm_polygons(fill_alpha = 0,
-              col_alpha = 0) +
-  tm_shape(world_final) +
-  tm_polygons(fill = "#99B5B1") +
-  tm_text(text = "iso_a3",
-          size = 0.3,
-          options = opt_tm_text(shadow = T,
-                                shadow.offset.x = 0.01,
-                                shadow.offset.y = 0.01)) +
-  tm_shape(NLD_bbox) +
-  tm_borders(lwd = 2, 
-             col = "#8E3B46") +
-  tm_layout(asp = 0,
-            bg.color = "#C1DEEA",
-            outer.bg.color = "#F2F2F2") 
-
-```
-
-
-
-```{r}
-
-#view the inset map
-inset_map
-
-#save the inset map
-tmap_save(inset_map, "inset_map.png")
-
-```
-
-## Create the Main Map
-
-```{r}
-  
-#for some reason the v4 and v4.1 layouts are slightly different. So we will use the 4.1 layout to get ahead of future changes
-#remotes::install_github("r-tmap/tmap")
-
-#access the netherlands province data
-prov_2 <- NLD_prov |> 
-  mutate(UseMe = "Province")
-
-#access the netherlands district data
-dist_2 <- NLD_dist |> 
-  mutate(population = population+1)
-
-#access the netherlands municipality data
-muni_2 <- NLD_muni |> 
-  mutate(UseMe = "Municipality")
-
-#create the map
-map <- tm_shape(background_final) +
-  tm_polygons(fill = "#99B5B1") +
-  tm_shape(dist_2, is.main = T) +
-  tm_polygons(fill = "population",
-              fill.scale = tm_scale_continuous_log2(values = c("#FFFFFF","#00252A"),
-                                                   ticks = c(1, 10000, 100000)),
-              fill.legend = tm_legend(title = "Population:",
-                                      position = tm_pos_out("right", "center"),
-                                      title.color = "black",
-                                      reverse = TRUE),
-              col_alpha = 0) +
-  tm_shape(muni_2) +
-  tm_borders(col = "UseMe",
-             col.scale = tm_scale_categorical(values = "#E6AA04"),
-             col.legend = tm_legend(title = "",
-                                    position = tm_pos_out("right", "center"),
-                                    lwd = 2),
-             lwd = 1) +
-  tm_shape(prov_2) +
-  tm_borders(col = "UseMe", 
-             col.scale = tm_scale_categorical(values = "#8E3B46"),
-             col.legend = tm_legend(title = "",
-                                    position = tm_pos_out("right", "center")),
-             lwd = 2) +
-  tm_layout(bg.color = "#C1DEEA",
-            legend.bg.color = "white",
-            asp = 0,
-            outer.bg.color = "#F2F2F2") +
-  tm_credits("© Data: Statistics Netherlands, Software: R-tmap", 
-             position = c("LEFT", "BOTTOM"),
-             size = 0.5) +
-  tm_compass(type = "rose", 
-             position = c("LEFT", "TOP"),
-             color.dark = "black", 
-             color.light = "white",
-             size = 3.5)
-
-
-#add major cities:
-
-#Amsterdam, Rotterdam, The Hague, and Utrecht.
-
-```
-
-
-
-```{r}
-
-#view the map
-map
-
-#save the map
-tmap_save(map, "main_map.png", height = 6, width = 8)
-
-```
-
-## Arrange Maps
-
-```{r}
-
-
-#figure out where to place the view port
-inset_viewport <- viewport(y = 0.015, x = 0.98, width = 0.33, height = 0.33, just = c("right", "bottom"))
-
-#save map
-tmap_save(map, "combined_map.png", insets_tm = inset_map, insets_vp = inset_viewport, height = 6, width = 8)
-
-```
-
-# Some Other Subtle Changes
-
-```{r}
-
-
-
-
-#map <- tm_shape(seagrass, is.master = T) +
-#  tm_borders(alpha = 0) +
-#  tm_shape(qld) +
-#  tm_polygons(col = "grey80") +
-#  tm_shape(dt_background) +
-#  tm_polygons(col = "grey90", border.col = "black") +
-#  tm_shape(dt_marine) +
-#  tm_polygons(col = "Geographic Area: All", border.col = "black", alpha = 0.3, palette = "Pastel1", legend.show = T) +
-#  water_map +
-#  tm_shape(tsv) +
-#  tm_symbols(size = 0.3, col = "white", border.col = "black", border.lwd = 1, shape = 23) +
-#  tm_text("PlaceName", shadow = T, auto.placement = T, size = 0.6) +
-#  tm_shape(seagrass) +
-#  tm_polygons(col = "Meadow ID", palette = "Set3", border.col = "black", legend.show = F) +
-#  tm_text("Meadow ID", shadow = T, auto.placement = T, size = 1.5) +
-#  tm_layout(legend.bg.color = "white", legend.frame = "black", asp = 1.1,
-#            legend.position = c("left", "bottom"))
-
-
-
-```
-
-
-
-Main points to hit
-
- - demonstrate I can do mapping
- - show some things i used to do
- - show how i have updated those things
- 
- 
- Here is an example of what i used to do:
- 
-```{r}
- 
- #build on these two layers with customization
-
- 
-```
-
-things i have noticed
-
- - is.master is now is.main. doesn't seem to be a note of that one
- - auto.placement is now under opt_tm_text(point.label = T)
- - shadow is now under opt_tm_text(shadow = T)
- - organisation is much cleaner now, all the fill.xyz can be put together and it is easy to spot which arguments relate to one another
- - setting colours and styles makes much more sense now. doing the cat vs cont, and setting the palette etc.
- - my preferred lay out has changed. I now like to list each argument under the next - helps with grouping but does make code have more lines
- 
- 
- rasters have also changed alot.
- 
  before:
  
 ```{r}
