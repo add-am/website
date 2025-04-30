@@ -23,7 +23,11 @@ library(dplyr)
 
 The tmap package is one of my all time favourite R packages, and this latest update only solidified this opinion. I highly recommend that you check out the main page [here](https://r-tmap.github.io/tmap/index.html), and take the time to read over some of the documents in each of the tabs. 
 
-As of the 27th of January, 2025, tmap version 4.0 was released, and with it came some BIG changes. The authors have done a great job making sure that the update is backwards compatible with your current code, however moving forward it is very important to start doing things the "new" way, as the "old" way will no longer be receiving updates. One of the most impactful updates in my opinion, is changes to the syntax used within a lot of the core functions. This new syntax makes things easier to understand, cleaner, and provides greater flexibility in the creation of your maps. However it can be a confusing journey to undergo the transition. You will find that for alot of the old v3 code there are now warning/pop-up messages to help you with the transition, but there are a few things that slip few the cracks and I think it is sometimes just easier to see some examples. Below I run through how my code for making maps using tmap used to look, and then discuss the changes that have happened and how things look now! 
+As of the 27th of January, 2025, tmap version 4.0 was released, and with it came some BIG changes. The authors have done a great job making sure that the update is backwards compatible with your current code, however moving forward it is very important to start doing things the new way, as the old way will no longer be receiving updates. 
+
+One of the most impactful updates in my opinion, is changes to the syntax used within a lot of the core functions. This new syntax makes things easier to understand, cleaner, and provides greater flexibility in the creation of your maps. However it can be a confusing journey to undergo the transition. You will find that for a lot of the old v3 code there are now warnings/pop-up messages to help you with the transition, but there are a few things that slip few the cracks and I think it is sometimes just easier to see some examples. 
+
+Below I run through how my code for making maps using tmap used to look, and then discuss the changes that have happened and how things look now! 
 
 :::{.callout-note}
 New datasets have also been added for demonstration purposes as well as the ability to extent tmap (to do things like map very unique spatial data types, or creating map overlays in a 3D environment). We won't be covering those in this blog, but they are very interesting in their own right.
@@ -35,7 +39,7 @@ New datasets have also been added for demonstration purposes as well as the abil
 For the purposes of this blog I will assume a basic understanding of the tmap package and won't be explaining in detail what each function is/does.
 :::
 
-Right, so in version 3.0, how did things look? Well, if I'm honest they looked a little messy. I found that there was only a moderate level of consistency between the arguments in each function, and that arguments within a function that match together didn't always make that fact obvious. For example, lets look at the arguments in the `tm_polygons()` function:
+Right, so in version 3.0, how did things look? Well, if I'm honest they looked a little messy. I found that there was only a moderate level of consistency between the arguments in each function, and that arguments within a function that matched together didn't always make that fact obvious. For example, lets look at the arguments in the `tm_polygons()` function:
 
 ```{r}
 #| eval: FALSE
@@ -45,16 +49,11 @@ tm_polygons(col,
             alpha,
             palette,
             legend.show,
-            ...)
+            ...) #There are many more arguments in `tm_polygons()` than what I have listed, but the general idea remains the same for the rest.
 
 ```
 
-:::{.callout-note}
-There are many more arguments in `tm_polygons()` than what I have listed above, but the general idea remains the same for the arguments I haven't listed.
-:::
-
-... seems fine I guess. But what if I now add in the `tm_borders()` function:
-
+... seems fine I guess. The arguments make sense, it looks like `col` would affect the colour of the polygon, and `border.col` would affect the border colour of the polygon. But what if I now add in the `tm_borders()` function:
 
 ```{r}
 #| eval: FALSE
@@ -62,10 +61,9 @@ There are many more arguments in `tm_polygons()` than what I have listed above, 
 tm_borders(col,
            ...)
 
-
 ```
 
-Okay so now we need the additional context of knowing that "col" in `tm_polygons()` changes the colour inside the polygon, where as "col" in `tm_borders()` changes the colour of the border of the polygon. (See how `tm_polygons()` also has a "border.col" argument). Confusing! Moving on, lets look at the alpha (transparency) argument. Does that change the alpha of the col or the border? You would have to read the documentation to know that. What about the palette argument? Col or Border?... Extra confusing. But it gets worse! There is only one palette argument, so how do you change the palette for the inside of the polygon independently to the palette for the border of the polygons. You can't, so you must use the `tm_polygons()` and `tm_borders()` functions together. Just making the conflict between "col" more obvious. Arrgh!
+The two functions share the argument `col`. F `tm_polygons()` we are pretty sure that `col` affects the colour of the polygon, however this `tm_borders()` function sounds like it has been written specifically for the borders of polygons only... So now we need the additional context of knowing that "col" in `tm_polygons()` changes the colour inside the polygon, but in `tm_borders()` changes the colour of the border of the polygon. (Technically we could guess this from contextual clues such as how `tm_polygons()` also has a "border.col" argument but `tm_borders()` does not). Confusing! Moving on, lets look at the `alpha` (transparency) argument. Does that change the transparency of `col` or `border.col`? You would have to read the documentation to know that. What about the `palette` argument? Is that the colour palette for the `col` or `border.col` argument?... Extra confusing. But it gets worse! There is only one palette argument, so how do you change the palette for the inside of the polygon independently to the palette for the border of the polygons. You can't, so thats where `tm_borders()` function comes in. Just making the conflict between `col` more obvious. Arrgh!
 
 Enough ranting, lets look at a worked example of a map made using tmap version 3.0:
 
@@ -87,6 +85,10 @@ v3_map <- tm_shape(example_data) +
 
 ```
 
+Again. Overall it doesn't look too bad, with enough patience we can piece together what things probably do, and by trial and error we can confirm our ideas. However, it is when this code is compared to the new code that the short comings become apparent.
+
+By the way, here is what the map produced by this code looks like:
+
 ```{r}
 
 #print the map
@@ -96,7 +98,7 @@ v3_map
 
 # How Things Look Now
 
-In comparison to the version 3 code required to produce this map, the new syntax available with tmap version 4 is much more consistent, concise, and also somehow does more with less. For example, lets look at the arguments in the `tm_polygons()` function again, right now we will just replace 1 to 1 the arguments we looked at before:
+Compared to Version 3.0, the new syntax available with tmap version 4.0 is much more consistent, concise, and also somehow does more with less. For example, lets look at the arguments in the `tm_polygons()` function again, right now we will just replace 1 to 1 the arguments we looked at before:
 
 ```{r}
 #| eval: FALSE
@@ -120,18 +122,18 @@ tm_borders(col, #this was "col", and still is "col"
 
 ```
 
-Right away we can see the first problem has been addressed. "Col" now always refers to the colour of the line/outline/border, whereas "fill" always refers to the inside/fill of the shape. Secondly, the confusion around alpha has been removed, we can see that "alpha" is now "fill_alpha", but even cooler, there is actually also a "col_alpha" now, the alphas' are independent! The same logic has been applied to "palette", which is now "fill.scale" (we will cover the change from palette to scale later), and the legend arguments, which now have "fill" in front of them. So what we have now is something like this:
+Right away we can see the first problem has been addressed. `col` now always refers to the colour of the line/outline/border, whereas `fill` always refers to the inside/fill of the shape. Secondly, the confusion around `alpha` has been removed, we can see that `alpha` is now `fill_alpha`, but even cooler, there is actually also a `col_alpha` now, the alphas' are independent! The same logic has been applied to `palette`, which is now `fill.scale` (too detailed to explain that change right now), and the legend arguments, which now have "fill" in front of them. So what we have now is something like this:
 
 ```{r}
 #| eval: FALSE
 
 tm_polygons(fill, #what variable defines the "fill" of the polygons
-            fill.scale, #what palette, breaks, style, etc. should the be used to colour the polygons
+            fill.scale, #what palette, breaks, style, should the be used to colour the polygons
             fill.legend, #do you want a legend? What should it look like for the fill variable
             fill.free, #should the scale be free for multiples (facets etc.)
             fill_alpha, #how transparent should the fill colour be
             col, #what variable defines the "col" (border) of the polygons
-            col.scale, #what palette, breaks, style, etc. should the be used to colour the borders
+            col.scale, #what palette, breaks, style, should the be used to colour the borders
             col.legend, #do you want a legend? What should it look like for the col variable
             col.free, #should the scale be free for multiples (facets etc.)
             col_alpha, #how transparent should the border colour be
@@ -139,7 +141,7 @@ tm_polygons(fill, #what variable defines the "fill" of the polygons
 
 ```
 
-It could not be more obvious what each argument does now. Lets now make the same map as above, but this time with the version 4.0 syntax:
+It couldn't be more obvious what each argument does now. Lets now make the same map as above, but this time with the version 4.0 syntax:
 
 ```{r}
 #| output: FALSE
@@ -164,6 +166,15 @@ v4_map <- tm_shape(example_data) +
     
 ```
 
+Two things are obvious in this code.
+
+ 1. Which arguments should be associated with each other
+ 2. The code looks slightly more verbose, but this is due to less assumptions by the functions, and more explicit directions by me
+ 
+Side note, you may have also noticed I have changed the structure of my code. This is purely to assist in determining which arguments match together.
+
+Here is what the map produced by this code looks like:
+
 ```{r}
 
 #print the map
@@ -171,20 +182,16 @@ v4_map
 
 ```
 
-Ignoring the fact that this isn't the most visually appealing map, it is now very easy to isolate exactly what each argument does and how we can adjust different aspects of the map. 
+Ignoring the fact that for both examples these aren't the most visually appealing maps, it is now very easy to isolate exactly what each argument does and how we can adjust different aspects of the map. Alongside the changes surrounding the `fill` and `col` arguments, some other changes include:
 
-Things to write more about: 
-
- - the "options" argument for tm_text (shadow and placement)
- - whats the go with the "tm_scale_xy", tm_legend, and tm_pos_out functions (these are helper functions)
-    - in particular the values, breaks, labels, etc. is much easier to work with as everything is grouped together
- - changing how i write the code to ake it more obvious what arguments should be paired together (new line for each argument)
-
-Overall I highly recommend switching to the version 4 method.
+ - The arguments: `shadow = TRUE`, and `auto.placement = TRUE`, have been nested under the new argument `options`, which has its own helper function `opt_tm_text()`. (`auto.placement` has also been changed to `point.label`).    + 
+    + Thus: `options = opt_tm_text(shadow = TRUE, point.label = TRUE)`
+ - More helper functions have been added such as the afor mentioned `opt_tm_text()`, the various scale helpers `tm_scale_...`, and functions for positioning things such as `tm_pos_out`.
+    + I never used to really use the helper functions before this update, but they really do make things easier. For a deeper dive on these, check out my other blog post: [Making Beautiful Maps in R](../making_beauiful_maps_in_r/index.qmd)
 
 # A Visually Appealing Map
 
-I think it is now about time to produce a map that is actually visually appealing! Here is one I prepared earlier:
+Okay lets be honest, I've been doing a lot of posturing without actually creating a map that is even remotely visually appealing. Thus, lets produce a map that is actually not half bad! Here is one I prepared earlier:
 
 :::{.callout-note}
 There is a lot of code that happens to produce this map, if you're interested in learning whats going on, I break it down in detail over in my other blog post: [Making Beautiful Maps in R](../making_beauiful_maps_in_r/index.qmd)
@@ -192,46 +199,13 @@ There is a lot of code that happens to produce this map, if you're interested in
 
 ![Beautiful Map of Netherlands](../making_beautiful_maps_in_r/final_map.png)
 
+That looks pretty good, right?
 
 # Some Other Changes
 
-Not only is the syntax of version 4 better, or just the visuals of the maps better. But the method for a bunch of other aspects has been improved as well. This includes things such as mapping raster data types, and faceting maps. Lets cover both at once!
+Before I'm done, I'd like to drop a few more findings. Not only is the syntax of version 4 better, or the consistency improved, or just the visuals of the maps better. But the method for a bunch of other aspects has been improved as well. This includes things such as mapping raster data types, and faceting maps. Lets cover both at once!
 
-
- before:
- 
-```{r}
- 
-#map <- tm_shape(qld) +
-#        tm_polygons(col = "grey80", border.col = "black") +
-#        tm_shape(get(bas_map_type[j]), is.master = T) +
-#        tm_raster(legend.reverse = T, palette = pal_type[j], midpoint = mid_type[[j]], style = "fixed", breaks = get(break_type[j])) 
-
- 
-```
- 
- 
-after:
-
-```{r}
-
-
-#  tm_shape(qld) +
-#      tm_polygons(fill = "grey80", 
-#                  col = "black") +
-#      tm_shape(get(reg_map_type[j]), is.main = T) +
-#      tm_raster(col.scale = tm_scale_intervals(style = "fixed",
-#                                               breaks = get(break_type[j]),
-#                                               midpoint = mid_type[[j]],
-#                                               values = pal_type[j]),
-#                col.legend = tm_legend(reverse = T))
-
-```
- 
-
-facet is much easier.
-
-before:
+Before the update this is how I used to create a faceted map of rasters (noting this code won't work right now as the data isn't available). I had to create a map for each year of data individually, then keep track of which map I was on. For the first map I created a legend, and for all other maps I didn't create a legend. Finally, I had to stitch all of these maps together, and then I could save the result.
 
 ```{r}
 #| eval: FALSE
@@ -310,7 +284,7 @@ for (i in n3_marine_names) {
   #save the map as a png
   tmap_save(facet_map, filename = glue("{output_path}/plots/{i_lower}_dhw_fyear-{current_fyear}-to-{current_fyear-4}.png"))
   
-  #save the legend seperately
+  #save the legend separately
   tmap_save(legend_map, glue("{output_path}/plots/{i_lower}_dhw_fyear-{current_fyear}-to-{current_fyear-4}_legend.png"))
   
 }
@@ -318,34 +292,37 @@ for (i in n3_marine_names) {
 
 ```
 
-after:
-
+And this is how I create them now. The change is purely down to the introduction of the `tm_facets_...` group of functions, which are modelling after the ggplot2 `facet_wrap` functions if you are familiar. Without a doubt, much easier, much simpler, much quicker to understand.
 
 ```{r}
 #| eval: FALSE
 
 #plot
-  facet_map <- tm_shape(all_year_region) +
-    tm_raster(col.scale = tm_scale_intervals(values = dhw_cols, 
-                                             breaks = c(1:6),
-                                             labels = dhw_lab),
-              col.free = FALSE,
-              col.legend = tm_legend(title = "Coral bleaching likelihood and number of DHW's")) +
-    tm_shape(qld) +
-    tm_polygons(fill = "grey80",
-                col = "black") +
-    tm_shape(region_basins, is.main = T) +
-    tm_borders(col = "black") +
-    tm_shape(basins) +
-    tm_polygons(fill = "grey90", 
-                col = "black") +
-    tm_layout(panel.labels = year(time(n3_dhw_5y))) +
-    tm_facets_hstack()
+facet_map <- tm_shape(all_year_region) +
+  tm_raster(col.scale = tm_scale_intervals(values = dhw_cols, 
+                                           breaks = c(1:6),
+                                           labels = dhw_lab),
+            col.free = FALSE,
+            col.legend = tm_legend(title = "Coral bleaching likelihood and number of DHW's")) +
+  tm_shape(qld) +
+  tm_polygons(fill = "grey80",
+              col = "black") +
+  tm_shape(region_basins, is.main = T) +
+  tm_borders(col = "black") +
+  tm_shape(basins) +
+  tm_polygons(fill = "grey90", 
+              col = "black") +
+  tm_layout(panel.labels = year(time(n3_dhw_5y))) +
+  tm_facets_hstack()
 
+#save the map as a png
+tmap_save(facet_map, filename = glue("{output_path}/plots/{i_lower}_dhw_fyear-{current_fyear}-to-{current_fyear-4}.png"))
 
 ```
 
+# Caveats
 
+This blog has been written documenting some of the changes that have occurred with the R package "tmap". I explain how some of the changes have impacted my work, and cover a few instances where the update from v3 to v4 might not be so obvious. However! In no way am I pretending to understand all of the changes that have occurred. I would highly recommend visiting the main tmap page [here](https://r-tmap.github.io/tmap/index.html).
 
 
 
