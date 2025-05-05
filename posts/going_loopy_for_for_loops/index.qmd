@@ -41,7 +41,7 @@ In this post I wanted to quickly talk about for loops in R, specifically, I'm lo
  
 # For Loops
 
-Realistically, all a for loop does, is say "do this bit of code again and again until i say stop". Lets imagine a completely unrealistic scenario where your boss asks you to write out the numbers 1 to 10. Why are they asking you to do this? I don't know, that's not really the point. So you do it:
+Realistically, all a for loop does, is say "do this bit of code again and again until I say stop". Lets imagine a completely unrealistic scenario where your boss asks you to write out the numbers 1 to 10. Why are they asking you to do this? I don't know, that's not really the point. So you do it:
 
 ```{r}
 
@@ -165,7 +165,7 @@ for (i in 15:22){
 
 In this case, we started at 15 and ended at 22. So on the first loop, "i" is 15, second loop "i" is 16, etc.
 
-The last super important thing to remember about "n" does not have to be numeric! It look me a while to realize this, but it can allow you to do some cool things. Here is another quick example:
+The last super important thing to remember about "n" is that it does not have to be numeric! It took me a while to realise this, but it can allow you to do some cool things. Here is another quick example:
 
 ```{r}
 
@@ -179,7 +179,7 @@ for (i in n_range){
 
 ```
 
-This does through a minor curve ball though. Did you notice that the code is now `for (i in n_range)`, there is no "1:" in front of "n_range", this is just because the object "n_range" already has a range of elements that we can loop over. Lets use `length()` again to show this:
+This does throw a minor curve ball though. Did you notice that the code is now `for (i in n_range)`, there is no "1:" in front of "n_range", this is just because the object "n_range" already has a range of elements that we can loop over. Lets use `length()` again to show this:
 
 ```{r}
 
@@ -196,7 +196,7 @@ If you can remember these core things about for loops you will get very, very fa
 
 ## f The Function
 
-The final part of a for loop is by far the biggest part of the code, but it is ironically very straight forward to understand if you have a little bit of an R background. The function or functions inside a for loop are the exact same functions that you would be using outside a for loop! The hard part to figure out is where to place that stupid "i" value. Personally, I haven't been able to find a method of explaining where "i" goes other than by being very conscious of the purpose of your for loop. Start with simple and short loops and work your way to more complicated tasked, it will come naturally. Generally you will find that "i" only needs to be placed in a few key locations, however if you miss a spot, happy debugging!
+The final part of a for loop is by far the biggest part of the code, but it is ironically very straight forward to understand if you have a little bit of an R background. The function or functions inside a for loop are the exact same functions that you would be using outside a for loop! The hard part to figure out is where to place that stupid "i" value. Personally, I haven't been able to find a method of explaining where "i" goes other than by being very conscious of the purpose of your for loop. Start with simple and short loops and work your way to more complicated tasks, it will come naturally. Generally you will find that "i" only needs to be placed in a few key locations, however if you miss a spot, happy debugging!
 
 ::: {.callout-note}
 Want to learn more about For Loops from the professionals? Check out the Iteration chapter in [R for Data Science](https://r4ds.had.co.nz/iteration.html?q=For%20L#for-loops)!
@@ -204,13 +204,13 @@ Want to learn more about For Loops from the professionals? Check out the Iterati
 
 # For Loops in Action
 
-So far all i have done is demonstrate a very silly example of a for loop. The kind of example that really doesn't give you a compelling reason to learn how to write a for loop. The kind of examples I used to read that made me not bother learning for quite a while. So instead of demonstrating a million more half baked for loops lets just cut to chance and see how I implement a for loop in my day to day. (If this blog post does compel you to go on the learning journey - the link above will fill the gaps in what I've written )here.
+So far all I have done is demonstrate a very silly example of a for loop. The kind of example that really doesn't give you a compelling reason to learn how to write a for loop. The kind of examples I used to read that made me not bother learning for quite a while. So instead of demonstrating a million more half baked for loops lets just cut to chance and see how I implement a for loop in my day to day. (If this blog post does compel you to go on the learning journey - the link above will fill the gaps in what I've written )here.
 
 ## The Scenario
 
 Something I do almost every day is make maps. Usually fairly simple maps, often they show sample site locations, or coral monitoring locations, or the size of a seagrass meadow, things like that. These maps are included in static word documents and are often needed over large chunks of areas. However, the combination of a large study location, a high quantity of sample site locations, and a static output (can't put an interactive map into word), means that instead of one large map, I need to create lots of small maps for each little area.
 
-This here, is an absolutely prime example of a compelling reason to use a for loop. To give you some numbers, in one my projects I need to create 67 maps. If I was to manually write out the code for each of those 67 maps, my script would have 3886 lines of code just dedicated to creating the maps. Instead, I use a for loop and pull 67 maps out of less than 100 lines of code. Not only that, but I also reduce the chance of an error sneaking into my code by 67x.
+This here, is an absolutely prime example of a compelling reason to use a for loop. To give you some numbers, in one of my projects I need to create 67 maps. If I was to manually write out the code for each of those 67 maps, my script would have 3886 lines of code just dedicated to creating the maps. Instead, I use a for loop and pull 67 maps out of less than 100 lines of code. Not only that, but I also reduce the chance of an error sneaking into my code by 67x.
 
 Below is a simplified mock up of the code I would use for this, noting that I have used made up sampling locations for data privacy, and created interactive maps for your enjoyment. We will see the full code in action first, then break it down step by step.
 
@@ -289,7 +289,7 @@ locations <- unique(example_sites$Location)
 
 ```
 
-3. I then create a list to store the outputs of my for loop. This step can be done a wide range of ways, for example you could store each output as a separate object, if you know the number of outputs you could pre-define a list of that length to store the outputs (like I did), or if the number of outputs is a mystery you can grow the list as you go. There is no "best" way to do this, however it is generally frowned upon to grow the list as you go, as this can be computationally quite expensive. My recommendation would be to use the first two options, favoring a list with a pre-defined length if you can.
+3. I then create a list to store the outputs of my for loop. This step can be done in a wide range of ways, for example you could store each output as a separate object, if you know the number of outputs you could pre-define a list of that length to store the outputs (like I did), or if the number of outputs is a mystery you can grow the list as you go. There is no "best" way to do this, however it is generally frowned upon to grow the list as you go, as this can be computationally quite expensive. My recommendation would be to use the first two options, favoring a list with a pre-defined length if you can.
 
 ```{r}
 #| eval: FALSE
