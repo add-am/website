@@ -453,7 +453,7 @@ main_map <- tm_shape(europe_final) + #the background data
             legend.bg.color = "white", #background colour of the legend
             asp = 0, #set aspect to zero to make the map full fill the frame when printed
             outer.bg.color = "#F2F2F2") + # a very subtle eggshell (the background of my website)
-  tm_credits("Credits Text", #some credit text to add to the map
+  tm_credits("© Data: Statistics Netherlands, Software: R-tmap\n Map Created: Adam Shand", #some credit text to add to the map
              position = c("left", "bottom")) + #where does the text go
   tm_compass(type = "rose", #what type of compass
              position = c("LEFT", "TOP"), #where is the compass positioned
