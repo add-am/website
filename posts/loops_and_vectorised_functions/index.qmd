@@ -9,7 +9,51 @@ title-block-banner: true #This is our banner
 include-after-body: "../../html/html_footer.html" #This is our footer
 ---
 
-This is going to be a different kind of blog. Less about teaching, and more about the explorative process as I try to understand myself the differences between loops and vectorised functions.
+# Introduction
+
+[Functions](../learning_to_create_custom_functions/index.qmd) and [for loops](../going_loopy_for_for_loops/index.qmd)... If you haven't read my blog posts on these two topics I will shamelessly self promote and say that you should. But honestly, I would like to think that the content written here can be understood without any prior knowledge. So please, read on if you want!
+
+If you are not aware, the tension between vectorise functions and for loops is weirdly high. Some people say that vectorised functions are easier to read and understand, others swear that for loops are a more obvious and legible option. Some people prioritise processing time above all else and will create vectorised functions for everything, others say that in todays' coding languages it really doesn't make much of a different.
+
+So which is it? What do I use? Why do I use it? The idea of my blog today to try and pull apart the differences between functions and for loops as they relate to my work. Its going to be a bit of a  different kind of blog. Less about teaching, and more about the exploratory process as I try to understand these questions myself and take you along for the ride. 
+
+# Whats What?
+
+Ok so first of all lets just have a quick refresher on what exactly vectorised functions and for loops are exactly.
+
+## Vectorised Functions
+
+This is a bit of a wierd analogy but you can essentially think of a vectorised function almost like a shotgun. The idea is that all the actions are completed at the same time in one big boom (like how all the pellets in a shotgun fire at the same time). 
+
+
+## For Loops 
+
+In contrast, a for loop is more like a chain-gun, with each action completed one after the other in rapid succession.
+
+
+
+where as a function is more like a merry-go-round
+
+As an overview, I would like to first summarise some of the main similarities and differences I am aware of for each of these methods.
+
+Similarities:
+
+ - Used for repeated action, to do something several times over
+ - Are often lauded as "efficient", "effective", and "scalable"
+ - Can be daunting for newcomers
+ 
+Differences:
+
+ - Obviously their struture/syntax/method is different
+ - Functions are (in my opinion) more vague
+ - loops are great to work on products of previous loops
+ - vectorised functions are arguably faster
+
+
+
+the differences 
+
+between loops and vectorised functions.
 
 Main points to hit
 
@@ -19,3 +63,19 @@ Main points to hit
     - human time (more important) - although sometimes I doubt readability
  - how did I learn to understand vectorised functions
  - what is a compelling reason to try/learn
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
