@@ -1,7 +1,7 @@
 ---
 title: "Environmental Bytes for a Better Earth"
 abstract-title: ""
-abstract: "As each of my projects come to completion and are cleared for public release my thought process and findings will be published here. Below you can find a wide range of topics, from the feeling of my first publication and future publications since, to current analysis workflows I use and new techniques I am trying out."
+abstract: "One of my favourite hobbies is learning new things, as well as helping others to do the same. On this page you can find my blogs documenting the wide range of skills I have learnt as an Environmental Data Analyst, with everything from low level R coding concepts, all the way to fully fledge data analysis pipelines, dashboards built with Tableau, and examples of SQL and database management."
 listing:
   type: default
   sort: date desc
