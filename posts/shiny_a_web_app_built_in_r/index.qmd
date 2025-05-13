@@ -35,7 +35,6 @@ Alternatively, shiny apps can take external inputs. I could make an app where I 
 
 ```{shinylive-r}
 #| standalone: true
-#| viewerHeight: 600
 
 library(shiny)
 
