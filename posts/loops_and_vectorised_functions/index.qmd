@@ -1,8 +1,8 @@
 ---
-title: "An Epic Battle Between For Loops and Vectorised Functions"
+title: "An Epic Battle Between Vectorised Functions and For Loops"
 date: "01/04/2025"
 abstract-title: "ABSTRACT"
-abstract: "TBD."
+abstract: "The choice between using a vectorised function or a for loop can sometimes be a hard one. Don't know what they are? Or which one is right for which scenario? This blog is for you. Read on to find out more about how I use both options in my day to day work."
 image: "image.png"
 format: html
 title-block-banner: true #This is our banner
@@ -49,7 +49,7 @@ In contrast, a for loop is more like a chain-gun, with each action completed one
 You know where to go if you want to know more... [for loops](../going_loopy_for_for_loops/index.qmd).
 :::
 
-![image](image.png)
+![](image.png)
 
 ## Similarities and Differences
 
@@ -142,7 +142,7 @@ There are two main methods of vectorising a function, both methods have three ke
  2. The vector that you want to run the function on
  3. The vectorising function (i.e. the thing that makes it work).
  
-The only difference between the two methods is the third element, the vectorising function. The first method uses base R - that is to say you don't need to install and R packages. In the first method the vectorising functions come under the "apply" family, such as `lapply()`, `mapply()`, and `vapply()`. For the second method you need to install the "Purrr" package, which gives you access to the "map" family of functions, such as `map()`, `map2()`, and `map_int()`. As you can probably already tell from my early example, I prefer using the Purrr package (yep, triple r). I find that the function names make more sense, and there are a lot more things you can do with the functions.
+The only difference between the two methods is the third element, the vectorising function. The first method uses base R - that is to say you don't need to install and R packages. In the first method the vectorising functions come under the "apply" family, such as `lapply()`, `mapply()`, and `vapply()`. For the second method you need to install the "Purrr" package (yep, triple r), which gives you access to the "map" family of functions, such as `map()`, `map2()`, and `map_int()`. As you can probably already tell from my early example, I prefer using the Purrr package. I find that the function names make more sense, and there are a lot more things you can do with the functions.
 
 ## Purrr
 
@@ -239,7 +239,7 @@ The first argument in the map function is always our vector. This is then always
 
 #### Why Choose This Way?
 
-This final option is the most verbose, but almost most robust method of writing a map function. This option is useful when you need to be very specific about where x goes in your repeated function. For example, if x is meant to be the second argument for some reason. There are no real downsides to this method, and it can technically be used in any scenario, but in a lot of cases you will find that it is overkill.
+This final option is the most verbose, but most robust method of writing a map function. This option is useful when you need to be very specific about where x goes in your repeated function. For example, if x is meant to be the second argument for some reason. There are no real downsides to this method, and it can technically be used in any scenario, but in a lot of cases you will find that it is overkill.
 
 Here are a few demonstrations of the benefits of this option, first we need to create a custom function where we deliberately want x to be the second argument:
 

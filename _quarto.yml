@@ -72,7 +72,6 @@ format:
     code-copy: true
     code-block-border-left: "#00252A" #a dark muted green
     code-block-bg: "#00252A20" #a dark muted green at 20% opacity
-    embed-resources: true
     toc: true
     toc-title: "Jump To:"
     toc-location: right

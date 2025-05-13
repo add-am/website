@@ -1,0 +1,63 @@
+---
+title: "Ooh Shiny! A Web App Built in R"
+date: "01/04/2025"
+abstract-title: "ABSTRACT"
+abstract: "Did you know you can build a web app in R? Did you know this web app could be a custom dashboard showing off your latest data analysis and results? In this blog I am learning how to create my very own Shiny web app, and I am taking you along for the ride."
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+filters:
+  - shinylive
+---
+
+Notes
+
+ - draw parallels to Tableau and eventually link to a Tableau blog post
+ - in my opinion shiny is best for light weight small scale projects that allow for quick pivots and fast turn around
+ - it is not so handy in super large or complicated projects (maybe), depending on where the complexity comes from (UI or analysis). In the case of UI it is probably better to use things like tableau
+ - I will initially be following this: https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/ tutorial. However I plan to also develop my own web app
+ 
+Ideas for Shiny Web Apps
+
+I guess the core purpose of the app is that the user interacts with it. Thus, there needs to be something that changes. I want to the user to instinctively ask questions about the data and then be able to do something about it to find the answer. For example:
+
+ - Where is something - map?
+ - How does this data look in a different plot type (alternative visuals)
+ - ... ?
+ 
+Alternatively, shiny apps can take external inputs. I could make an app where I want users to input data. For my purposes I want this data to be as simple and generic as possible. Examples include:
+
+ - the PRM dashboard
+ - the land comparison thing? - Can i make a simplified version of this? (i.e. take a more basic dataset)
+
+
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 600
+
+library(shiny)
+
+ui <- fluidPage(
+  sliderInput("n", "Number", 1, 100, 50),
+  plotOutput("plot"))
+)
+
+server <- function(input, output) {
+  output$plot <- renderPlot({
+    hist(rnorm(input$n))
+  })
+}
+
+shinyApp(ui, server)
+
+```
+
+
+
+
+
+
+
+

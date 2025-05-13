@@ -1,0 +1,17 @@
+{
+  "hash": "f712661bac85824d20db30cf91dadb5c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Ooh Shiny! A Web App Built in R\"\ndate: \"01/04/2025\"\nabstract-title: \"ABSTRACT\"\nabstract: \"Did you know you can build a web app in R? Did you know this web app could be a custom dashboard showing off your latest data analysis and results? In this blog I am learning how to create my very own Shiny web app, and I am taking you along for the ride.\"\nimage: \"image.png\"\nformat: html\ntitle-block-banner: true #This is our banner\ninclude-after-body: \"../../html/html_footer.html\" #This is our footer\nfilters:\n  - shinylive\n---\n\n::: {.cell}\n\n:::\n\n\n\nNotes\n\n - draw parallels to Tableau and eventually link to a Tableau blog post\n - in my opinion shiny is best for light weight small scale projects that allow for quick pivots and fast turn around\n - it is not so handy in super large or complicated projects (maybe), depending on where the complexity comes from (UI or analysis). In the case of UI it is probably better to use things like tableau\n - I will initially be following this: https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/ tutorial. However I plan to also develop my own web app\n \nIdeas for Shiny Web Apps\n\nI guess the core purpose of the app is that the user interacts with it. Thus, there needs to be something that changes. I want to the user to instinctively ask questions about the data and then be able to do something about it to find the answer. For example:\n\n - Where is something - map?\n - How does this data look in a different plot type (alternative visuals)\n - ... ?\n \nAlternatively, shiny apps can take external inputs. I could make an app where I want users to input data. For my purposes I want this data to be as simple and generic as possible. Examples include:\n\n - the PRM dashboard\n - the land comparison thing? - Can i make a simplified version of this? (i.e. take a more basic dataset)\n\n\n\n```{shinylive-r}\n#| standalone: TRUE\n\nlibrary(shiny)\nlibrary(bslib)\n\n# Define UI for app that draws a histogram ----\nui <- page_sidebar(\n  # App title ----\n  title = \"Hello Shiny!\",\n  # Sidebar panel for inputs ----\n  sidebar = sidebar(\n    # Input: Slider for the number of bins ----\n    sliderInput(\n      inputId = \"bins\",\n      label = \"Number of bins:\",\n      min = 1,\n      max = 100,\n      value = 90\n    )\n  ),\n  # Output: Histogram ----\n  plotOutput(outputId = \"distPlot\")\n)\n\n# Define server logic required to draw a histogram ----\nserver <- function(input, output) {\n  \n  # Histogram of the Old Faithful Geyser Data ----\n  # with requested number of bins\n  # This expression that generates a histogram is wrapped in a call\n  # to renderPlot to indicate that:\n  #\n  # 1. It is \"reactive\" and therefore should be automatically\n  #    re-executed when inputs (input$bins) change\n  # 2. Its output type is a plot\n  output$distPlot <- renderPlot({\n    \n    x    <- faithful$waiting\n    bins <- seq(min(x), max(x), length.out = input$bins + 1)\n    \n    hist(x, breaks = bins, col = \"#007bc2\", border = \"orange\",\n         xlab = \"Waiting time to next eruption (in mins)\",\n         main = \"Histogram of waiting times\")\n    \n  })\n  \n}\n\n\nshinyApp(ui = ui, server = server)\n\n```\n\n\n\n\n\n\n\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

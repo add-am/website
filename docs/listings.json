@@ -1,0 +1,14 @@
+[
+  {
+    "listing": "/posts/index.html",
+    "items": [
+      "/posts/an_opinionated_dataframe_cleaner/index.html",
+      "/posts/going_loopy_for_for_loops/index.html",
+      "/posts/learning_to_create_custom_functions/index.html",
+      "/posts/loops_and_vectorised_functions/index.html",
+      "/posts/making_beautiful_maps_in_r/index.html",
+      "/posts/shiny_a_web_app_built_in_r/index.html",
+      "/posts/tmap_migrating_to_v4/index.html"
+    ]
+  }
+]
