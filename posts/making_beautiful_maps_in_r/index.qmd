@@ -1,6 +1,6 @@
 ---
 title: "Making Beautiful Maps in R"
-date: "01/04/2025"
+date: "03/23/2025"
 abstract-title: "ABSTRACT"
 abstract: "Creating maps using a programming language can be a painful process. The lack of a visual editor with realtime feedback, varying proportions between console and outputs, and complicated syntax to tie your brain in knots! In this blog I explore the R package 'tmap' and how it can be used to programmatically make beautiful, report ready maps, with as little stress as possible."
 image: "image.png"

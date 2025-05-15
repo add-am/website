@@ -1,6 +1,6 @@
 ---
 title: "Migrating to Version 4 of the tmap R Package"
-date: "01/04/2025"
+date: "02/04/2025"
 abstract-title: "ABSTRACT"
 abstract: "My favourite mapping package just released a major update! In this post I discuss the changes made as they relate to my work, and provide some tips and tricks I have learnt so far when migration from Version 3.0 to Version 4.0."
 image: "image.png"
