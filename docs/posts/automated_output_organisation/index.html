@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-05-15">
+<meta name="dcterms.date" content="2025-05-19">
 <meta name="description" content="Environmental Scientist | Data Analyst">
 
-<title>Ooh Shiny! A Web App Built in R – ADAM SHAND</title>
+<title>Automate Your Output Folders – ADAM SHAND</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -41,11 +76,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-2f24fd9e25f784bbee3d36216199cec5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<meta name="shinylive:serviceworker_dir" content="../..">
-<script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/load-shinylive-sw.js" type="module"></script>
-<script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/run-python-blocks.js" type="module"></script>
-<link href="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/shinylive.css" rel="stylesheet">
-<link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -141,7 +171,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Ooh Shiny! A Web App Built in R</h1>
+      <h1 class="title">Automate Your Output Folders</h1>
                       </div>
   </div>
     
@@ -152,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 15, 2025</p>
+        <p class="date">May 19, 2025</p>
       </div>
     </div>
     
@@ -162,15 +192,25 @@ ul.task-list li input[type="checkbox"] {
   <div>
     <div class="abstract">
       <div class="block-title">ABSTRACT</div>
-      Did you know you can build a web app in R? Did you know this web app could be a custom dashboard showing off your latest data analysis and results? In this blog I am learning how to create my very own Shiny web app, and I am taking you along for the ride.
+      Got a bunch of scripts and are confused which output belongs to which script? This post is for you!
     </div>
   </div>
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Jump To:</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#the-manual-fix" id="toc-the-manual-fix" class="nav-link" data-scroll-target="#the-manual-fix"><span class="header-section-number">2</span> The Manual Fix</a></li>
+  <li><a href="#the-automated-solution" id="toc-the-automated-solution" class="nav-link" data-scroll-target="#the-automated-solution"><span class="header-section-number">3</span> The Automated Solution</a></li>
+  <li><a href="#when-is-this-useful-when-is-it-not" id="toc-when-is-this-useful-when-is-it-not" class="nav-link" data-scroll-target="#when-is-this-useful-when-is-it-not"><span class="header-section-number">4</span> When Is This Useful When Is it Not?</a></li>
+  <li><a href="#extensions" id="toc-extensions" class="nav-link" data-scroll-target="#extensions"><span class="header-section-number">5</span> Extensions</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -179,88 +219,217 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Notes</p>
-<ul>
-<li>draw parallels to Tableau and eventually link to a Tableau blog post</li>
-<li>in my opinion shiny is best for light weight small scale projects that allow for quick pivots and fast turn around</li>
-<li>it is not so handy in super large or complicated projects (maybe), depending on where the complexity comes from (UI or analysis). In the case of UI it is probably better to use things like tableau</li>
-<li>I will initially be following this: https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/ tutorial. However I plan to also develop my own web app</li>
-</ul>
-<p>Ideas for Shiny Web Apps</p>
-<p>I guess the core purpose of the app is that the user interacts with it. Thus, there needs to be something that changes. I want to the user to instinctively ask questions about the data and then be able to do something about it to find the answer. For example:</p>
-<ul>
-<li>Where is something - map?</li>
-<li>How does this data look in a different plot type (alternative visuals)</li>
-<li>… ?</li>
-</ul>
-<p>Alternatively, shiny apps can take external inputs. I could make an app where I want users to input data. For my purposes I want this data to be as simple and generic as possible. Examples include:</p>
-<ul>
-<li>the PRM dashboard</li>
-<li>the land comparison thing? - Can i make a simplified version of this? (i.e.&nbsp;take a more basic dataset)</li>
-</ul>
-<div class="cell-output-display">
-<style>
-iframe.app-frame {
-  height: 700px !important;
-  width: 100% !important;
-}
-</style>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Being organised is hard work, no doubt about it. Being consistent is hard work, no doubt about it. But automating your output folders to be both organised and consistent? Well that’s easy, and today I’ll be showing you how.</p>
+<p>Lets set a scene that I’m sure many of you have encountered. You create a new repository for your next work task or personal project, initially you take your time, you’re careful, you organise everything neatly. But time goes on and competing priorities appear, suddenly you are in a rush, naming falls to the wayside and you just need to get things done. One day you look back at your work and you realise you have created a monster, your results folder probably looks something like this…</p>
+<p><img src="output_image.jpg" class="img-fluid"></p>
+<p>and your scripts folder a bit like this:</p>
+<p><img src="script_image.jpg" class="img-fluid"></p>
+<p>… its a sight to behold…</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
-#|   shinylive does not work in self-contained HTML documents.
-#|   Please set `embed-resources: false` in your metadata.
-#| standalone: true
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I will give you $100 if you successfully match the output(s) to the script that produce it.</p>
+</div>
+</div>
+<p>conceptually, you could represent the above arrangement like this:</p>
+<p><img src="image_1.png" class="img-fluid"></p>
+<p>With every script and every output all dumped into the project directory folder.</p>
+</section>
+<section id="the-manual-fix" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The Manual Fix</h1>
+<p>Not to worry, to keep things organised you put your scripts into a scripts folder. Maybe you have so many scripts that you also create sub folders!:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_2.png" class="img-fluid figure-img"></p>
+<figcaption>Variation 1</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image_3.png" class="img-fluid figure-img"></p>
+<figcaption>Variation 2</figcaption>
+</figure>
+</div>
+<p>however, in both these cases, the outputs are still getting dumped directly into the project directory. The natural next step here is to create a folder that stores all of the outputs:</p>
+<p><img src="image_4.png" class="img-fluid"></p>
+<p>Or, if you have sub folders it could look like this:</p>
+<p><img src="image_5.png" class="img-fluid"></p>
+<p>But that’s hard work! And as we covered above, overtime the maintenance on these structures fall away and get forgotten.</p>
+</section>
+<section id="the-automated-solution" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> The Automated Solution</h1>
+<p>Thankfully there is an easy fix, a little something called getting the active document context. Effectively what we are going to do is create a function that we can run at the start of every single script. This function will get information about the active document (i.e.&nbsp;the script being run), and use this to create a series of folders and paths that perfectly mirror the path to the script.</p>
+<p>For example by running <code>rstudioapi::getActiveDocumentContext()</code> we return a bit of information about the path of the script, the id, and where the mouse is. We can use this to our advantage by changing the function to <code>rstudioapi::getActiveDocumentContext()$path</code> and just selecting the path. This will return something like this:</p>
+<p>“~/GitHub/scripts/posts/automated_output_organisation/climate_final_report.qmd”</p>
+<p>Following this, we can isolate the specific name of the script using a little bit of <code>stringr()</code> magic, which leaves us with the string “climate_final_report”. Next, we can inject this string into the <code>dir.create()</code> function and hey presto the function automatically creates a folder with the exact same name as the script, right next to our script. Then we can just save the path to this folder as an object that we can reference whenever we want to save one of our outputs.</p>
+<p>The bones of this function are presented below:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a function that makes an output folder and path that matches the script calling it</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>auto_output <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#load in the required libraries</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(rstudioapi)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(stringr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#get the file path and name of the active document</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  script_path <span class="ot">&lt;-</span> <span class="fu">getActiveDocumentContext</span>()<span class="sc">$</span>path</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove the unnecessary components of the file path</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  output_path <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(script_path, <span class="st">".*/|.qmd|.R"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#create a folder at the location</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(output_path)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#save the location as an object to the global environment</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="st">"output_path"</span>, <span class="fu">paste0</span>(output_path, <span class="st">"/"</span>), <span class="at">envir =</span> .GlobalEnv)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>However, there are a two key issues with this set up so far:</p>
+<ol type="1">
+<li>This function only works when you manually run an R script or quarto document, it fails when you try to render a quarto document (bit too complicated to cover why here).</li>
+<li>This function is currently assuming the output folder should be created in the same folder that the script is located - in our examples above this would only work in the very first conceptual diagram.</li>
+</ol>
+<p>The first issue is a relatively simple fix, we just need to include the “quarto render” version of the <code>rstudioapi::getActiveDocumentContext()</code> function, which is <code>knitr::current_input()</code>. Below we update the function to first try <code>rstudioapi::getActiveDocumentContext()</code> , and if that fails, switch to <code>knitr::current_input()</code>:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a function that makes an output folder and path that matches the script calling it</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>auto_output <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#load in the required libraries</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(rstudioapi)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(stringr)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#try the first method, if it fails "result" becomes an object of class "try-error"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">try</span>({</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get the file path and name of the active document</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    script_path <span class="ot">&lt;-</span> <span class="fu">getActiveDocumentContext</span>()<span class="sc">$</span>path</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove the unnecessary components of the file path which is everything left of the last /, and the ".qmd" or ".R"</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    output_path <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(script_path, <span class="st">".*/|.qmd|.R"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#if the result object became a class "try-error" then we attempt the second method</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">inherits</span>(result, <span class="st">"try-error"</span>)){</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get the file path and name of the active document</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    script_path <span class="ot">&lt;-</span> knitr<span class="sc">::</span><span class="fu">current_input</span>()</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove unnecessary components of the file path</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    output_path <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(script_path, <span class="st">".rmarkdown"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#create a folder at the location</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(output_path)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">#save the location as an object to the global environment</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="st">"output_path"</span>, <span class="fu">paste0</span>(output_path, <span class="st">"/"</span>), <span class="at">envir =</span> .GlobalEnv)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>However the second issue is a bit more abstract as it depends on your exact folder structure. As we covered above, your scripts might be stored in a “scripts/” folder, or maybe there are layers of sub folders.</p>
+<p>The best solution I have found for this is to mirror the script folder organisation into a newly created “outputs” folder. This is achieved by modifying the function to use <code>here()</code>. What <code>here()</code> does is return a path to the R project directory that the script is being run within (i.e.&nbsp;the parent folder in our conceptual diagram). By combining the <code>here()</code> function with our custom function above we can isolate the exact path from the parent folder of the project to the script being run, and then mirro this to create the folder and path structure for our outputs folder. For example, if we use <code>rstudioapi::getActiveDocumentContext()</code> and the path to the script is:</p>
+<p>“~/GitHub/website/scripts/automated_output_organisation/climate_final_report.qmd”</p>
+<p>and the <code>here()</code> function returns:</p>
+<p>“C:/Users/adams/XYZ/Documents/GitHub/website”</p>
+<p>we can first identify that the parent folder is the final phrase from the <code>here()</code> function, which in our case is “website”. Following this, we can then see that everything between “website” and the file type from the <code>rstudioapi::getActiveDocumentContext()</code> function must be the folder(s) in which the R script is stored and the name of the script. In our case this would be:</p>
+<p>“scripts/automated_output_organisation/climate_final_report/”</p>
+<p>finally, we just take this string and substitute any text before the first slash (/) with “output” to create:</p>
+<p>“output/automated_output_organisation/climate_final_report/”</p>
+<p>Conceptually this would look almost exactly the same as our previous diagram, except that we have created an additional folder with the same name as the script to provide clarity on the source of the output, and that all of highlighted folders were created automatically:</p>
+<p>image.png)</p>
+<p>The code to achieve this is as follows:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a function that makes an output folder and path that matches the script calling it</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>auto_output <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#load the required packages</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(rstudioapi)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(stringr)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(here)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(glue)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#try the first method, if it fails "result" becomes an object of class "try-error"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">try</span>({</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get the file path and name of the active document</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    script_path <span class="ot">&lt;-</span> <span class="fu">getActiveDocumentContext</span>()<span class="sc">$</span>path</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get the name of the folder that the R project sits in. Regex is to grab everything after the last slash</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    parent_folder_name <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="fu">here</span>(), <span class="st">"[^/]+$"</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get everything after the parent folder, note this may be several sub folders.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    sub_folder_names <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(script_path, <span class="fu">glue</span>(<span class="st">"(?&lt;=/{parent_folder_name}/).*"</span>))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#replace the very first subfolder with "output" this will split any additional subfolders off down the output folder chain</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    output_path <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(sub_folder_names, <span class="st">"^[^/]+"</span>, <span class="st">"output"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#drop the ".qmd" or ".R" off the end</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    output_path <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(output_path, <span class="st">".qmd|.R"</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#if the result object became a class "try-error" then we attempt the second method</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">inherits</span>(result, <span class="st">"try-error"</span>)){</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get the file path and name of the active document</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    script_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">getwd</span>(), <span class="st">"/"</span>, knitr<span class="sc">::</span><span class="fu">current_input</span>())</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get the name of the folder that the R project sits in. Regex is to grab everything after the last slash</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    parent_folder_name <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="fu">here</span>(), <span class="st">"[^/]+$"</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get everything after the parent folder, not this may be several sub folders.</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    sub_folder_names <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(script_path, <span class="fu">glue</span>(<span class="st">"(?&lt;=/{parent_folder_name}/).*"</span>))</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="co">#replace the very first subfolder with "output" this will split any additional subfolders off down the output folder pathway</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    output_path <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(sub_folder_names, <span class="st">"^[^/]+"</span>, <span class="st">"output"</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove unnecessary components of the file path</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    output_path <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(sub_folder_names, <span class="st">".rmarkdown"</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  <span class="co">#create a folder at the location</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">here</span>(output_path), <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">#save the location as an object to the global environment</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="st">"output_path"</span>, <span class="fu">paste0</span>(output_path, <span class="st">"/"</span>), <span class="at">envir =</span> .GlobalEnv)</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>And thats it! You can save this function, call it at the start of any script you write, and it will automatically create the required output folders for you to store all of the awesome work you create. To access the path to the created folders all you need to do is call the “output_path” object.</p>
+</section>
+<section id="when-is-this-useful-when-is-it-not" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> When Is This Useful When Is it Not?</h1>
+<p>Broadly speaking, you will find this function useful when the repository you are working in is high traffic, and/or has a lot of scripts and outputs. If you have several scripts that produce outputs with similar names this is also a life save.</p>
+<p>Conversely, this function is certainly overkill for a simple repository that only contains one or two scripts.</p>
+</section>
+<section id="extensions" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Extensions</h1>
+<p>There are a few natural extensions to this function that I have also implemented in my day to day. The most obvious of which is creating another mirrored folder structure for my input data to be stored. This is particularly helpful when the data is automatically downloaded and then stored for later retrieval.</p>
+<p>To the contrary, if you manually access and store your data this extension might not work so well for you - since you would have to be manually creating the folders to store the data to begin with.</p>
 
-library(shiny)
-library(bslib)
 
-# Define UI for app that draws a histogram ----
-ui &lt;- page_sidebar(
-  # App title ----
-  title = "Hello Shiny!",
-  # Sidebar panel for inputs ----
-  sidebar = sidebar(
-    # Input: Slider for the number of bins ----
-    sliderInput(
-      inputId = "bins",
-      label = "Number of bins:",
-      min = 1,
-      max = 50,
-      value = 30
-    )
-  ),
-  # Output: Histogram ----
-  plotOutput(outputId = "distPlot", height = "600px")
-)
-
-# Define server logic required to draw a histogram ----
-server &lt;- function(input, output) {
-
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
-  output$distPlot &lt;- renderPlot({
-
-    x    &lt;- faithful$waiting
-    bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
-
-    hist(x, breaks = bins, col = "#007bc2", border = "white",
-         xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times")
-
-    })
-
-}
-
-shinyApp(ui = ui, server = server)
-</code></pre>
-
-
+</section>
 
 </main> <!-- /main -->
 

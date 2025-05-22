@@ -2,6 +2,7 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/automated_output_organisation/index.html",
       "/posts/shiny_a_web_app_built_in_r/index.html",
       "/posts/an_opinionated_dataframe_cleaner/index.html",
       "/posts/making_beautiful_maps_in_r/index.html",

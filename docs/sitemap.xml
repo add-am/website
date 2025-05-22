@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.adamshand22.com/posts/tmap_migrating_to_v4/index.html</loc>
-    <lastmod>2025-05-15T03:04:45.837Z</lastmod>
+    <lastmod>2025-05-15T11:50:37.979Z</lastmod>
   </url>
   <url>
     <loc>https://www.adamshand22.com/posts/making_beautiful_maps_in_r/index.html</loc>
-    <lastmod>2025-05-15T03:05:27.947Z</lastmod>
+    <lastmod>2025-05-15T11:50:37.967Z</lastmod>
   </url>
   <url>
     <loc>https://www.adamshand22.com/posts/learning_to_create_custom_functions/index.html</loc>
-    <lastmod>2025-05-15T03:05:59.979Z</lastmod>
+    <lastmod>2025-05-15T11:50:37.957Z</lastmod>
   </url>
   <url>
     <loc>https://www.adamshand22.com/posts/going_loopy_for_for_loops/index.html</loc>
-    <lastmod>2025-05-15T03:06:18.123Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adamshand22.com/index.html</loc>
-    <lastmod>2025-04-14T04:26:41.967Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.adamshand22.com/cv/index.html</loc>
-    <lastmod>2025-04-14T03:44:10.897Z</lastmod>
+    <lastmod>2025-05-15T11:50:37.954Z</lastmod>
   </url>
   <url>
     <loc>https://www.adamshand22.com/posts/an_opinionated_dataframe_cleaner/index.html</loc>
-    <lastmod>2025-05-15T03:06:30.868Z</lastmod>
+    <lastmod>2025-05-15T11:50:37.953Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adamshand22.com/cv/index.html</loc>
+    <lastmod>2025-04-15T11:13:57.155Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adamshand22.com/index.html</loc>
+    <lastmod>2025-05-13T10:43:24.688Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.adamshand22.com/posts/automated_output_organisation/index.html</loc>
+    <lastmod>2025-05-22T04:17:12.487Z</lastmod>
   </url>
   <url>
     <loc>https://www.adamshand22.com/posts/index.html</loc>
-    <lastmod>2025-05-15T00:22:25.566Z</lastmod>
+    <lastmod>2025-05-13T10:43:34.305Z</lastmod>
   </url>
   <url>
     <loc>https://www.adamshand22.com/posts/loops_and_vectorised_functions/index.html</loc>
-    <lastmod>2025-05-15T03:05:41.732Z</lastmod>
+    <lastmod>2025-05-15T11:50:37.963Z</lastmod>
   </url>
   <url>
     <loc>https://www.adamshand22.com/posts/shiny_a_web_app_built_in_r/index.html</loc>
-    <lastmod>2025-05-15T03:06:57.391Z</lastmod>
+    <lastmod>2025-05-15T11:50:37.975Z</lastmod>
   </url>
 </urlset>
