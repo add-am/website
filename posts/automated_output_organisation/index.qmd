@@ -155,7 +155,7 @@ finally, we just take this string and substitute any text before the first slash
 
 Conceptually this would look almost exactly the same as our previous diagram, except that we have created an additional folder with the same name as the script to provide clarity on the source of the output, and that all of highlighted folders were created automatically:
 
-image.png)
+![](image_6.png)
 
 The code to achieve this is as follows:
 
