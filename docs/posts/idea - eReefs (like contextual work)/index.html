@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-05-23">
+<meta name="description" content="Environmental Scientist | Data Analyst">
+
+<title>The Extraction and Visualisation of Highly Specialised Modeled Data – ADAM SHAND</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/logo.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de070a7b0ab54f8780927367ac907214.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2f24fd9e25f784bbee3d36216199cec5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo.svg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ADAM SHAND</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/adamshand22"> 
+<span class="menu-text"><img src="../..\images/coffee_icon.svg" style="vertical-align: -0.1em;;height:1.5em"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com//add-am"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/AdamShand7"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/adam-shand-a2257117b/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:mail.adamshand22@gmail.com"> <i class="bi bi-envelope" role="img" aria-label="Email">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">The Extraction and Visualisation of Highly Specialised Modeled Data</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 23, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  <div>
+    <div class="abstract">
+      <div class="block-title">ABSTRACT</div>
+      In this blog I talk about the skills need to execute the extraction, manipulation, and visualisation of modeled environmental data such as ocean currents, nutrient loads, and water clarity from the online platform “eReefs”.
+    </div>
+  </div>
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Jump To:</h2>
+   
+  <ul>
+  <li><a href="#key-points-to-hit" id="toc-key-points-to-hit" class="nav-link active" data-scroll-target="#key-points-to-hit"><span class="header-section-number">1</span> Key points to hit</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">2</span> Introduction</a></li>
+  <li><a href="#core-data" id="toc-core-data" class="nav-link" data-scroll-target="#core-data"><span class="header-section-number">3</span> Core Data</a>
+  <ul class="collapse">
+  <li><a href="#additional-data" id="toc-additional-data" class="nav-link" data-scroll-target="#additional-data"><span class="header-section-number">3.1</span> Additional Data</a></li>
+  </ul></li>
+  <li><a href="#to-do---i-will-likely-make-this-part-of-my-website" id="toc-to-do---i-will-likely-make-this-part-of-my-website" class="nav-link" data-scroll-target="#to-do---i-will-likely-make-this-part-of-my-website"><span class="header-section-number">4</span> To Do - I will likely make this part of my website</a></li>
+  <li><a href="#introduction-1" id="toc-introduction-1" class="nav-link" data-scroll-target="#introduction-1"><span class="header-section-number">5</span> Introduction</a></li>
+  <li><a href="#script-set-up" id="toc-script-set-up" class="nav-link" data-scroll-target="#script-set-up"><span class="header-section-number">6</span> Script Set Up</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data"><span class="header-section-number">7</span> Load Data</a>
+  <ul class="collapse">
+  <li><a href="#normal-spatial-data" id="toc-normal-spatial-data" class="nav-link" data-scroll-target="#normal-spatial-data"><span class="header-section-number">7.1</span> Normal Spatial Data</a></li>
+  <li><a href="#ereefs-data" id="toc-ereefs-data" class="nav-link" data-scroll-target="#ereefs-data"><span class="header-section-number">7.2</span> eReefs Data</a>
+  <ul class="collapse">
+  <li><a href="#edit-ereefs-data" id="toc-edit-ereefs-data" class="nav-link" data-scroll-target="#edit-ereefs-data"><span class="header-section-number">7.2.1</span> Edit eReefs Data</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis"><span class="header-section-number">8</span> Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots"><span class="header-section-number">8.1</span> Plots</a></li>
+  <li><a href="#maps" id="toc-maps" class="nav-link" data-scroll-target="#maps"><span class="header-section-number">8.2</span> Maps</a></li>
+  <li><a href="#tables" id="toc-tables" class="nav-link" data-scroll-target="#tables"><span class="header-section-number">8.3</span> Tables</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="key-points-to-hit" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Key points to hit</h1>
+<ul>
+<li>what is eReefs?</li>
+<li>what will this blog cover?
+<ul>
+<li>data access and extraction</li>
+<li>dot plots</li>
+<li>simple maps</li>
+</ul></li>
+<li>note that there is plenty more that is possible</li>
+</ul>
+</section>
+<section id="introduction" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
+<p>In this blog post I’d like to cover the essentials of extracting and visualising data from the eReefs platform. First of all, hands up - who’s heard of <a href="https://www.ereefs.org.au/">eReefs</a>? Fair enough if you haven’t, despite its star power in my world it is still a relatively niche topic. To summarise, eReefs is <em>“a comprehensive view of dynamic marine environment conditions across the Great Barrier Reef from end-of-catchments and estuaries to reef lagoons and the open ocean.”</em> What this means for us is that it has a whole bunch of modeled environmental datasets that are easily accessible, backed by top-notch science, and <strong>heavy</strong> (i.e.&nbsp;we really get to flex our coding and spatial skill “muscles”).</p>
+</section>
+<section id="core-data" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Core Data</h1>
+<p>The datasets we are going to look at today are the chlorophyll a dataset, and the the nitrites dataset. However there are hundreds of datasets to choose from including water movement variables, water clarity indicators, and a whole host of chemical indicators. Thankfully, all data produced by eReefs is stored on the <a href="https://thredds.nci.org.au/thredds/catalog/catalogs/fx3/catalog.html">National Computing Infrastructure’s (NCIs) THREDDS server</a> which is a server which we can interact with in an automated fashion. Don’t be fooled though, accessing the data can still pose quite the challenge and can sometimes seem like you are feeling your wa around in the dark.</p>
+<section id="additional-data" class="level2" data-number="3.1">
+<h2 data-number="3.1" data-anchor-id="additional-data"><span class="header-section-number">3.1</span> Additional Data</h2>
+<p>To assist in this process we are also going to need two extra datasets: 1) a dataset of all the reefs in the area, which gives us an exceptional frame of reference for where things are happening and why. And 2) a dataset that details the specific boundaries of a target region within the scope of the eReefs model. I will be using the boundaries of the Dry Tropics region (near Townsville, QLD), however any boundaries withing the Great Barrier Reef Marine Park will work fine.</p>
+<p>First I will load in reef data, which is available to download online using the <a href="https://open-aims.github.io/gisaimsr/">GISAIMSR package</a>. This package is handy, but is a bit of a hassle to get working as you can’t install it from the usual package library. I’ve listed the essentials to get started but please note that if you can’t get the package working, the analysis in this script will still work, your maps will just be missing the reef layer and the context that the reefs bring.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check and install the remotes package (this is required to then install the gisaimsr package)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">"remotes"</span> <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">"Package"</span>]){<span class="fu">install.packages</span>(<span class="st">"remotes"</span>)}</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#check and install the gisaimsr package</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="st">"gisaimsr"</span> <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">"Package"</span>]){remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"https://github.com/open-AIMS/gisaimsr"</span>)}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#read in reef data and update crs</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>reefs <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="fu">data</span>(<span class="st">"gbr_feat"</span>, <span class="at">package =</span> <span class="st">"gisaimsr"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(FEAT_NAME <span class="sc">==</span> <span class="st">"Reef"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="st">"EPSG:7844"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Following this I will load in my boundaries of the Dry Tropics region. Unfortunately this is a custom dataset that cannot be made available for download, however as noted above any polygon area within the Great Barrier Reef region will work so I encourage you to create your own.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#read in the dry tropics region dataset</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dt_region <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"dt_region.gpkg"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="st">"EPSG:7844"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In a pinch for coordinates? Use these for a simple box:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>example_box <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">144.227</span>, <span class="sc">-</span><span class="fl">24.445</span>,   <span class="co"># bottom-left</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                        <span class="fl">144.227</span>, <span class="sc">-</span><span class="fl">15.195</span>,   <span class="co"># top-left</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                        <span class="fl">151.329</span>, <span class="sc">-</span><span class="fl">15.195</span>,   <span class="co"># top-right</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                        <span class="fl">151.329</span>, <span class="sc">-</span><span class="fl">24.445</span>,   <span class="co"># bottom-right</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                        <span class="fl">144.227</span>, <span class="sc">-</span><span class="fl">24.445</span>),    <span class="co"># close the polygon by repeating the first point</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ncol =</span> <span class="dv">2</span>, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#create a polygon geometry and set the CRS</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>example_box <span class="ot">&lt;-</span> <span class="fu">st_polygon</span>(<span class="fu">list</span>(example_box)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_sfc</span>(<span class="at">crs =</span> <span class="st">"EPSG:7844"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+<p>Alright we are now all set to start trying to pull data from eReefs!</p>
+</section>
+</section>
+<section id="to-do---i-will-likely-make-this-part-of-my-website" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> To Do - I will likely make this part of my website</h1>
+<ul>
+<li>create more visual explanations, particular around the bbox interaction</li>
+<li>link to eReefs training resources again</li>
+<li>explain the issue are size of data and pwalk[ing] this script??</li>
+<li>drop the script set up function</li>
+<li>drop the name cleaning function</li>
+</ul>
+</section>
+<section id="introduction-1" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Introduction</h1>
+<p>This script will analyse several contextual variables in the Offshore Marine Zone of each of the Technical Reports. We will look at:</p>
+<ul>
+<li>Chlorophyll a,</li>
+<li>Secchi,</li>
+<li>And possibly Total Suspended Solids or its surrogates</li>
+</ul>
+<p>“Contextual results” means that these indicators will not be properly scored and graded. Instead the results will be presented as the raw concentration values. Likely presented using statistics such as monthly and annual means, yearly trends, and visual aids (maps, plots).</p>
+</section>
+<section id="script-set-up" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Script Set Up</h1>
+<p>This script requires multiple core spatial packages, each of which is loaded below. Key variables and paths are also created.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>project_crs<span class="sc">:</span> <span class="st">"EPSG:7844"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  target_fyear<span class="sc">:</span> <span class="dv">2023</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  target_region<span class="sc">:</span> <span class="st">"Dry Tropics"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  resolution<span class="sc">:</span> <span class="dv">0</span> <span class="co">#0 is full size, bigger number = more cells merge together</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#use pacman function to load and install (if required) all other packages</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, glue, here, janitor, sf, tmap, stars, ncmeta, ereefs, ggplot2, RColorBrewer, huxtable, scales)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#load in the custom function used to create the read and write folders for the script</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"functions/script_setup.R"</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#run the function to create the folders and paths</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">script_setup</span>()</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#set project crs</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>proj_crs <span class="ot">&lt;-</span> params<span class="sc">$</span>project_crs</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#set the targeted region</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>proj_region <span class="ot">&lt;-</span> params<span class="sc">$</span>target_region</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#set the resolution</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>down_sample <span class="ot">&lt;-</span> params<span class="sc">$</span>resolution</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"functions/name_cleaning.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="load-data" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Load Data</h1>
+<p>There are two distinct groups of data used in this analysis, “normal” spatial data, which includes information on each of the Northern Three reporting regions, their marine zones, boundaries, sizes, etc., and the eReefs data. The eReefs data we are referring to in this context as “special” as it is provided in a format not often worked with by data analysts, and requires additional care to utilise.</p>
+<section id="normal-spatial-data" class="level2" data-number="7.1">
+<h2 data-number="7.1" data-anchor-id="normal-spatial-data"><span class="header-section-number">7.1</span> Normal Spatial Data</h2>
+<p>These are the standard datasets used by almost any spatial analysis script in this repository, and the method of obtaining and refining the data should be familiar to those who have worked in this space before. Below we simply extract the spatial information of the areas in which we are going to analyse the data. This will be stored as three sf objects in a list - each object is one of the Northern Three regions. The reason for this method of storage will be apparent further down.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get each marine region</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>target_marine_region <span class="ot">&lt;-</span> n3_region <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Region <span class="sc">==</span> proj_region,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           Environment <span class="sc">==</span> <span class="st">"Marine"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, SubBasinOrSubZone) <span class="sc">|&gt;</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geom)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_cast</span>()</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#get a land variation </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>target_land_region <span class="ot">&lt;-</span> n3_region <span class="sc">|&gt;</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Region <span class="sc">==</span> proj_region,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>         Environment <span class="sc">!=</span> <span class="st">"Marine"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, SubBasinOrSubZone) <span class="sc">|&gt;</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geom)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_cast</span>()</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#read in reef data and update crs</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>reefs <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="fu">data</span>(<span class="st">"gbr_feat"</span>, <span class="at">package =</span> <span class="st">"gisaimsr"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">name_cleaning</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(FeatName <span class="sc">==</span> <span class="st">"Reef"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(proj_crs)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(reefs, <span class="st">"reefs.gpkg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="ereefs-data" class="level2" data-number="7.2">
+<h2 data-number="7.2" data-anchor-id="ereefs-data"><span class="header-section-number">7.2</span> eReefs Data</h2>
+<p>Now we can look to download the eReefs data. We will be using the spatial information for each of the regions that we loaded above to guide us when extracting the eReefs data.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Please note that this script will download the eReefs data from an online server the first time the script is run. This is a lengthy process given the size of the data (several gb) and will take a significant amount of time to process (approximately 20 minutes). To assist in future runs of the script, the data will be saved to your local computer and reloaded next time (approximate 30 seconds).</p>
+</div>
+</div>
+<p>Given that this is the 6th script in the series about eReefs data we already have a significant amount of contextual information about the data that makes it a lot easier to understand what data we are downloading and how we can access it. (Not all previous scripts have to be run, but reading them does help).</p>
+<p>Using script 5 we know that to get the data for each year we need to access the following layers:</p>
+<ul>
+<li>2019-2020 = 1-215 (215 layers total)</li>
+<li>2020-2021 = 216-580 (365 layers total)</li>
+<li>2021-2022 = 581-945 (365 layers total)</li>
+<li>2022-2023 = 946-1310 (365 layers total)</li>
+<li>2023-2024 = 1311-1510 (200 layers)</li>
+</ul>
+<p>For this script we can focus on downloading just the year of data that is closest to our target data year. I say closest because data is only released roughly every 2 years, thus sometimes the target year matches, sometimes it does not. The general method of downloading is as follows:</p>
+<ol type="1">
+<li>Set up a table containing the layer counter information determined above and then identify the year we are interested in.</li>
+<li>Establish coordinate boundaries of the area of interest</li>
+<li>Extract grid cell latitude, longitude information within this area of interest</li>
+<li>Compare the coordinate boundaries of the area of interest with the grid cell latitude and longitude (this is because the grid cells are on a curvilinear grid and sometimes extend outside our area of interest due to the line “bending”)</li>
+<li>From this comparison, extract the true start and end points of the area of interest, accounting for bending</li>
+<li>Download each financial year of data individually, using information from steps 4. and 5.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use nc_vars(input_file) to get a table that lists all available variables. It will also tell you the dimensions needed to call the data (usually 3 or 4).</p>
+</div>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a folder to store all the data outputs</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">glue</span>(<span class="st">"{output_path}/datasets/"</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#-----------------</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#step 1:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#set up our indices reference table</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>indicies <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Fyear"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Start"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">216</span>, <span class="dv">581</span>, <span class="dv">946</span>, <span class="dv">1311</span>),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Count"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">215</span>, <span class="dv">365</span>, <span class="dv">365</span>, <span class="dv">365</span>, <span class="dv">200</span>))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#pick the correct year (the one closest to our target)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>target_indicies <span class="ot">&lt;-</span> indicies <span class="sc">|&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">which.min</span>(<span class="fu">abs</span>(Fyear <span class="sc">-</span> current_fyear)))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#-----------------</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#steps 2 to 6 occur here:</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#create a vector of all the variables we want to extract. Note the callout above if you want to get different variables</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>indicators_vect <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chl_a_sum"</span>, <span class="st">"Secchi"</span>, <span class="st">"Turbidity"</span>, <span class="st">"NO3"</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#define the buffer around our area, for MWI, the buffer needs to be smaller otherwise the data requested is to large to be loaded into memory</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(proj_region <span class="sc">==</span> <span class="st">"Mackay Whitsunday Isaac"</span>){buff_numb <span class="ot">&lt;-</span> <span class="dv">0</span>} <span class="cf">else</span> {buff_numb <span class="ot">&lt;-</span> <span class="fl">1.2</span>}</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#get a bounding box of the marine region</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>marine_bbox <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">st_buffer</span>(target_marine_region, buff_numb))</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#rearrange to suit how eReefs like to request each point ( order is min lon, max lon, min lat, max lat)</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>box_bounds <span class="ot">&lt;-</span> <span class="fu">c</span>(marine_bbox[<span class="dv">1</span>], marine_bbox[<span class="dv">3</span>], marine_bbox[<span class="dv">2</span>], marine_bbox[<span class="dv">4</span>])</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#establish the initial file path using the ereefs package (currently we use the eReefs GBR1 biogeochemistry and sediments v3.2 model)</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#input_file &lt;- substitute_filename("catalog")</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>input_file <span class="ot">&lt;-</span> <span class="st">"https://dapds00.nci.org.au/thredds/dodsC/fx3/GBR1_H2p0_B3p2_Cfur_Dnrt.ncml"</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#get all grids</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>grids <span class="ot">&lt;-</span> <span class="fu">get_ereefs_grids</span>(input_file)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#get x and y specifically</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>x_grid <span class="ot">&lt;-</span> grids[[<span class="st">"x_grid"</span>]]</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>y_grid <span class="ot">&lt;-</span> grids[[<span class="st">"y_grid"</span>]]</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#create an array of FALSE values the same dimensions as the x (and y) grids</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>outOfBox <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">FALSE</span>, <span class="at">dim =</span> <span class="fu">dim</span>(x_grid))</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#change array value to TRUE if the associated value in the x or y grid at the same position is outside our bounding box</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(box_bounds[<span class="dv">1</span>])) {outOfBox <span class="ot">&lt;-</span> <span class="fu">apply</span>(x_grid, <span class="dv">2</span>, <span class="cf">function</span>(x) {(x <span class="sc">&lt;</span> box_bounds[<span class="dv">1</span>] <span class="sc">|</span> <span class="fu">is.na</span>(x))})}</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(box_bounds[<span class="dv">2</span>])) {outOfBox <span class="ot">&lt;-</span> outOfBox <span class="sc">|</span> <span class="fu">apply</span>(x_grid, <span class="dv">2</span>, <span class="cf">function</span>(x) {(x <span class="sc">&gt;</span> box_bounds[<span class="dv">2</span>] <span class="sc">|</span> <span class="fu">is.na</span>(x))})}</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(box_bounds[<span class="dv">3</span>])) {outOfBox <span class="ot">&lt;-</span> outOfBox <span class="sc">|</span> <span class="fu">apply</span>(y_grid, <span class="dv">2</span>, <span class="cf">function</span>(x) {(x <span class="sc">&lt;</span> box_bounds[<span class="dv">3</span>] <span class="sc">|</span> <span class="fu">is.na</span>(x))})}</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(box_bounds[<span class="dv">4</span>])) {outOfBox <span class="ot">&lt;-</span> outOfBox <span class="sc">|</span> <span class="fu">apply</span>(y_grid, <span class="dv">2</span>, <span class="cf">function</span>(x) {(x <span class="sc">&gt;</span> box_bounds[<span class="dv">4</span>] <span class="sc">|</span> <span class="fu">is.na</span>(x))})}</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">#find the first x position (row) that is inside the bounding box (i.e. the first row with at least one TRUE val)</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>xmin <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">apply</span>(<span class="sc">!</span>outOfBox, <span class="dv">1</span>, any))[<span class="dv">1</span>]</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co">#find all (rows) inside the bounding box (i.e. all rows with at least one TRUE val) then take the last using length() as the index</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>xmax <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">apply</span>(<span class="sc">!</span>outOfBox, <span class="dv">1</span>, any))</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>xmax <span class="ot">&lt;-</span> xmax[<span class="fu">length</span>(xmax)]</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co">#find the first y position (col) that is inside the bounding box (i.e. the first col with at least one TRUE val)</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>ymin <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">apply</span>(<span class="sc">!</span>outOfBox, <span class="dv">2</span>, any))[<span class="dv">1</span>]</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co">#find all (cols) inside the bounding box (i.e. all cols with at least one TRUE val) then take the last using length() as the index</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>ymax <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">apply</span>(<span class="sc">!</span>outOfBox, <span class="dv">2</span>, any))</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>ymax <span class="ot">&lt;-</span> ymax[<span class="fu">length</span>(ymax)]</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="co">#get a vector that states what region we are looking at</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>region_lower <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">str_to_lower</span>(<span class="fu">unique</span>(target_marine_region<span class="sc">$</span>Region)), <span class="st">" "</span>, <span class="st">"_"</span>)</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> indicators_vect){</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  <span class="co">#create a all lower case versions for reading and writing</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  i_lower <span class="ot">&lt;-</span> <span class="fu">str_to_lower</span>(i)</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check if the file already exists and can be loaded back in</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(<span class="fu">glue</span>(<span class="st">'{output_path}/datasets/{i_lower}_{region_lower}.RData'</span>))){</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>    <span class="co">#load the data in</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>    <span class="fu">load</span>(<span class="fu">glue</span>(<span class="st">'{output_path}/datasets/{i_lower}_{region_lower}.RData'</span>))</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the file does not exists, fetch the data from online then save it</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the indicator is secchi the dimensions of the data are different (no depth)</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (i_lower <span class="sc">==</span> <span class="st">"secchi"</span>){</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>      <span class="co">#extract secchi data using indices to define layer counts</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>      <span class="fu">assign</span>(<span class="fu">glue</span>(<span class="st">"{i_lower}_{region_lower}"</span>), </span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>             <span class="fu">read_ncdf</span>(input_file, <span class="at">var =</span> i, </span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ncsub =</span> <span class="fu">cbind</span>(<span class="at">start =</span> <span class="fu">c</span>(xmin, ymin, target_indicies[<span class="dv">1</span>, <span class="st">"Start"</span>]),</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">count =</span> <span class="fu">c</span>((xmax <span class="sc">-</span> xmin), (ymax <span class="sc">-</span> ymin), target_indicies[<span class="dv">1</span>, <span class="st">"Count"</span>])),</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>                       <span class="at">downsample =</span> down_sample))</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>      <span class="co">#extract chla data using indices to define layer counts</span></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>      <span class="fu">assign</span>(<span class="fu">glue</span>(<span class="st">"{i_lower}_{region_lower}"</span>), </span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>             <span class="fu">read_ncdf</span>(input_file, <span class="at">var =</span> i, </span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ncsub =</span> <span class="fu">cbind</span>(<span class="at">start =</span> <span class="fu">c</span>(xmin, ymin, <span class="dv">44</span>, target_indicies[<span class="dv">1</span>, <span class="st">"Start"</span>]),</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">count =</span> <span class="fu">c</span>((xmax <span class="sc">-</span> xmin), (ymax <span class="sc">-</span> ymin), <span class="dv">1</span>, target_indicies[<span class="dv">1</span>, <span class="st">"Count"</span>])),</span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>                       <span class="at">downsample =</span> down_sample))</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>    <span class="co">#save a copy of the data to our output folder</span></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save</span>(<span class="at">list =</span> <span class="fu">glue</span>(<span class="st">"{i_lower}_{region_lower}"</span>), </span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>         <span class="at">file =</span> <span class="fu">glue</span>(<span class="st">'{output_path}/datasets/{i_lower}_{region_lower}.RData'</span>))</span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a><span class="co">#clean up</span></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(box_bounds, input_file, grids, x_grid, y_grid, outOfBox, xmin, xmax, ymin, ymax, indicies,</span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>   marine_bbox)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="edit-ereefs-data" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" data-anchor-id="edit-ereefs-data"><span class="header-section-number">7.2.1</span> Edit eReefs Data</h3>
+<p>Once the eReefs data is obtained we need to conduct some basic editing and cleaning steps such as changing out “wrong” values. Once again we are relying on the contextual knowledge built up by the previous scripts in this series to understand that these “wrong” values are the values of grid cells that occur over land (and thus should have no value). Currently these cells have values more than 10,000 times greater than any “real” cell and should be changed to a value of NA.</p>
+<p>Additional edits conducted here include updating the names of the data, transforming the CRS of the data, and cropping the data to be more precisely within our target area (the cropping above only cuts the data down to a square box around our area, the cropping that occurs here reduces data to the exact polygon outline of our target area).</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make a cleaner version of the project region variable</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>clean_proj_region <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">str_to_lower</span>(proj_region), <span class="st">" "</span>, <span class="st">"_"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="fu">c</span>(<span class="fu">glue</span>(<span class="st">"chl_a_sum_{clean_proj_region}"</span>), </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">glue</span>(<span class="st">"secchi_{clean_proj_region}"</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">glue</span>(<span class="st">"turbidity_{clean_proj_region}"</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">glue</span>(<span class="st">"no3_{clean_proj_region}"</span>)),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                 get)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#run a custom function over the list of lists datasets to crop each correctly</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">map</span>(data_list, <span class="cf">function</span>(dataset){</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#overwrite erroneous high values (note that a value of even 50 would be very very high)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  dataset[(dataset <span class="sc">&gt;</span> <span class="dv">200</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#crop to the actual area of interest</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  dataset <span class="ot">&lt;-</span> dataset <span class="sc">|&gt;</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>   <span class="fu">st_transform</span>(proj_crs)<span class="co"># |&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>   <span class="co">#st_crop(target_marine_region)</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#update the name of the each data set</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_list) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chla (ug/L)"</span>, <span class="st">"Secchi (m)"</span>, <span class="st">"Turbidity (NTU)"</span>, <span class="st">"Nitrites (mg[N]/m^3)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+</section>
+<section id="data-analysis" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Data Analysis</h1>
+<p>For our data analysis section we will be focuses on a few key aspects, these are:</p>
+<ul>
+<li>Calculating daily mean concentrations and plotting them</li>
+<li>Calculating monthly mean concentrations and creating a facet map</li>
+<li>Calculating annual values and comparing over time.</li>
+</ul>
+<section id="plots" class="level2" data-number="8.1">
+<h2 data-number="8.1" data-anchor-id="plots"><span class="header-section-number">8.1</span> Plots</h2>
+<p>First up are the plots, the main focus of these plots are the daily mean concentration values, however we will also take the time to calculate the annual mean and median and overlay these values on the plot.</p>
+<p>Below we extract the data from netcdf format into a sf dataframe to create the plots. Please note that a single day (layer) of data contains upwards of 20,000 cells (i.e.&nbsp;indicator values), that’s more than 7 million data points per year per dataset. Thus to save time when conducting this initial exploratory analysis we will take a random sub sample of only 500 cells per day (which is still a few hundred thousand data points) and use that for the dots in the background. We still do use the entire dataset to calculate the daily mean and annual mean and median.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a folder to store all the outputs</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">glue</span>(<span class="st">"{output_path}/plots/"</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#create a custom function to convert data from nc to sf and take a sub sample if needed</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>convert_nc_to_sf <span class="ot">&lt;-</span> <span class="cf">function</span>(dataset, group, <span class="at">sample_size =</span> <span class="cn">NULL</span>){</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#crop to the actual area of interest</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  dataset <span class="ot">&lt;-</span> dataset <span class="sc">|&gt;</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(proj_crs) <span class="sc">|&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_crop</span>(target_marine_region)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#convert raster to a polygon dataset</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(dataset, <span class="at">as_points =</span> F, <span class="at">merge =</span> F)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#drop the geometry column</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> <span class="fu">st_drop_geometry</span>(dataset_df)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add dates, for some reason they get dropped during the conversion to an sf object</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  target_dates <span class="ot">&lt;-</span> <span class="fu">date</span>(<span class="fu">st_get_dimension_values</span>(dataset, <span class="st">"time"</span>))</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">#assign the dates to the new data</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(dataset_df) <span class="ot">&lt;-</span> target_dates </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(sample_size)){<span class="co">#if we want a subset</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">#take a random sample of the dataset (only 500 data points per day rather than &gt;25,000)</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    dataset_df <span class="ot">&lt;-</span> dataset_df <span class="sc">|&gt;</span> </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slice_sample</span>(<span class="at">n =</span> sample_size)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#pivot the data longer</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> dataset_df <span class="sc">|&gt;</span> </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Day"</span>, <span class="at">values_to =</span> <span class="st">"Values"</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">#make sure the day column is formatted correctly</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  dataset_df<span class="sc">$</span>Day <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(dataset_df<span class="sc">$</span>Day)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add a dataset identifier using the second variable in the function</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> dataset_df <span class="sc">|&gt;</span> </span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Indicator =</span> group)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove units from the values column</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> dataset_df <span class="sc">|&gt;</span> </span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Values =</span> <span class="fu">as.vector</span>(Values))</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add a wet/dry column to group data by </span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> dataset_df <span class="sc">|&gt;</span> </span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Season =</span> <span class="fu">case_when</span>(<span class="fu">month</span>(Day) <span class="sc">&gt;</span> <span class="dv">4</span> <span class="sc">&amp;</span> <span class="fu">month</span>(Day) <span class="sc">&lt;</span> <span class="dv">11</span> <span class="sc">~</span> <span class="st">"Dry"</span>, T <span class="sc">~</span> <span class="st">"Wet"</span>))</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>  <span class="co">#return the df</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(dataset_df)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="co">#run the custom function that does all of the pre-processing of the data </span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>raw_data_df_subset <span class="ot">&lt;-</span> <span class="fu">map2</span>(data_list, <span class="fu">names</span>(data_list), <span class="sc">~</span><span class="fu">convert_nc_to_sf</span>(.x, .y, <span class="dv">500</span>))</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="co">#run again, without taking a subset, note this will take much longer</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>raw_data_df <span class="ot">&lt;-</span> <span class="fu">map2</span>(data_list, <span class="fu">names</span>(data_list), <span class="sc">~</span><span class="fu">convert_nc_to_sf</span>(.x, .y))</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="co">#convert list of df subsets into a single df</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>raw_data_df_subset <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(raw_data_df_subset)</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="co">#convert list of df into a single df</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>raw_data_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(raw_data_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Once the data is in the sf format, we can then treat the data like a simple dataframe, something that is a much more familiar format to work with. The list of sf objects is combined into one single dataframe, and then additional information such as if the day was during the wet season or dry season can be added.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A question that may occur to you here is “if the sf format is so much easier to work with, why not use it immediately and throughout the script?”. The answer to this is one of size and practicality. Although the sf format is more familiar, and thus easier to work with, it does not offer the same efficiency when storing information, or when plotting. As noted above, we down sampled the original data to roughly 1/5 of the size of the original netcdf file and yet the object still takes up more space in our environment. We do also convert the object 1:1, but this is purely to obtain a true annual mean - plotting with this dataset takes much too long. It is simply not practical to convert the objects to the sf format prematurely. Instead, when completing each of our methods further below, we perform as much of the analysis as we can using the native netcdf format. Often these steps include calculating monthly, annual, or spatial means - which naturally reduce the size of the data to a point at which it is then feasible to convert the data to the sf format.</p>
+</div>
+</div>
+<p>Once the additional modifications have been made to the data, it can be plotted:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate group mean to use for the yintercept line from the full dataset</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>group_means <span class="ot">&lt;-</span> raw_data_df <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Indicator) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MeanValue =</span> <span class="fu">mean</span>(Values, <span class="at">na.rm =</span> T)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate group median to use for the yintercept line from the full dataset</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>group_medians <span class="ot">&lt;-</span> raw_data_df <span class="sc">|&gt;</span>  </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Indicator) <span class="sc">|&gt;</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MedianValue =</span> <span class="fu">median</span>(Values, <span class="at">na.rm =</span> T)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#summarise data by month from the full dataset</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>raw_data_df <span class="ot">&lt;-</span> raw_data_df <span class="sc">|&gt;</span> </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">month</span>(Day))</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#create the plot, this contains a point plot, a smoothed line plot, and a volin plot</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>summary_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> raw_data_df_subset,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> Day, <span class="at">y =</span> Values, <span class="at">color =</span> Season, <span class="at">group =</span> Indicator), </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">data =</span> raw_data_df_subset,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> Day, <span class="at">y =</span> Values, <span class="at">group =</span> Indicator), </span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">method =</span> <span class="st">"gam"</span>, </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>              <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">s</span>(x), </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"blue"</span>, </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> F) <span class="sc">+</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">data =</span> raw_data_df_subset,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> Day, <span class="at">y =</span> Values, <span class="at">group =</span> Indicator), </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"Black"</span>) <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">data =</span> group_means, </span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">yintercept =</span> MeanValue, <span class="at">group =</span> Indicator), </span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"purple"</span>) <span class="sc">+</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">data =</span> group_medians, </span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">yintercept =</span> MedianValue, <span class="at">group =</span> Indicator), </span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">breaks =</span> <span class="fu">pretty_breaks</span>(<span class="dv">6</span>)) <span class="sc">+</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Concentration"</span>) <span class="sc">+</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>Indicator, <span class="at">nrow =</span> <span class="dv">1</span>, </span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>               <span class="at">scales =</span> <span class="st">"free"</span>)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="co">#save the individual plots</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">glue</span>(<span class="st">"{output_path}/plots/{region_lower}_all_indicators_plot.png"</span>), summary_plot, <span class="at">width =</span> <span class="dv">15</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="maps" class="level2" data-number="8.2">
+<h2 data-number="8.2" data-anchor-id="maps"><span class="header-section-number">8.2</span> Maps</h2>
+<p>With the plots completed we can move on to creating the monthly mean maps for each of the indicators. First we need to calculate monthly means for each indicator, then stitch the layer back into groups:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#write a custom function that does each of the required steps to calculate the monthly values</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>monthly_mean_data <span class="ot">&lt;-</span> <span class="fu">map</span>(data_list, <span class="cf">function</span>(dataset){</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#get the list of "times" (dates) stored in the dataset (1 date per layer) and convert it into a dataframe</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  dates <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">DateTime =</span> <span class="fu">st_get_dimension_values</span>(dataset, <span class="at">which =</span> <span class="st">"time"</span>))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#extract the year and month and combine into a single unique name and add an index column</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  dates <span class="ot">&lt;-</span> dates <span class="sc">|&gt;</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">year</span>(DateTime),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">Month =</span> <span class="fu">month</span>(DateTime, <span class="at">label =</span> T),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">RowId =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unite</span>(LayerName, <span class="st">"Year"</span>, <span class="st">"Month"</span>, <span class="at">sep =</span> <span class="st">"_"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#group by LayerName and get the min and max row index (layer number) for each month, then reorder the dataframe by index</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  dates <span class="ot">&lt;-</span> dates <span class="sc">|&gt;</span> </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(LayerName) <span class="sc">|&gt;</span> </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">MinIndex =</span> <span class="fu">min</span>(RowId),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">MaxIndex =</span> <span class="fu">max</span>(RowId)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(MinIndex)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">#create a trackers for the objects that will be made</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  created_objects <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#loop over each of the unique names</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">unique</span>(dates<span class="sc">$</span>LayerName)){</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">#get the index numbers for the min and max layers from the table</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    min_layer <span class="ot">&lt;-</span> dates <span class="sc">|&gt;</span> <span class="fu">filter</span>(LayerName <span class="sc">==</span> i) <span class="sc">|&gt;</span> <span class="fu">select</span>(MinIndex) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    max_layer <span class="ot">&lt;-</span> dates <span class="sc">|&gt;</span> <span class="fu">filter</span>(LayerName <span class="sc">==</span> i) <span class="sc">|&gt;</span> <span class="fu">select</span>(MaxIndex) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">#extract the month of data using the index numbers </span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">str_detect</span>(<span class="fu">names</span>(dataset), <span class="st">"Secchi"</span>)){<span class="co"># if secchi: [attribute, i (lat), j (long), time] - no depth</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>      monthly_mean <span class="ot">&lt;-</span> dataset[,,,min_layer<span class="sc">:</span>max_layer]</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {<span class="co">#otherwise [attribute, i (lat), j (long), k (depth), time]</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>      monthly_mean <span class="ot">&lt;-</span> dataset[,,,,min_layer<span class="sc">:</span>max_layer]</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">#and apply the mean function over the i,j dimensions (lat, long)</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    monthly_mean <span class="ot">&lt;-</span> <span class="fu">st_apply</span>(monthly_mean, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">FUN =</span> mean, <span class="at">keep =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">#assign the monthly_mean dataset to a new object</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assign</span>(<span class="fu">glue</span>(<span class="st">"{i}"</span>), monthly_mean)</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">#create a vector that tracks all the names of the created objects</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    created_objects <span class="ot">&lt;-</span> <span class="fu">c</span>(created_objects, <span class="fu">glue</span>(<span class="st">"{i}"</span>))</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">#combine each of the monthly layers into one new dataset ("mget" is "multiple get") and this will be the output of the function</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>  dataset <span class="ot">&lt;-</span> <span class="fu">do.call</span>(c, <span class="fu">mget</span>(created_objects))</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Then we convert these stacks of monthly means into sf objects:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>monthly_mean_df <span class="ot">&lt;-</span> <span class="fu">map</span>(monthly_mean_data, <span class="cf">function</span>(dataset){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#extract the datasets into tables</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(dataset, <span class="at">as_points =</span> F, <span class="at">merge =</span> F)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#pivot the tables longer to make them easier to work with, split the layer information into Financial Year and month, and order by Month</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  dataset_df <span class="ot">&lt;-</span> dataset_df <span class="sc">|&gt;</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">matches</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d"</span>), <span class="at">names_to =</span> <span class="st">"Layer"</span>, <span class="at">values_to =</span> <span class="st">"Value"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">separate</span>(Layer, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"FinancialYear"</span>, <span class="st">"Month"</span>), <span class="at">sep =</span> <span class="st">"_"</span>, <span class="at">remove =</span> F) <span class="sc">|&gt;</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">as.factor</span>(Month),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">Month =</span> <span class="fu">fct_relevel</span>(Month, <span class="st">"Jul"</span>, <span class="st">"Aug"</span>, <span class="st">"Sep"</span>, <span class="st">"Oct"</span>, <span class="st">"Nov"</span>, <span class="st">"Dec"</span>, <span class="st">"Jan"</span>, <span class="st">"Feb"</span>, </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>))</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#return the object</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(dataset_df)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Next we set up the arguments that are going to vary for each map and each region.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a list of arguments that we will use to inject the correct arguments per region</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>args_per_region <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">"Position"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"Dry Tropics"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"Wet Tropics"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.77</span>, <span class="fl">0.99</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"Mackay Whitsunday Isaac"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.79</span>, <span class="fl">0.99</span>)),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"FacetDim"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"Dry Tropics"</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"Wet Tropics"</span> <span class="ot">=</span> <span class="dv">6</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"Mackay Whitsunday Isaac"</span> <span class="ot">=</span> <span class="dv">4</span>))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#create a list of palettes to switch between for each indicator</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>indicator_palettes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"brewer.greens"</span>, <span class="st">"-brewer.oranges"</span>, <span class="st">"-carto.ag_sunset"</span>, <span class="st">"brewer.blues"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#create a function that will inject the correct arguments per indicator</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>args_per_indicator <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">str_detect</span>(<span class="fu">names</span>(monthly_mean_df)[[x]], <span class="st">"Turb|Nitri"</span>)){<span class="co">#if indicator is Turbidity or nitrites use a log scale</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_continuous_log</span>(<span class="at">values =</span> indicator_palettes[x])</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {<span class="co">#otherwise, just use a linear scale</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_continuous</span>(<span class="at">values =</span> indicator_palettes[x])</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#create an function that produces the correct title</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>map_name <span class="ot">&lt;-</span> <span class="cf">function</span>(reg, x){</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#get the indicator currently being used</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  ind <span class="ot">&lt;-</span> <span class="fu">names</span>(monthly_mean_df)[[x]]</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">#detect if it should be a log scale or not</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  log <span class="ot">&lt;-</span> <span class="cf">if</span>(<span class="fu">str_detect</span>(ind, <span class="st">"Turb|Nitri"</span>)){<span class="st">"(Log Scale)"</span>} <span class="cf">else</span> {<span class="st">"(Linear Scale)"</span>}</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>  <span class="co">#glue everything together to make the correct title</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glue</span>(<span class="st">"{reg}, {ind}: {log}"</span>)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Facet maps of the monthly values can then be made:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mask reefs to the region we are currently looking at</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>target_reefs <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(reefs, <span class="fu">st_union</span>(target_marine_region))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#for each sf dataframe in our list</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(monthly_mean_df)){</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#create the map</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(qld) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"#99B5B1"</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">"#7bba9d"</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(target_land_region) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"grey90"</span>, </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(monthly_mean_df[[i]]) <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"Value"</span>, </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill.scale =</span> <span class="fu">args_per_indicator</span>(i),</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">title =</span> <span class="st">""</span>, </span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">width =</span> <span class="dv">2</span>,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">height =</span> <span class="dv">5</span>,</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">item.width =</span> <span class="fl">0.2</span>,</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">na.show =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">position =</span> args_per_region[[<span class="st">"Position"</span>]][[proj_region]]),</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>                                        </span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill.free =</span> T,</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">col_alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_facets</span>(<span class="at">by =</span> <span class="st">"Month"</span>, </span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol =</span> args_per_region[[<span class="st">"FacetDim"</span>]][[proj_region]]) <span class="sc">+</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(reefs) <span class="sc">+</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">fill =</span> <span class="st">"grey60"</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill_alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"grey60"</span>,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>               <span class="at">col_alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(target_reefs) <span class="sc">+</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">fill =</span> <span class="st">"grey60"</span>,</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill_alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"black"</span>,</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>               <span class="at">col_alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(target_marine_region) <span class="sc">+</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(<span class="fu">st_buffer</span>(target_marine_region, <span class="fl">0.5</span>), <span class="at">is.main =</span> T) <span class="sc">+</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="cn">NULL</span>,</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="at">bg.color =</span> <span class="st">"#C1DEEA"</span>) <span class="sc">+</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_title</span>(<span class="at">text =</span> <span class="fu">map_name</span>(proj_region, i),</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">0.8</span>)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">#extract a clean name for saving</span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  indicator_name <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="fu">names</span>(data_list)[i], <span class="st">"^[^ ]+"</span>)</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>  <span class="co">#and save</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tmap_save</span>(map, <span class="fu">glue</span>(<span class="st">"{output_path}/plots/{region_lower}_{indicator_name}_map.png"</span>))</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Following this, we will make the same facet map except we will use a fixed scale for the maps.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mask reefs to the region we are currently looking at</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>target_reefs <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(reefs, <span class="fu">st_union</span>(target_marine_region))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#for each sf dataframe in our list</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(monthly_mean_df)){</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#create the map</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  map <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(qld) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"#99B5B1"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">"#7bba9d"</span>) <span class="sc">+</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(target_land_region) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"grey90"</span>, </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(monthly_mean_df[[i]]) <span class="sc">+</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"Value"</span>, </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill.scale =</span> <span class="cf">if</span> (i <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>)){<span class="fu">tm_scale_continuous_log</span>(<span class="at">values =</span> indicator_palettes[i])} <span class="co">#if Turbidity or nitrites use log scale</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>                             <span class="cf">else</span> {<span class="fu">tm_scale_continuous</span>(<span class="at">values =</span> indicator_palettes[i])}, <span class="co">#otherwise use linear scale</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">title =</span> <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">3</span>){<span class="fu">glue</span>(<span class="st">"{names(data_list)[i]} (Log)"</span>)} <span class="co">#if log, write log</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>                                                <span class="cf">else</span> {<span class="fu">names</span>(data_list)[i]}, <span class="co">#otherwise just write the indicator</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">na.show =</span> <span class="cn">FALSE</span>), </span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">col_alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_facets</span>(<span class="at">by =</span> <span class="st">"Month"</span>, <span class="at">ncol =</span> <span class="cf">if</span>(proj_region <span class="sc">==</span> <span class="st">"Wet Tropics"</span>){<span class="dv">6</span>}<span class="cf">else</span>{<span class="dv">4</span>}) <span class="sc">+</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(reefs) <span class="sc">+</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">fill =</span> <span class="st">"grey60"</span>,</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill_alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"grey60"</span>,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>               <span class="at">col_alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(target_reefs) <span class="sc">+</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">fill =</span> <span class="st">"grey60"</span>,</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill_alpha =</span> <span class="fl">0.2</span>,</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"black"</span>,</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>               <span class="at">col_alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(target_marine_region) <span class="sc">+</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(<span class="fu">st_buffer</span>(target_marine_region, <span class="fl">0.5</span>), <span class="at">is.main =</span> T) <span class="sc">+</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="cn">NULL</span>,</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="at">bg.color =</span> <span class="st">"#C1DEEA"</span>,</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>              <span class="at">legend.position =</span> <span class="fu">tm_pos_out</span>(<span class="st">"right"</span>, <span class="st">"center"</span>))</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">#extract a clean name for saving</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>  indicator_name <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="fu">names</span>(data_list)[i], <span class="st">"^[^ ]+"</span>)</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">#and save</span></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tmap_save</span>(map, <span class="fu">glue</span>(<span class="st">"{output_path}/plots/{region_lower}_{indicator_name}_map_fixed_scale.png"</span>))</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="tables" class="level2" data-number="8.3">
+<h2 data-number="8.3" data-anchor-id="tables"><span class="header-section-number">8.3</span> Tables</h2>
+<p>Finally, we will create a table summarizing the key statistics we have found throughout this analysis. These tables will contain:</p>
+<ul>
+<li>monthly mean values</li>
+<li>annual mean values</li>
+</ul>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a folder to store all the data outputs</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">glue</span>(<span class="st">"{output_path}/tables/"</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#read in the custom function to style tables</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"functions/cond_form_tables.R"</span>))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#extract monthly and annual means</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> raw_data_df <span class="sc">|&gt;</span> </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Indicator) <span class="sc">|&gt;</span> </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AnnualMeanValue =</span> <span class="fu">mean</span>(Values, <span class="at">na.rm =</span> T)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Indicator, Month, AnnualMeanValue) <span class="sc">|&gt;</span> </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MonthlyMeanValue =</span> <span class="fu">mean</span>(Values, <span class="at">na.rm =</span> T)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">month</span>(Month, <span class="at">label =</span> T),</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">Month =</span> <span class="fu">fct_relevel</span>(Month, <span class="st">"Jul"</span>, <span class="st">"Aug"</span>, <span class="st">"Sep"</span>, <span class="st">"Oct"</span>, <span class="st">"Nov"</span>, <span class="st">"Dec"</span>, <span class="st">"Jan"</span>, <span class="st">"Feb"</span>, <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Month)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">#pivot data wider into a reader friendly format</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>summary_table_wide <span class="ot">&lt;-</span> summary_table <span class="sc">|&gt;</span> </span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Month, <span class="at">values_from =</span> MonthlyMeanValue) <span class="sc">|&gt;</span> </span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="st">"AnnualMeanValue"</span>, <span class="at">.after =</span> <span class="fu">last_col</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">2</span>)))</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#save the table</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(summary_table_wide, <span class="fu">glue</span>(<span class="st">"{output_path}/tables/{region_lower}_summary_table.csv"</span>))</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="co">#print the table in a visually appealing way</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="fu">cond_form_tables</span>(summary_table_wide, <span class="at">header_rows =</span> <span class="dv">1</span>, <span class="at">landscape =</span> F, <span class="at">score_colour =</span> F) <span class="sc">|&gt;</span> </span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_align</span>(everywhere, everywhere, <span class="st">"center"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_valign</span>(everywhere, everywhere, <span class="st">"middle"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+
+
+  <h1>Thanks For Reading!</h1>
+
+  <p>If you like the content, please consider donating to let me know. Also please stick around and have a read of several of my other posts. You'll find work on everything from simple data management and organisation skills, all the way to writting custom functions, tackling complex environmental problems, and my journey when learning new environmental data analyst skills.
+
+  </p><hr style="margin-bottom: 0;">
+
+  <p style="text-align: center; margin: 0;">A work by <a href="https://github.com/add-am/">Adam Shand.</a> Reuse: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en">CC-BY-NC-ND.</a></p>
+
+  <p style="text-align: center; margin: 0;"><span style="color: #808080;"><em>adamshand22@gmail.com</em></span></p>
+
+  
+
+  <!-- Add font awesome icons -->
+
+  <p style="text-align: center; margin: 0;">
+
+    <a href="https://github.com/add-am/" target="_blank" style="text-decoration: none;">
+
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+
+    </a>
+
+    <a href="https://www.linkedin.com/in/adam-shand-a2257117b/" target="_blank" style="text-decoration: none;">
+
+             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></svg>
+
+    </a>
+
+  </p>
+
+  <hr style="margin-bottom: 0;">
+
+  <p style="text-align: center; margin-top: 0; margin-bottom: 2em;"><span style="color: #808080;">This work should be cited as: <br>
+
+  <em>Adam Shand, "[Insert Document Title]", "[Insert Year]".</em>
+
+  </span>
+
+  
+
+  </p>
+
+
+
+<a href="https://www.buymeacoffee.com/adamshand22" target="_blank" class="bmc-fixed" style="text-decoration: none; font-family: sans-serif; font-size: 1rem; color: inherit;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" width="1.3em" height="1.3em" style="vertical-align: -0.15em; margin-right: 0px;">
+
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="17.408"></g>
+
+    <g id="SVGRepo_iconCarrier">
+
+      <polygon style="fill:#c79200;" points="375.716,503.983 136.284,503.983 102.079,213.244 409.921,213.244 "></polygon> <polygon style="fill:#F6F6F7;" points="399.797,299.29 112.203,299.29 130.311,453.211 381.689,453.211 "></polygon> <path style="fill:#c79200;" d="M405.833,247.983l4.086-34.739H102.078l4.086,34.739l30.119,256h101.091 c-61.62-57.199-101.091-145.105-101.091-243.708c0-4.118,0.09-8.212,0.227-12.292H405.833z"></path> <polygon style="fill:#FFFFFF;" points="112.203,299.824 130.311,453.745 381.689,453.745 399.797,299.824 "></polygon> <path style="fill:#ECEDEF;" d="M130.311,453.211h63.634c-29.551-43.467-49.343-96.243-55.554-153.921h-26.189L130.311,453.211z"></path> <polygon style="fill:#B3B9BF;" points="401.369,161.937 110.63,161.937 127.733,93.528 384.267,93.528 "></polygon> <rect x="67.875" y="153.386" style="fill:#ECEDEF;" width="376.251" height="68.409"></rect> <rect x="67.875" y="153.386" style="fill:#D9DCDF;" width="43.29" height="68.409"></rect> <path style="fill:#F6F6F7;" d="M315.86,153.386h-51.309c0,22.803,0,45.606,0,68.409h52.151 C315.95,198.998,315.868,176.001,315.86,153.386z"></path> <rect x="153.386" y="119.181" style="fill:#00252A;" width="68.409" height="34.205"></rect> <rect x="153.386" y="119.181" style="fill:#00252A;" width="68.409" height="17.102"></rect> <path d="M444.125,145.369h-38.634l-13.447-53.786c-0.893-3.569-4.099-6.072-7.777-6.072H127.733c-3.678,0-6.885,2.503-7.777,6.072 l-13.447,53.786H67.875c-4.428,0-8.017,3.589-8.017,8.017v68.409c0,4.427,3.588,8.017,8.017,8.017h28.082l32.365,275.108 c0.475,4.037,3.897,7.08,7.961,7.08h239.432c4.065,0,7.487-3.043,7.961-7.08l13.078-111.165c0.517-4.397-2.627-8.381-7.025-8.899 c-4.395-0.517-8.382,2.627-8.897,7.025l-6.272,53.312h-237.12l-16.223-137.887h269.565l-5.926,50.371 c-0.517,4.397,2.627,8.381,7.025,8.899c0.319,0.037,0.634,0.056,0.947,0.056c4.008,0,7.472-3.001,7.95-7.08l15.264-129.738h28.083 c4.428,0,8.017-3.589,8.017-8.017v-68.409C452.142,148.959,448.552,145.369,444.125,145.369z M133.991,101.545h244.017 l10.956,43.825H229.812v-26.188c0-4.427-3.588-8.017-8.017-8.017h-68.409c-4.428,0-8.017,3.589-8.017,8.017v26.188h-22.333 L133.991,101.545z M213.779,145.369h-52.376v-18.171h52.376V145.369z M372.674,461.227l-4.086,34.739H143.412l-4.086-34.739H372.674 z M436.108,213.778H196.142c-4.428,0-8.017,3.589-8.017,8.017c0,4.427,3.588,8.017,8.017,8.017H399.9l-7.231,61.461H119.331 l-7.231-61.461h41.286c4.428,0,8.017-3.589,8.017-8.017c0-4.427-3.588-8.017-8.017-8.017H75.891v-52.376h360.217V213.778z"></path> <path d="M250.33,73.543c3.261,3.26,8.766,3.041,11.764-0.46c2.686-3.137,2.493-7.959-0.425-10.877 c-5.156-5.156-4.385-7.479,1.847-17.042c6.044-9.278,16.161-24.807-1.847-42.816c-3.132-3.131-8.207-3.131-11.338,0 c-3.131,3.131-3.131,8.207,0,11.337c8.476,8.476,6.197,12.83-0.249,22.726C244.64,44.764,235.532,58.744,250.33,73.543z"></path> <path d="M310.855,73.543c3.261,3.26,8.766,3.041,11.764-0.46c2.686-3.137,2.493-7.959-0.425-10.877 c-5.156-5.156-4.385-7.479,1.847-17.042c6.044-9.278,16.161-24.807-1.847-42.816c-3.132-3.131-8.207-3.131-11.338,0 s-3.131,8.207,0,11.337c8.476,8.476,6.197,12.83-0.249,22.726C305.165,44.764,296.057,58.744,310.855,73.543z"></path> <path d="M191.139,73.543c3.261,3.26,8.766,3.041,11.764-0.46c2.686-3.137,2.493-7.959-0.425-10.877 c-5.156-5.156-4.385-7.479,1.847-17.042c6.044-9.278,16.161-24.807-1.847-42.816c-3.132-3.131-8.207-3.131-11.338,0 c-3.131,3.131-3.131,8.207,0,11.337c8.476,8.476,6.197,12.83-0.249,22.726C185.449,44.764,176.341,58.744,191.139,73.543z"></path>
+
+    </g>
+
+  </svg>
+
+  Buy Me a Coffee!
+
+</a>
+
+
+
+
+
+
+
+
+
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.adamshand22\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/add-am/website">
+<p>Source Code</p>
+</a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

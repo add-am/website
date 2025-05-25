@@ -1,0 +1,16 @@
+[
+  {
+    "listing": "/posts/index.html",
+    "items": [
+      "/posts/idea - eReefs (like contextual work)/index.html",
+      "/posts/automated_output_organisation/index.html",
+      "/posts/shiny_a_web_app_built_in_r/hide.html",
+      "/posts/an_opinionated_dataframe_cleaner/index.html",
+      "/posts/making_beautiful_maps_in_r/index.html",
+      "/posts/tmap_migrating_to_v4/index.html",
+      "/posts/loops_and_vectorised_functions/index.html",
+      "/posts/learning_to_create_custom_functions/index.html",
+      "/posts/going_loopy_for_for_loops/index.html"
+    ]
+  }
+]
