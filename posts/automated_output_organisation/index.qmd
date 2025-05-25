@@ -2,7 +2,7 @@
 title: "Automate Your Output Folders"
 date: "05/19/2025"
 abstract-title: "ABSTRACT"
-abstract: "Got a bunch of scripts and are confused which output belongs to which script? This post is for you!"
+abstract: "Got a bunch of scripts and are confused which output belongs to which script? Maybe you promised yourself your file organisation would be good this time? Never fear, this post is for you!"
 image: "image.png"
 format: html
 title-block-banner: true #This is our banner
