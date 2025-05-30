@@ -1,0 +1,105 @@
+---
+title: "Ooh Shiny! A Web App Built in R"
+date: "05/15/2025"
+abstract-title: "ABSTRACT"
+abstract: "Did you know you can build a web app in R? Did you know this web app could be a custom dashboard showing off your latest data analysis and results? In this blog I am learning how to create my very own Shiny web app, and I am taking you along for the ride."
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+filters:
+  - shinylive
+---
+
+Notes
+
+ - draw parallels to Tableau and eventually link to a Tableau blog post
+ - in my opinion shiny is best for light weight small scale projects that allow for quick pivots and fast turn around
+ - it is not so handy in super large or complicated projects (maybe), depending on where the complexity comes from (UI or analysis). In the case of UI it is probably better to use things like tableau
+ - I will initially be following this: https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/ tutorial. However I plan to also develop my own web app
+ - note the error i found with standalone = T which stopped shiny from working
+
+
+ 
+Ideas for Shiny Web Apps
+
+I guess the core purpose of the app is that the user interacts with it. Thus, there needs to be something that changes. I want to the user to instinctively ask questions about the data and then be able to do something about it to find the answer. For example:
+
+ - Where is something - map?
+ - How does this data look in a different plot type (alternative visuals)
+ - ... ?
+ 
+Alternatively, shiny apps can take external inputs. I could make an app where I want users to input data. For my purposes I want this data to be as simple and generic as possible. Examples include:
+
+ - the PRM dashboard
+ - the land comparison thing? - Can i make a simplified version of this? (i.e. take a more basic dataset)
+
+::: {.cell-output-display}
+<style>
+iframe.app-frame {
+  height: 700px !important;
+  width: 100% !important;
+}
+</style>
+:::
+
+```{shinylive-r}
+#| standalone: true
+
+library(shiny)
+library(bslib)
+
+# Define UI for app that draws a histogram ----
+ui <- page_sidebar(
+  # App title ----
+  title = "Hello Shiny!",
+  # Sidebar panel for inputs ----
+  sidebar = sidebar(
+    # Input: Slider for the number of bins ----
+    sliderInput(
+      inputId = "bins",
+      label = "Number of bins:",
+      min = 1,
+      max = 50,
+      value = 30
+    )
+  ),
+  # Output: Histogram ----
+  plotOutput(outputId = "distPlot", height = "600px")
+)
+
+# Define server logic required to draw a histogram ----
+server <- function(input, output) {
+
+  # Histogram of the Old Faithful Geyser Data ----
+  # with requested number of bins
+  # This expression that generates a histogram is wrapped in a call
+  # to renderPlot to indicate that:
+  #
+  # 1. It is "reactive" and therefore should be automatically
+  #    re-executed when inputs (input$bins) change
+  # 2. Its output type is a plot
+  output$distPlot <- renderPlot({
+
+    x    <- faithful$waiting
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+    hist(x, breaks = bins, col = "#007bc2", border = "white",
+         xlab = "Waiting time to next eruption (in mins)",
+         main = "Histogram of waiting times")
+
+    })
+
+}
+
+shinyApp(ui = ui, server = server)
+
+```
+
+
+
+
+
+
+
+
