@@ -265,7 +265,7 @@ So instead, we use syntax option 3 and directly tell "x" where it needs to go an
 ```{r}
 
 #working version
-map_int(our_numbers, \(x) custom_func(, x))
+map_int(our_numbers, \(x) custom_func(b = x))
 
 ```
 

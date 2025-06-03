@@ -3,6 +3,9 @@ posts/ereefs_mapping_data/daset (RData, TBD)
 posts/ereefs_plotting_data/dataset (RData, TBD)
 posts/ereefs_plotting_data/dataset (csv, TBD)
 
+# temp:
+posts/ereefs_mapping_data/chl_a_sum_dry_tropics.RData
+
 # History files
 .Rhistory
 .Rapp.history
