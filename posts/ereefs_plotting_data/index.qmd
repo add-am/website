@@ -1,0 +1,345 @@
+---
+title: "Creating Beautiful Plots using eReefs Data"
+date: "05/23/2025"
+abstract-title: "ABSTRACT"
+abstract: "In this blog I demonstrate how you can make beautiful plots in R using example data extracted from the eReefs platform. You can also follow along with any of your own data."
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+---
+
+```{r}
+#| output: FALSE
+#| echo: FALSE
+#| code-fold: TRUE
+
+library(sf)
+library(stars)
+library(ggplot2)
+library(tidyverse)
+library(scales)
+
+```
+
+# Introduction
+
+In this blog we are going to learn how to create some visually interesting plots in R. The package we are going to be using is ggplot2, and the data we are going to be using is from eReefs. If you are interested in getting an exact copy of the data I recommend you check out my other blog; [The Extraction of Highly Specialised Modeled Data from eReefs](../ereefs_extracting_data/index.qmd), however you can still follow along just fine using your own data. Once you have completed this blog, I recommend you check out my blog about [Mapping eReefs Data](../ereefs_mapping_data/index.qmd).
+
+# Data
+
+```{r}
+
+#NEED TO SILENTLY RETRIEVE DATA FROM EREEFS AND CONVERT IT TO CSV IN CASE THE FILE IS NOT PRESENT
+
+
+```
+
+
+Lets first load in the data:
+
+```{r}
+#| output: FALSE
+
+load("chl_a_sum_dry_tropics.RData")
+
+test <- st_as_sf(chl_a_sum_dry_tropics, as_points = F, merge = F)
+
+test <- test |>
+  st_drop_geometry()
+
+
+#add dates, for some reason they get dropped during the conversion to an sf object
+  target_dates <- as.character(st_get_dimension_values(chl_a_sum_dry_tropics, "time"))
+  
+  #assign the dates to the new data
+  colnames(test) <- target_dates
+  
+  #pivot the data longer
+  test <- test |> 
+    pivot_longer(cols = everything(), names_to = "Date", values_to = "Values")
+  
+
+write_csv(test, "Chla_ereefs_data_new.csv")
+  
+#read in data
+example_data <- read_csv("chla_ereefs_data.csv")
+
+```
+
+This data has `r dim(example_data)[1]` rows and `r dim(example_data)[2]` columns. The column names are `r colnames(example_data)[1]` and `r colnames(example_data)[2]`:
+
+```{r}
+
+#view the first few rows of the data
+head(example_data)
+
+```
+
+If we ordered this data by date we would see that there are several hundred rows of data that belong to the exact same date and time. This is because the original source of this data was a spatial file - it had a grid of values for each date:
+
+```{r}
+
+#order the first few rows by date
+head(arrange(example_data, Date))
+
+```
+
+The value column is the concentration of chlorophyll a in the water column, measured in micrograms per litre. Lets update that.
+
+```{r}
+
+#rename the data column
+example_data <- rename(example_data, "Chla (ug/L)" = "Value")
+
+#view the first few rows of data
+head(example_data)
+
+```
+
+:::{.callout-note}
+Please note that it is generally bad form to include spaces in your column names, but I am doing it to reduce the code needed for the plotting section. You will see I have to refer to the column name using ticks (``) to make the ggplot code work because of the space in the column name.
+:::
+
+# Plotting
+
+Due to our cursory exploration of the data we already know a few things:
+
+ - There is a lot of data
+ - Data has a time element
+ - There are multiple data points per time step
+ - Values are the concentration of chlorophyll a, if you are not an environmental scientist this means the data is continuous, and should not contain negative values.
+ 
+## Distribution and Log Transformation
+
+However what we don't know is about the distribution of the data. Below is a histogram of our data.
+
+```{r}
+
+#create a basic histogram plot of the data
+ggplot(example_data) +
+  geom_histogram(aes(x = `Chla (ug/L)`), 
+                 bins = 150,
+                 fill = "#00252A") +
+  theme_bw()
+
+```
+
+Clearly this data is heavily right skewed. Although we wont be doing any statistical analysis this distribution will still impact how our plot looks. So to make things a bit nice we will look at the data with a log 10 transformation:
+
+```{r}
+
+#create a histogram plot of the data on a log10 scale
+ggplot(example_data) +
+  geom_histogram(aes(x = `Chla (ug/L)`), 
+                 bins = 150,
+                 fill = "#8E3B46") +
+  scale_x_log10() +
+  theme_bw()
+
+```
+
+Looking good.
+
+Now, knowing a bit more abut the distribution lets consider what kind of plot we want to make. Of course it is up to you, but I know that when I see a time variable and a value, I am thinking lines and/or dot plots.
+
+In its most basic form here is a dot plot:
+
+```{r}
+
+#creat a basic dot plot of the data
+ggplot(example_data) +
+  geom_point(aes(x = Date, y = `Chla (ug/L)`), 
+             color =  "#E6AA04") +
+  scale_y_log10() +
+  theme_bw()
+
+```
+
+A few things to note:
+
+ - As we have already covered, there is a shit ton of data and actually plotting all the points takes several minutes (boring).
+ - It looks like there are some trends but it is a bit hard to tell, particularly because the number of points makes it difficult to identify areas of high, mid, or low density that might affect the trends
+
+For the first point, a simple solution is to take a random subset of data to make plotting more efficient. For the second point, this will in part be fixed by the sub sampling, but we will also be adding extra visuals to this plot as we go along.
+
+## Subsetting Data
+
+To do our sub-setting we will use the `slice_sample()` function. To ensure that we get the same number of randomly sampled points from each day we will make sure to first group our data by the Date column. In total we want to randomly select 150 data points from each day - still quite a lot.
+
+```{r}
+
+#get a random subset of data, ensuring an equal sample is taken from each day
+example_data_subset <- example_data |> 
+  group_by(Date) |> 
+  slice_sample(n = 150) |> 
+  ungroup()
+
+```
+
+```{r}
+
+#creat a basic dot plot of the data
+ggplot(example_data_subset) +
+  geom_point(aes(x = Date, y = `Chla (ug/L)`), 
+             color =  "#E6AA04") +
+  scale_y_log10() +
+  theme_bw()
+
+```
+
+Awesome, right away we can see that it is likely that the values dip down towards the end of the graph. Note that this might be a product of the random sampling, but that is highly unlikely.
+
+## Additional Visuals
+
+Something that will help us determine how the data trends over time would be a nice would be a line that follows the daily mean. We will calculate this line using the full dataset to make sure of the trend we spotted above.
+
+```{r}
+
+#calculate a daily mean value
+example_data_daily_mean <- example_data |> 
+  group_by(Date) |> 
+  summarise(`Chla (ug/L)` = mean(`Chla (ug/L)`))
+
+
+#create a basic dot plot plus daily mean line
+ggplot() +
+  geom_point(data = example_data_subset, 
+             aes(x = Date, y = `Chla (ug/L)`), 
+             color = "#E6AA04") +
+  geom_line(data = example_data_daily_mean, 
+            aes(x = Date, y = `Chla (ug/L)`), 
+            color = "#00252A",
+            lwd = 1) +
+  scale_y_log10() +
+  theme_bw()
+
+```
+
+This line confirms that the values do indeed decrease towards the end of the graph, but the line is a bit ugly no? A common replacement in this scenario is to use a Generalized Additive Model (GAM) which creates a smoothing spline that also reveals trends but is not so harsh: 
+
+```{r}
+
+#create a basic dot plot plus GAM line
+ggplot() +
+  geom_point(data = example_data_subset, 
+             aes(x = Date, y = `Chla (ug/L)`), 
+             color = "#E6AA04") +
+  geom_smooth(data = example_data,
+              aes(x = Date, y = `Chla (ug/L)`), 
+              method = "gam", 
+              formula = y ~ s(x), 
+              color = "#00252A",
+              se = F) +
+  scale_y_log10() +
+  theme_bw()
+
+```
+
+Something else of interest with time series data is often how things are doing relative to a long-term mean. This mean might be an annual mean, or a mean of all the available data, or a mean of some historical reference period. For us, we will just look at the annual mean:
+
+```{r}
+
+#calculate group mean to use for the yintercept line from the full dataset
+annual_mean <- example_data |>
+  summarise(`Mean Chla (ug/L)` = mean(`Chla (ug/L)`, na.rm = T)) |> 
+  as.numeric() |> 
+  round(4)
+
+#create a more sophisticated plot
+ggplot() +
+  geom_point(data = example_data_subset, 
+             aes(x = Date, y = `Chla (ug/L)`), 
+             color = "#E6AA04") +
+  geom_hline(yintercept = annual_mean,
+             colour = "#628395",
+             lwd = 1.3) +
+  geom_smooth(data = example_data,
+              aes(x = Date, y = `Chla (ug/L)`), 
+              method = "gam", 
+              formula = y ~ s(x), 
+              color = "#00252A",
+              se = F) +
+  scale_y_log10() +
+  theme_bw()
+
+```
+As expected, the smoothed GAM line fluctuates above and below the annual mean. You might initially think that the GAM line goes waaay below the mean towards the end of the plot but remember this is all visualised with a log10 y axis.
+
+The next thing I would like to add is some sort of visual cue to significant season. In the Townsville region where we are currently looking at the data there are only two season; "wet" and "dry". This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred falling in all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef, nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.
+
+```{r}
+
+#assign either the wet or dry season to each row of data
+example_data_subset <- example_data_subset |> 
+  mutate(Season = case_when(month(Date) > 4 & month(Date) < 11 ~ "Dry", T ~ "Wet"))
+  
+#create a more sophisticated plot
+ggplot() +
+  geom_point(data = example_data_subset, 
+             aes(x = Date, y = `Chla (ug/L)`, 
+                 color = Season)) +
+  geom_hline(yintercept = annual_mean,
+             colour = "#628395",
+             lwd = 1.3) +
+  scale_color_manual(values = c("#E6AA04", "#8E3B46")) +
+  geom_smooth(data = example_data,
+              aes(x = Date, y = `Chla (ug/L)`), 
+              method = "gam", 
+              formula = y ~ s(x), 
+              color = "#00252A",
+              se = F) +
+  scale_y_log10() +
+  theme_bw()
+
+```
+
+There is only one more thing I would like to add to this plot, and it is mainly due to personal preference. But in this case, I would like to overlay a violin plot to further highlight the distribution of the data we are dealing with.
+
+```{r}
+
+#mutate the date column back into an actual date variable
+example_data_subset <- example_data_subset |> 
+  mutate(Date = as.Date(Date))
+
+#do the same for the full dataset
+example_data <- example_data |> 
+  mutate(Date = as.Date(Date))
+
+#create a more sophisticated plot
+ggplot() +
+  geom_point(data = example_data_subset, 
+             aes(x = Date, y = `Chla (ug/L)`, 
+                 color = Season)) +
+  geom_hline(yintercept = annual_mean,
+             colour = "#628395",
+             lwd = 1.3) +
+  scale_color_manual(values = c("#E6AA04", "#8E3B46")) +
+  geom_smooth(data = example_data,
+              aes(x = Date, y = `Chla (ug/L)`), 
+              method = "gam", 
+              formula = y ~ s(x), 
+              color = "#00252A",
+              se = F) +
+  geom_violin(data = example_data_subset,
+              aes(x = Date, y = `Chla (ug/L)`),
+              alpha = 0.4, 
+              color = "Black") +
+  scale_y_log10() +
+  scale_x_date(breaks = pretty_breaks(6)) +
+  labs(x = "Date", y = "Chla (ug/L) (Log10 Scale)") +
+  theme_bw()
+
+```
+
+Extensions:
+
+ - I want to pull in several years of data and create a facet of plots
+ - thats it I think
+
+```{r}
+
+#save the individual plots
+#ggsave("path", summary_plot, width = 15, height = 5)
+
+```
