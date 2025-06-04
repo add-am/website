@@ -21,6 +21,8 @@ library(tmap)
 library(ncmeta)
 library(stars)
 
+sf_use_s2(FALSE)
+
 ```
 
 # Introduction
@@ -330,6 +332,7 @@ Almost there, only one more part. In this section we are going to learn how to s
 
 ```{r}
 
+#return a table of all possible variables
 all_variables <- nc_vars(input_file)
 
 ```
@@ -382,9 +385,16 @@ Lets immediately try and visualise the data:
 
 ```{r}
 
+#make a simple palette using our website colours
+my_pal <- c("#A7C3C7", "#7EA0A7", "#55807D", "#2D6056", "#00402F", "#00252A")
+
+#create a simple plot of the data
 tm_shape(extracted_data) +
-  tm_raster() +
-  tm_shape(dt_region) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region, is.main = T) +
   tm_polygons(fill = NULL,
               col = "black")
 
@@ -394,41 +404,159 @@ Rather ugly yea? Also WTF is up with that scale? And why does the data extend pa
 
  1. Yes it is rather ugly, but it will mostly be fixed by 2.
  2. The scale is because eReefs uses ridiculously high values for land cells (i.e. cells that shouldn't have a chlorophyll a value)
- 3. This is because a) we used the maximum bounds of our object, and b) because the data is provided on a curvilinear grid which messes with the boundaries a bit (don't worry about it). This can be fixed with further masking.
+ 3. The data extends past our area of interest for a few reasons, we will fix this further below.
  
-Removing the land cells is rather easy, simply pick a value that your dataset would never reach (e.g. 1000ug/L) and change all cells with a value greater than that to NA. This fixes both points 1 and 2:
+"Removing" the land cells is rather easy, simply pick a value that your dataset would never reach (e.g. 1000ug/L) and change all cells with a value greater than that to NA. Visually, this fixes both points 1 and 2:
 
 ```{r}
 
+#change all land values to NA
 extracted_data[(extracted_data > 1000)] <- NA
 
+#create a simple plot of the data
 tm_shape(extracted_data) +
-  tm_raster(col.legend = tm_legend(reverse = T)) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
   tm_shape(dt_region) +
   tm_polygons(fill = NULL,
               col = "black")
 
 ```
 
+That's already much better looking. However we still have the problem of data extending past our area of interest.
+
+### Cropping Data
+
+As we noted above, the data extends outside our area of interest for two main reasons: 
+
+ 1. Because when we request data we need to use the maximum bounds of our object, and
+ 2. Because the data is on a curvilinear grid - which messes with the grid layout.
+ 
+:::{.callout-note}
+Raster data can be provided in a range of different grid types. The most common, and the one you are probably familiar with is the regular grid. In this type of grid each cell is consistent. In a curvilinear grid, cells bend and twist to allow for a higher concentration of cells in area that require greater resolution. This has the benefit of reducing file size, but the downside of inflicting physic damage to the uninitiated spatial analyst.
+
+If you would like to learn more about different grid types, check out [this](https://r-spatial.github.io/stars/articles/stars4.html) handy explainer.
+:::
+ 
+To help us understand this, here is a map showing the bounding box in red that we used to request the data:
+
+```{r}
+
+#create a simple plot of the data
+tm_shape(extracted_data) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black") +
+  tm_shape(st_as_sfc(target_bounds)) +
+  tm_polygons(fill = NULL,
+              col = "#E6AA04")
+
+```
+
+which demonstrates how the top left and bottom right corners are defining the region in which data is collected - at least a little bit. In this map we can also start to see the effect of the curvilinear grid and how it twists the data. A closer look at the actual grid lines of the data might demonstrate this a bit clearer:
+
+```{r}
+
+#extract each cell as a polygon
+curvilinear_polygons <- st_as_sf(extracted_data, as_points = FALSE, merge = FALSE)
+
+#create a simple map
+tm_shape(curvi_poly) +
+  tm_borders(col = "#00252A") 
+
+```
+
+Especially if you compare this to a linear grid representing the same area:
+
+```{r}
+#| output: FALSE
+#| echo: FALSE
+#| code-fold: TRUE
+#| label: silently run this code because we haven't explained it yet
+
+#convert our curvilinear object into just a bbox then update the crs on the bbox
+curvi_bbox <- extracted_data |> 
+  st_bbox() |> 
+  st_transform("EPSG:7844")
+
+#get a linear grid target with the same dimensions (number of cells) as our curvilinear grid 
+reg_stars <- st_as_stars(curvi_bbox, #using the bbox to provide the xmin, xmax etc., 
+                         nx = dim(extracted_data)[[1]], #and the dimensions to provide the x and y count. 
+                         ny = dim(extracted_data)[[2]], 
+                         values = NA_real_) #Fill each cell with NA
+
+#run st warp, it requires a curvilinear object, and a regular object as a target
+warped_data <- st_warp(extracted_data, reg_stars)
+
+#downsample the data so we can see it better in the map
+warped_data <- st_downsample(warped_data, 1)
+
+#convert the data into an sf object to make sure we can plot grid cells
+warped_data_sf <- st_as_sf(warped_data, as_points = FALSE, merge = FALSE)
+
+```
+
+```{r}
+
+#create a simple map
+tm_shape(warped_data_sf) +
+  tm_borders(col = "#00252A") 
+
+```
+
+So what can we do with this new found knowledge?
+
+notes:
+ - we can still use st_crop on curvilinear, but we cant drop NA values it seems
+ - we can drop NA in a regular grid I think - happens automatically with st_crop?
+
 While masking the values outside our area is a little trickier but also not too much of a stretch:
 
 ```{r}
 
-test <- dt_region |> st_make_valid() |> st_union() |> nngeo::st_remove_holes()
-
-tm_shape(test) +
-  tm_polygons()
-
 #crop to the actual area of interest
-extracted_data <- extracted_data |> 
+cropped_data <- extracted_data |> 
   st_transform("EPSG:7844") |>
-  st_crop(test)
+  st_crop(dt_region) |> 
+  st_as_stars()
 
-tm_shape(extracted_data) +
+#create a simple map
+tm_shape(cropped_test) +
   tm_raster(col.legend = tm_legend(reverse = T)) +
   tm_shape(dt_region, is.main =  T) +
   tm_polygons(fill = NULL,
               col = "black")
+
+```
+
+However an interesting side point to make here is 
+
+
+
+```{r}
+
+
+
+#crop to the actual area of interest
+cropped_test <- warped_data |> 
+  #st_transform() |>
+  st_crop(dt_region) #|> 
+  st_as_stars()
+
+down_sample <- st_downsample(extracted_data, 1)
+
+
+
+
+
+tm_shape(cropped_test) +
+  tm_raster()
 
 ```
 
