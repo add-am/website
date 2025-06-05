@@ -57,7 +57,7 @@ Below I load in my boundaries of the Dry Tropics region, unfortunately this is a
 ```{r}
 #| output: FALSE
 
-#read in the dry tropics region dataset
+#read in the dry tropics region dataset and start with a lat/long crs
 dt_region <- st_read("dt_region.gpkg") |> 
   st_transform("EPSG:7844")
 
@@ -377,11 +377,26 @@ extracted_data <- read_ncdf(input_file,
 
 If that code ran, congratulations you have official got the data.
 
-## Step 3 - View and Save eReefs Data
+# View eReefs Data
 
 What, there's still more to go? Unfortunately yes.
 
-Lets immediately try and visualise the data:
+First up, we are going to be visualising lots of layers, this means we need to make sure our CRS match across everything. From here on out I will be using, "EPSG:7855". This is a projected crs (measures in meters) and is particularly useful when we do our cropping steps further down.
+
+```{r}
+
+#update the crs on the extracted data
+extracted_data <- st_transform(extracted_data, "EPSG:7855")
+
+#update the crs on our target area
+dt_region <- st_transform(dt_region, "EPSG:7855")
+
+#create a perspective object that helps us get the best view of our maps
+dt_perspective <- st_buffer(dt_region, 0.5)
+
+```
+
+Then try and visualise the data:
 
 ```{r}
 
@@ -427,12 +442,14 @@ tm_shape(extracted_data) +
 
 That's already much better looking. However we still have the problem of data extending past our area of interest.
 
-### Cropping Data
+## Cropping Data
 
-As we noted above, the data extends outside our area of interest for two main reasons: 
+The next step I'd like to explore is conducting an intial crop of our data, this is because as we noted above, the data extends outside our area of interest, despite our efforts when requestiong the data. This is for two main reasons: 
 
  1. Because when we request data we need to use the maximum bounds of our object, and
  2. Because the data is on a curvilinear grid - which messes with the grid layout.
+ 
+### Curvilinear Grid Data
  
 :::{.callout-note}
 Raster data can be provided in a range of different grid types. The most common, and the one you are probably familiar with is the regular grid. In this type of grid each cell is consistent. In a curvilinear grid, cells bend and twist to allow for a higher concentration of cells in area that require greater resolution. This has the benefit of reducing file size, but the downside of inflicting physic damage to the uninitiated spatial analyst.
@@ -467,7 +484,7 @@ which demonstrates how the top left and bottom right corners are defining the re
 curvilinear_polygons <- st_as_sf(extracted_data, as_points = FALSE, merge = FALSE)
 
 #create a simple map
-tm_shape(curvi_poly) +
+tm_shape(curvilinear_polygons) +
   tm_borders(col = "#00252A") 
 
 ```
@@ -481,12 +498,12 @@ Especially if you compare this to a linear grid representing the same area:
 #| label: silently run this code because we haven't explained it yet
 
 #convert our curvilinear object into just a bbox then update the crs on the bbox
-curvi_bbox <- extracted_data |> 
-  st_bbox() |> 
-  st_transform("EPSG:7844")
+curvilinear_bbox <- extracted_data |> 
+  st_bbox() |>
+  st_as_sfc()
 
 #get a linear grid target with the same dimensions (number of cells) as our curvilinear grid 
-reg_stars <- st_as_stars(curvi_bbox, #using the bbox to provide the xmin, xmax etc., 
+reg_stars <- st_as_stars(curvilinear_bbox, #using the bbox to provide the xmin, xmax etc., 
                          nx = dim(extracted_data)[[1]], #and the dimensions to provide the x and y count. 
                          ny = dim(extracted_data)[[2]], 
                          values = NA_real_) #Fill each cell with NA
@@ -510,130 +527,180 @@ tm_shape(warped_data_sf) +
 
 ```
 
-So what can we do with this new found knowledge?
+So what can we do with this new found knowledge? Well for one thing it gives us a better understanding of how the data is organised, for example if you run `extracted_data` you might now understand why offset is NA - because the offset changes per cell. But secondly, it is about to play an important role in cropping the data.
 
-notes:
- - we can still use st_crop on curvilinear, but we cant drop NA values it seems
- - we can drop NA in a regular grid I think - happens automatically with st_crop?
-
-While masking the values outside our area is a little trickier but also not too much of a stretch:
+We can crop almost any stars object (curvilinear grid, or regular grid) using `st_crop()` and it will broadly do what we want:
 
 ```{r}
 
 #crop to the actual area of interest
-cropped_data <- extracted_data |> 
-  st_transform("EPSG:7844") |>
-  st_crop(dt_region) |> 
-  st_as_stars()
+curv_lini_cropped_data <- extracted_data |> 
+  st_crop(dt_region)
+
+```
+
+```{r}
 
 #create a simple map
-tm_shape(cropped_test) +
-  tm_raster(col.legend = tm_legend(reverse = T)) +
+tm_shape(curv_lini_cropped_data) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
   tm_shape(dt_region, is.main =  T) +
   tm_polygons(fill = NULL,
               col = "black")
 
 ```
 
-However an interesting side point to make here is 
+However you may notice that the `st_crop()` function is providing a warning. like this:
 
-
+"Warning in st_crop.stars(st_transform(extracted_data, "EPSG:7844"), dt_region) :
+  crop only crops regular grids: maybe use st_warp() first?"
+  
+Additionally, if you inspect the dimensions of the original data in comparison to the cropped data it is clear something funky is going on:
 
 ```{r}
 
+dim(extracted_data)
 
+```
+
+```{r}
+
+dim(curv_lini_cropped_data)
+
+```
+
+Indeed, if you inspect each of the objects again, using `extracted_data`, and `cropped_data_example_1` you can see that the only thing that really changed is that there are now more NA values. So what `st_crop()` actually did in this scenario was just replace values outside our area with NA:
+
+```{r}
+
+#create a simple map
+tm_shape(curv_lini_cropped_data) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2),
+                                           value.na = "#E6AA04"),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black") +
+  tm_shape(dt_perspective, is.main =  T) +
+  tm_polygons(fill = NULL,
+              col = NULL)
+
+```
+
+Which is not necessarily a bad thing, but can become a big problem if we are particularly concerned about file size.
+
+The reason this occurs is mostly a mystery to me, but I believe it has to do with the way the grid cells on a curvilinear raster are set out - and that those NA cells are needed to provide positioning context to the rest of the cells.
+
+### Regular Grid Data
+
+The solution to this is of course what was recommended in the original warning message - to use `st_warp()` to shift the data from a curvilinear grid onto a regular grid. This is thankfully not to difficult, and only has four main steps:
+
+ 1. Obtain the xmin, xmax, ymin, and ymax bounds of our curvilinear object
+ 2. Obtain the x and y dimensions of our curvilinear object (i.e. number of rows and cols)
+ 3. Create a "destination" regular grid using the values determined in steps 1. and 2.
+ 4. Warp the curvilinear object onto the destination grid, matching cell to cell.
+
+```{r}
+
+#convert our curvilinear object into just a bbox then update the crs on the bbox
+curvilinear_bbox <- extracted_data |> 
+  st_bbox() |>
+  st_as_sfc()
+
+#get a linear grid target with the same dimensions (number of cells) as our curvilinear grid 
+reg_stars <- st_as_stars(curvilinear_bbox, #using the bbox to provide the xmin, xmax etc., 
+                         nx = dim(extracted_data)[[1]], #and the dimensions to provide the x and y count. 
+                         ny = dim(extracted_data)[[2]], 
+                         values = NA_real_) #Fill each cell with NA
+
+#run st warp, it requires a curvilinear object, and a regular object as a target
+warped_data <- st_warp(extracted_data, reg_stars)
+
+```
+
+With the warped data we can then use the `st_crop()` function again:
+
+```{r}
 
 #crop to the actual area of interest
-cropped_test <- warped_data |> 
-  #st_transform() |>
-  st_crop(dt_region) #|> 
-  st_as_stars()
-
-down_sample <- st_downsample(extracted_data, 1)
-
-
-
-
-
-tm_shape(cropped_test) +
-  tm_raster()
+reg_grid_cropped_data <- warped_data |> 
+  st_crop(dt_region)
 
 ```
-
-
-
-
-## eReefs Data
-
-Now we can look to download the eReefs data. We will be using the spatial information for each of the regions that we loaded above to guide us when extracting the eReefs data.
-
-::: {.callout-note}
-Please note that this script will download the eReefs data from an online server the first time the script is run. This is a lengthy process given the size of the data (several gb) and will take a significant amount of time to process (approximately 20 minutes). To assist in future runs of the script, the data will be saved to your local computer and reloaded next time (approximate 30 seconds).
-:::
-
-Given that this is the 6th script in the series about eReefs data we already have a significant amount of contextual information about the data that makes it a lot easier to understand what data we are downloading and how we can access it. (Not all previous scripts have to be run, but reading them does help). 
-
-Using script 5 we know that to get the data for each year we need to access the following layers:
-
-- 2019-2020 = 1-215 (215 layers total)
-- 2020-2021 = 216-580 (365 layers total)
-- 2021-2022 = 581-945 (365 layers total)
-- 2022-2023 = 946-1310 (365 layers total)
-- 2023-2024 = 1311-1510 (200 layers)
-
-For this script we can focus on downloading just the year of data that is closest to our target data year. I say closest because data is only released roughly every 2 years, thus sometimes the target year matches, sometimes it does not. The general method of downloading is as follows:
-
-1. Set up a table containing the layer counter information determined above and then identify the year we are interested in.
-2. Establish coordinate boundaries of the area of interest
-3. Extract grid cell latitude, longitude information within this area of interest
-4. Compare the coordinate boundaries of the area of interest with the grid cell latitude and longitude (this is because the grid cells are on a curvilinear grid and sometimes extend outside our area of interest due to the line "bending")
-5. From this comparison, extract the true start and end points of the area of interest, accounting for bending
-6. Download each financial year of data individually, using information from steps 4. and 5.
-
-:::{.callout-note}
-Use nc_vars(input_file) to get a table that lists all available variables. It will also tell you the dimensions needed to call the data (usually 3 or 4).
-:::
 
 ```{r}
-#| label: load the eReefs data
 
-
-
- 
-#save(list = glue("{i_lower}_{region_lower}"), 
-#     file = glue('{output_path}/datasets/{i_lower}_{region_lower}.RData'))
-        
-  
-  #overwrite erroneous high values (note that a value of even 50 would be very very high)
-#  dataset[(dataset > 200)] <- NA
-  
-  #crop to the actual area of interest
-#  dataset <- dataset |> 
-#   st_transform(proj_crs)# |>
-
-
-
-#map <- tm_shape(qld) +
-#    tm_polygons(fill = "#99B5B1",
-#                col = "#7bba9d") +
-#    tm_shape(target_land_region) +
-#    tm_polygons(fill = "grey90", 
-#                col = "black") +
-#    tm_shape(monthly_mean_df[[i]]) +
-#    tm_polygons(fill = "Value",
+#create a simple map
+tm_shape(reg_grid_cropped_data) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2),
+                                           value.na = "#E6AA04"),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region, is.main =  T) +
+  tm_polygons(fill = NULL,
+              col = "black") +
+  tm_shape(dt_perspective, is.main = T) +
+  tm_polygons(fill = NULL,
+              col = NULL)
 
 ```
 
+Thus actually cropping the data to the bounding box of our target area, and create a map with significantly few NA cells, specifically the curvilinear version has `r sum(is.na(cropped_data_example_1[[1]]))` NA values, and the regular grid version has `r sum(is.na(cropped_data_example_2[[1]]))` NA values - a difference of `r sum(is.na(cropped_data_example_1[[1]])) - sum(is.na(cropped_data_example_2[[1]]))`
 
+# Save Data
 
+I think all that is left now is to save the data, which is done using `write_stars()`. However there is one little trick to remember here, the `write_stars()` function only expects either a 2D (x,y) or a 3D (x,y,time/band) object - it does not support 4D objects (x,y,depth, time) and it also does not support **empty or redundant dimensions** i.e. those with only one layer. If you try to save a 4D object, or an object with a single time step or depth layer the function will fail. To fix this we can simply drop dimensions with 1 value first.
 
+```{r}
 
+#drop dimensions with only 1 value
+reg_grid_cropped_data <- reg_grid_cropped_data[drop = TRUE]
 
+#save the object
+write_stars(reg_grid_cropped_data, "regular_grid_chla.nc")
 
+#FYI this also works on curvilinear data just fine
+curv_lini_cropped_data <- curv_lini_cropped_data[drop = TRUE]
 
+#save the object
+write_stars(curv_lini_cropped_data, "curvilinear_grid_chla.nc")
 
+```
 
+# Bonus Round
 
+If you've not brain dead/catatonic yet I have a small bonus round for you, extracting multiple years. I will really quickly blast through this as it is not particularly different. The only changes is to supply extract layers to "count" along in the dimensions request:
 
+```{r}
 
+#set our dimensions (44 is the surface depth, 100 is the 100th time step)
+our_dimensions_request <- cbind(start = c(first_row, first_col, 44, 100),
+                                count = c(num_of_rows, num_of_cols, 1, 3)) #changed 1 to 3
 
+```
+
+This is still supplied to `read_ncdf()` the same way:
+
+```{r}
+
+#extract the data
+extracted_data_multi_day <- read_ncdf(input_file, 
+                                      var = "Chl_a_sum", 
+                                      ncsub = our_dimensions_request)
+
+#view the data
+extracted_data_multi_day
+
+```
+
+And Voila, a multi-day dataset.
+
+# Caveats
+
+TBD
