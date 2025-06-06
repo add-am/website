@@ -1,5 +1,5 @@
 ---
-title: "The Extraction of Highly Specialised Modeled Data from eReefs"
+title: "The Extraction of Highly Specialised Modelled Data from eReefs"
 date: "05/23/2025"
 abstract-title: "ABSTRACT"
 abstract: 'In this blog I talk about the skills needed and the steps taken to execute the extraction of modelled environmental data such as ocean currents, nutrient loads, and water clarity from the online platform "eReefs".'
@@ -27,7 +27,7 @@ sf_use_s2(FALSE)
 
 # Introduction
 
-In this blog post I'd like to cover the essentials of extracting data from the eReefs platform. First of all, hands up - who's heard of [eReefs](https://www.ereefs.org.au/)? Fair enough if you haven't, despite its star power in my world it is still a relatively niche topic. To summarise, eReefs is *"a comprehensive view of dynamic marine environment conditions across the Great Barrier Reef from end-of-catchments and estuaries to reef lagoons and the open ocean."* What this means for us is that it has a whole bunch of modelled environmental datasets that are relatively easy to access, backed by top-notch science, and **heavy** (i.e. we really get to flex our coding and spatial "muscles"). 
+In this blog post I'd like to cover the essentials of extracting data from the eReefs platform. First of all, hands up - who's heard of [eReefs](https://www.ereefs.org.au/)? Fair enough if you haven't. Despite its star power in my world it is still a relatively niche topic. To summarise, eReefs is *"a comprehensive view of dynamic marine environment conditions across the Great Barrier Reef from end-of-catchments and estuaries to reef lagoons and the open ocean."* What this means for us is that it has a wide range of modelled environmental datasets that are relatively easy to access, backed by top-notch science, and **heavy** (i.e. we really get to flex our coding and spatial "muscles"). 
 
 The goal today is to learn how to:
 
@@ -44,9 +44,9 @@ The datasets we are going to look at today are the chlorophyll a dataset, and th
 
 All data produced by eReefs is stored on the [National Computing Infrastructure's (NCIs) THREDDS server](https://thredds.nci.org.au/thredds/catalog/catalogs/fx3/catalog.html) which is a server we can interact with in an automated fashion. Don't be fooled though, accessing the data can still pose quite the challenge and can sometimes seem like you are feeling your way around in the dark.
 
-To assist in the process of extracting data from eReefs we are going to need an extra dataset that details the specific boundaries of a target region within the scope of the eReefs model. I will be using the boundaries of the Dry Tropics region (near Townsville, QLD), however any boundaries withing the Great Barrier Reef Marine Park will work fine.
+To assist in the process of extracting data from eReefs we are going to need an extra dataset that details the specific boundaries of a target region within the scope of the eReefs model. I will be using the boundaries of the Dry Tropics region (near Townsville, QLD), however any boundaries within the Great Barrier Reef Marine Park will work fine.
 
-Lets get into it.
+Let's get into it.
 
 ## Step 1 - Obtain Facilitating Dataset
 
@@ -88,7 +88,7 @@ example_box <- st_polygon(list(example_box)) |>
 
 ## Step 2 - Getting eReefs Data
 
-I would first like to note that there are several resources online that contain useful information about access data from eReefs. These include:
+I would first like to note that there are several resources online that contain useful information about accessing data from eReefs. These include:
 
  - [An eReefs R Package](https://github.com/open-AIMS/ereefs)
  - [Multiple eReefs Tutorials](https://open-aims.github.io/ereefs-tutorials/)
@@ -96,7 +96,7 @@ I would first like to note that there are several resources online that contain 
  
 However, I personally find that most of these resources either A) gloss over what is really happening behind the scenes, or B) don't provide critical information needed for you to go away and conduct your own analysis (for example, how to see what indicators are available in eReefs). It is these reasons among others that prompted me to write this blog.
 
-Anyway, time to buckle your seatbelts kids.
+Anyway, time to buckle your seatbelts, kids.
 
 ### Connecting to the Data
 
@@ -145,7 +145,7 @@ x_dim <- dim(x_grid)
 
 ```
 
-The x_grid tells us about longitude The min x value is `r xmin`, the max x value is `r xmax`, and the dimensions of the x_grid are `r x_dim`.
+The x_grid tells us about longitude. The min x value is `r xmin`, the max x value is `r xmax`, and the dimensions of the x_grid are `r x_dim`.
 
 ```{r}
 
@@ -190,7 +190,7 @@ tm_shape(World) +
 
 ```{r}
 
-#extract just the x grid
+#extract just the z grid
 z_grid <- grids[["z_grid"]]
 
 #get some basic information about the dataset
@@ -202,7 +202,7 @@ z_dim <- dim(grids[["z_grid"]])
 
 The z_grid tells us about depth (eReefs models the entire water column). The min z value is `r z_min`m, the max x value is `r z_max`m, and the dimensions of the z_grid are `r z_dim`. These values tell us at what depth each layer of the model is at, and how many layers there are.
 
-In combination these three grids tell us everything we need to know about the data. Lets first look at the x_grid, as we noted above, the dimensions of the x_grid are `r x_dim`, thus picture a table that has `r dim(grids[["x_grid"]])[1]` rows, and `r dim(grids[["x_grid"]])[2]` columns. Once again, here is a snapshot of the first five rows and columns of the grid: 
+In combination these three grids tell us everything we need to know about the data. Let's first look at the x_grid, as we noted above, the dimensions of the x_grid are `r x_dim`, thus picture a table that has `r dim(grids[["x_grid"]])[1]` rows, and `r dim(grids[["x_grid"]])[2]` columns. Once again, here is a snapshot of the first five rows and columns of the grid: 
 
 ```{r}
 
@@ -210,7 +210,7 @@ as.data.frame(head(x_grid, n = c(5,5)))
 
 ```
 
-In contrast, lets now consider the y_grid, this grid has the exact same dimensions as the x_grid, and we can picture it much the same way: 
+In contrast, let's now consider the y_grid, this grid has the exact same dimensions as the x_grid, and we can picture it much the same way: 
 
 ```{r}
 
@@ -239,7 +239,7 @@ Well, the reason this matters is that we can use this conceptual understanding o
 
 ### Specify Our Target Location
 
-To explain how we are going to specify our target I am going to keep the analogy of the table going. The idea is simple, lets once again imagine the table, the table is the exact same dimensions as the table we were talking about above, except the values in this table are all just "FALSE":
+To explain how we are going to specify our target I am going to keep the analogy of the table going. The idea is simple, let's once again imagine the table, the table is the exact same dimensions as the table we were talking about above, except the values in this table are all just "FALSE":
 
 | |1    |2    |3    |4    |5    |
 |-|-----|-----|-----|-----|-----|
@@ -249,7 +249,7 @@ To explain how we are going to specify our target I am going to keep the analogy
 |4|FALSE|FALSE|FALSE|FALSE|FALSE|
 |5|FALSE|FALSE|FALSE|FALSE|FALSE|
 
-Lets say that we want to extract all the information within 151.2 to 151.4, and -23.3 to -23.5. What we then do is figure out where those cells are (based on their row and column number) using the table in the previous section, and then change the cells in those positions to TRUE in our current table:
+let's say that we want to extract all the information within 151.2 to 151.4, and -23.3 to -23.5. What we then do is figure out where those cells are (based on their row and column number) using the table in the previous section, and then set those cells to TRUE in our current table:
 
 | |1    |2    |3    |4    |5    |
 |-|-----|-----|-----|-----|-----|
@@ -259,7 +259,7 @@ Lets say that we want to extract all the information within 151.2 to 151.4, and 
 |4|FALSE|TRUE |TRUE |TRUE |FALSE|
 |5|FALSE|TRUE |TRUE |TRUE |FALSE|
 
-We can then use this table to communicate with the database and tell it "only give me data that lines up with my true values, remove the rest". And that's kind of it! If all goes well, the database will return the exact data you requested. Lets see how that looks in code.
+We can then use this table to communicate with the database and tell it "only give me data that lines up with my true values, remove the rest". And that's kind of it! If all goes well, the database will return the exact data you requested. let's see how that looks in code.
 
 :::{.callout-note}
 It is important to highlight here that the code we are about to write and the data we are working with does not take the form of an actual table, the above description is just a handy analogy to describe what is happening.
@@ -343,11 +343,11 @@ By looking at this table we can establish that to get the chlorophyll a and the 
 
 ### Extract the Data
 
-Its finally time, after all that we can start our data extraction!
+It's finally time, after all that we can start our data extraction!
 
 The function we are going to use to extract the data is the `read_ncdf()` function from the `stars` package. This function takes several inputs, such as the source of the data, the variable we are interested in, and the "coordinates" we are interested in. Thanks to all the work we have done above we have all of the "hard" information, however there are still a few little things to tick off.
 
-When we are talking about the "coordinates" of the data I have previously spoken about the x, y, and z dimensions of the data (the longitude, latitude, and depth). However there is one more dimension I haven't spoken about yet - time. Yes this data actually has 4 dimensions we need to specify. To keep things simple we will start off my just asking for a single point in time, but later we will move on to getting a full time series. So, when we supply the details we are essentially going to tell the database, 
+When we are talking about the "coordinates" of the data I have previously spoken about the x, y, and z dimensions of the data (the longitude, latitude, and depth). However there is one more dimension I haven't spoken about yet - time. Yes this data actually has 4 dimensions we need to specify. To keep things simple we will start off my just asking for a single point in time, but we'll later retrieve a full time series. So, when we supply the details we are essentially going to tell the database, 
 
  - On the x dimension; start at this cell, and keep going until this cell
  - On the y dimension; start at this cell, and keep going until this cell
@@ -415,7 +415,7 @@ tm_shape(extracted_data) +
 
 ```
 
-Rather ugly yea? Also WTF is up with that scale? And why does the data extend past our area of interest?
+Rather ugly yeah? Also WTF is up with that scale? And why does the data extend past our area of interest?
 
  1. Yes it is rather ugly, but it will mostly be fixed by 2.
  2. The scale is because eReefs uses ridiculously high values for land cells (i.e. cells that shouldn't have a chlorophyll a value)
@@ -444,7 +444,7 @@ That's already much better looking. However we still have the problem of data ex
 
 ## Cropping Data
 
-The next step I'd like to explore is conducting an intial crop of our data, this is because as we noted above, the data extends outside our area of interest, despite our efforts when requestiong the data. This is for two main reasons: 
+The next step I'd like to explore is conducting an initial crop of our data, this is because as we noted above, the data extends outside our area of interest, despite our efforts when requesting the data. This is for two main reasons: 
 
  1. Because when we request data we need to use the maximum bounds of our object, and
  2. Because the data is on a curvilinear grid - which messes with the grid layout.
@@ -452,7 +452,7 @@ The next step I'd like to explore is conducting an intial crop of our data, this
 ### Curvilinear Grid Data
  
 :::{.callout-note}
-Raster data can be provided in a range of different grid types. The most common, and the one you are probably familiar with is the regular grid. In this type of grid each cell is consistent. In a curvilinear grid, cells bend and twist to allow for a higher concentration of cells in area that require greater resolution. This has the benefit of reducing file size, but the downside of inflicting physic damage to the uninitiated spatial analyst.
+Raster data can be provided in a range of different grid types. The most common, and the one you are probably familiar with is the regular grid. In this type of grid each cell is consistent. In a curvilinear grid, cells bend and twist to allow for a higher concentration of cells in area that require greater resolution. This has the benefit of reducing file size, but the downside of inflicting psychic damage to the uninitiated spatial analyst.
 
 If you would like to learn more about different grid types, check out [this](https://r-spatial.github.io/stars/articles/stars4.html) handy explainer.
 :::
@@ -675,7 +675,7 @@ write_stars(curv_lini_cropped_data, "curvilinear_grid_chla.nc")
 
 # Bonus Round
 
-If you've not brain dead/catatonic yet I have a small bonus round for you, extracting multiple years. I will really quickly blast through this as it is not particularly different. The only changes is to supply extract layers to "count" along in the dimensions request:
+If I haven't put you into a coma yet I have a small bonus round for you; extracting multiple years. I will really quickly blast through this as it is not particularly different. The only changes is to supply extract layers to "count" along in the dimensions request:
 
 ```{r}
 
@@ -703,4 +703,10 @@ And Voila, a multi-day dataset.
 
 # Caveats
 
-TBD
+As always I would like to remind you to thoughtfully consider everything you read on the internet. This blog is my own work based on my own research into the topic. There may be practices I use that aren't considered "best practice" that I am not aware of, and I highly recommend that you do further exploration into the topic if it is something that interests you. I suggest checking out:
+
+ - This [ESRI GIS Basics](https://www.esri.com/training/catalog/5d9cd7de5edc347a71611ccc/gis-basics/) course for a general introduction to GIS,
+ - This [Spatial Data in R](https://www.paulamoraga.com/book-spatial/spatial-data-in-r.html) course for an overview of working with spatial data in R (noting this book mostly talks about the `sf` and `terra` packages, but still has excellent and relevant information), and
+ - The [stars](https://r-spatial.github.io/stars/) package documentation for specific information about `stars` - my package of choice
+
+

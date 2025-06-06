@@ -14,12 +14,15 @@ include-after-body: "../../html/html_footer.html" #This is our footer
 #| echo: FALSE
 #| code-fold: TRUE
 
-#library(sf)
+library(sf)
 library(stars)
 library(tmap)
 #library(ggplot2)
 library(tidyverse)
+library(ereefs)
 #library(scales)
+
+sf_use_s2(FALSE)
 
 ```
 
@@ -33,37 +36,109 @@ In this post I would like to explore the spatial aspect of eReefs data. Together
  2. Understand how to visualise the data, and
  3. Build a series of informative maps
 
-
 # Read in Data
 
-
 ```{r}
+#| output: FALSE
+#| echo: FALSE
+#| code-fold: TRUE
 
-#NEED TO SILENTLY RETRIEVE DATA FROM EREEFS AND SAVE IT AS AN RDATA OBJECT IN THE FILE DOES NOT EXISTS
+#if our csv does not exists, create it
+if(!file.exists("example_data.nc")){
 
-#DONT FORGET TO REMOVE STUPID HIGH VALUES
+  #read in the dry tropics region dataset and start with a lat/long crs
+  dt_region <- st_read("dt_region.gpkg") |> 
+    st_transform("EPSG:7844")
+  
+  #manually assign the url from above into a variable (so I don't have to interact with the code)
+  input_file <- "https://dapds00.nci.org.au/thredds/dodsC/fx3/GBR1_H2p0_B3p2_Cfur_Dnrt.ncml"
+      
+  #get all grids
+  grids <- get_ereefs_grids(input_file)
+  
+  #use the bbox function to get the boundaries of our targeted location
+  target_bounds <- st_bbox(dt_region)
+  
+  #if the value is inside the bounds of each of our coords, change it to TRUE. Those outside are automatically false
+  true_false_array <- grids[["x_grid"]] >= target_bounds[1] & 
+    grids[["x_grid"]] <= target_bounds[3] & 
+    grids[["y_grid"]] >= target_bounds[2] & 
+    grids[["y_grid"]] <= target_bounds[4]
+    
+  #if the value is NA, change it to false.
+  true_false_array[is.na(true_false_array)] <- FALSE
+  
+  #return the row index for every row that contains at least one true value:
+  true_rows <- which(apply(true_false_array, 1, any))
+  
+  #find the first row that contains a true value
+  first_row <- true_rows[1]
+  
+  #find the number of rows that contains a true value
+  num_of_rows <- tail(true_rows, n = 1) - first_row
+  
+  #return the row index for every row that contains at least one true value:
+  true_cols <- which(apply(true_false_array, 2, any))
+  
+  #find the first col that contains a true value
+  first_col <- true_cols[1]
+  
+  #find the number of cols that contains a true value
+  num_of_cols <- tail(true_cols, n = 1) - first_col
+  
+  #set our dimensions (44 is the surface depth, 100 is the 100th time step)
+  our_dimensions_request <- cbind(start = c(first_row, first_col, 44, 216),
+                                  count = c(num_of_rows, num_of_cols, 1, 365))
+  
+  #extract the data
+  extracted_data <- read_ncdf(input_file, 
+                              var = "Chl_a_sum", 
+                              ncsub = our_dimensions_request)
+  
+  #update the crs
+  extracted_data <- st_transform(extracted_data, "EPSG:7855")
+  
+  #convert our curvilinear object into just a bbox then update the crs on the bbox
+  curvilinear_bbox <- extracted_data |> 
+    st_bbox() |>
+    st_as_sfc()
+  
+  #get a linear grid target with the same dimensions (number of cells) as our curvilinear grid 
+  reg_stars <- st_as_stars(curvilinear_bbox, #using the bbox to provide the xmin, xmax etc., 
+                           nx = dim(extracted_data)[[1]], #and the dimensions to provide the x and y count. 
+                           ny = dim(extracted_data)[[2]], 
+                           values = NA_real_) #Fill each cell with NA
+  
+  #run st warp, it requires a curvilinear object, and a regular object as a target
+  warped_data <- st_warp(extracted_data, reg_stars)
+  
+  #update the crs
+  dt_region <- st_transform(dt_region, "EPSG:7855")
+  
+  #crop to the actual area of interest
+  reg_grid_cropped_data <- warped_data |> 
+    st_crop(dt_region)
+  
+  #drop dimensions with only 1 value
+  reg_grid_cropped_data <- reg_grid_cropped_data[drop = TRUE]
+  
+  #save the data 
+  write_stars(reg_grid_cropped_data, "example_data.nc")
 
-sf_use_s2(FALSE)
-
-#read in the dry tropics region dataset
-dt_region <- st_read("dt_region.gpkg") |> 
-  st_transform("EPSG:7844")# |> 
-  #st_union() |> 
-  #nngeo::st_remove_holes() |> 
-  #st_union() |> 
-  #st_make_valid()
-
-
+}
 
 ```
 
-
-Thanks to our previous posts we have data ready to go.
+Thanks to our previous post about extracting the data, it is saved in our file system ready to open no stress:
 
 ```{r}
 
-#load in the data
-load("chl_a_sum_dry_tropics.RData")
+#load in the example data
+example_data <- read_stars("example_data.nc")
+
+#read in the dry tropics region dataset that we will use for spatial context
+dt_region <- st_read("dt_region.gpkg") |> 
+  st_transform("EPSG:7844")
 
 ```
 
@@ -74,7 +149,7 @@ Before we can get right into analysis or mapping we need to get a better underst
 ```{r}
 
 #get a summary of the data
-chl_a_sum_dry_tropics
+example_data
 
 ```
 
@@ -93,7 +168,7 @@ To see the names of our dimensions we can use `dim()`.
 ```{r}
 
 #view the dimension names and lengths
-dim(chl_a_sum_dry_tropics)
+dim(example_data)
 
 ```
 
@@ -102,7 +177,7 @@ and to see the names of our attributes we can use `names()`.
 ```{r}
 
 #view the names of the attributes
-names(chl_a_sum_dry_tropics)
+names(example_data)
 
 ```
 
@@ -117,7 +192,7 @@ In this way we have a cursory method of manipulating the data, and can use this 
 ```{r}
 
 #create a simple map
-tm_shape(chl_a_sum_dry_tropics["Chl_a_sum",,,,1]) +
+tm_shape(example_data["Chl_a_sum",,,,1]) +
   tm_raster(col.legend = tm_legend(reverse = T))
 
 ```
@@ -127,7 +202,7 @@ Not bad, and just to be clear - if we don't select just 1 time step we would get
 ```{r}
 
 #create a map with several facets
-tm_shape(chl_a_sum_dry_tropics["Chl_a_sum",,,,1:4]) +
+tm_shape(example_data["Chl_a_sum",,,,1:4]) +
   tm_raster(col.legend = tm_legend(reverse = T))
 
 ```
@@ -141,11 +216,11 @@ When we use the tidyverse method, knowing the exact names of our dimensions and 
 ```{r}
 
 #slice to get a single time step
-single_timestep <- chl_a_sum_dry_tropics |> 
+single_timestep <- example_data |> 
   slice(time, 1)
 
 #slice to get multiple time steps
-multi_timestep <- chl_a_sum_dry_tropics |> 
+multi_timestep <- example_data |> 
   slice(time, 1:10)
 
 ```
@@ -163,7 +238,7 @@ However one downside here is that if you want to slice on multiple dimensions th
 ```{r}
 
 #slice by latitude and time, not the 
-slice_of_lat_and_time <- chl_a_sum_dry_tropics |> 
+slice_of_lat_and_time <- example_data |> 
   slice(j, 1:30) |> 
   slice(time, 1)
 
@@ -172,7 +247,7 @@ slice_of_lat_and_time <- chl_a_sum_dry_tropics |>
 ```{r}
 
 #visualise the slice of lat and time 
-tm_shape(slice_of_lat_and_time) +
+tm_shape(example_data) +
   tm_raster(col.legend = tm_legend(reverse = T))
 
 ```
@@ -234,7 +309,7 @@ In fact, this is what we will do right now. Note the dimensions of our dataset b
 
 ```{r}
 
-chl_a_sum_dry_tropics
+example_data
 
 ```
 
@@ -242,7 +317,7 @@ versus after:
 
 ```{r}
 
-chl_a_mean <- st_apply(chl_a_sum_dry_tropics, 
+chl_a_mean <- st_apply(example_data, 
                        c(1,2),
                        mean)
 
@@ -279,7 +354,7 @@ Lets first demonstrate this with a spatial object:
 
 ```{r}
 
-test <- aggregate(st_transform(chl_a_sum_dry_tropics, "EPSG:7844"),
+test <- aggregate(st_transform(example_data, "EPSG:7844"),
                   dt_region,
                   mean)
 
@@ -292,13 +367,13 @@ Before following up with a temporal vector:
 ```{r}
 
 #create a vector of times for each layer
-all_times <- st_get_dimension_values(chl_a_sum_dry_tropics, "time")
+all_times <- st_get_dimension_values(example_data, "time")
 
 #change these times to only contain the year and month information, then extract unique values
 unique_months <- unique(floor_date(all_times, unit = "month"))
 
 #this give us a vector the same length as the number of data layers. e.g. month information is repeated
-test2 <- aggregate(chl_a_sum_dry_tropics,
+test2 <- aggregate(example_data,
                    by = unique_months,
                    mean)
 
@@ -320,7 +395,7 @@ Now we know how to aggregate our data we need to aggregate our data in a useful 
 
 ```{r}
 
-time_table <- data.frame(DateTime = st_get_dimension_values(chl_a_sum_dry_tropics, "time"))
+time_table <- data.frame(DateTime = st_get_dimension_values(example_data, "time"))
 
 time_table <- time_table |> 
   mutate(Year = year(DateTime),

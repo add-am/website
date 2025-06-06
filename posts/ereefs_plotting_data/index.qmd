@@ -19,6 +19,9 @@ library(stars)
 library(ggplot2)
 library(tidyverse)
 library(scales)
+library(ereefs)
+
+sf_use_s2(FALSE)
 
 ```
 
@@ -29,41 +32,125 @@ In this blog we are going to learn how to create some visually interesting plots
 # Data
 
 ```{r}
+#| output: FALSE
+#| echo: FALSE
+#| code-fold: TRUE
 
-#NEED TO SILENTLY RETRIEVE DATA FROM EREEFS AND CONVERT IT TO CSV IN CASE THE FILE IS NOT PRESENT
+#if our csv does not exists, create it
+if(!file.exists("example_data.csv")){
 
+  #read in the dry tropics region dataset and start with a lat/long crs
+  dt_region <- st_read("dt_region.gpkg") |> 
+    st_transform("EPSG:7844")
+  
+  #manually assign the url from above into a variable (so I don't have to interact with the code)
+  input_file <- "https://dapds00.nci.org.au/thredds/dodsC/fx3/GBR1_H2p0_B3p2_Cfur_Dnrt.ncml"
+      
+  #get all grids
+  grids <- get_ereefs_grids(input_file)
+  
+  #use the bbox function to get the boundaries of our targeted location
+  target_bounds <- st_bbox(dt_region)
+  
+  #if the value is inside the bounds of each of our coords, change it to TRUE. Those outside are automatically false
+  true_false_array <- grids[["x_grid"]] >= target_bounds[1] & 
+    grids[["x_grid"]] <= target_bounds[3] & 
+    grids[["y_grid"]] >= target_bounds[2] & 
+    grids[["y_grid"]] <= target_bounds[4]
+    
+  #if the value is NA, change it to false.
+  true_false_array[is.na(true_false_array)] <- FALSE
+  
+  #return the row index for every row that contains at least one true value:
+  true_rows <- which(apply(true_false_array, 1, any))
+  
+  #find the first row that contains a true value
+  first_row <- true_rows[1]
+  
+  #find the number of rows that contains a true value
+  num_of_rows <- tail(true_rows, n = 1) - first_row
+  
+  #return the row index for every row that contains at least one true value:
+  true_cols <- which(apply(true_false_array, 2, any))
+  
+  #find the first col that contains a true value
+  first_col <- true_cols[1]
+  
+  #find the number of cols that contains a true value
+  num_of_cols <- tail(true_cols, n = 1) - first_col
+  
+  #set our dimensions (44 is the surface depth, 100 is the 100th time step)
+  our_dimensions_request <- cbind(start = c(first_row, first_col, 44, 216),
+                                  count = c(num_of_rows, num_of_cols, 1, 365))
+  
+  #extract the data
+  extracted_data <- read_ncdf(input_file, 
+                              var = "Chl_a_sum", 
+                              ncsub = our_dimensions_request)
+  
+  #change all land values to NA
+  extracted_data[(extracted_data > 1000)] <- NA
+
+  #update the crs
+  extracted_data <- st_transform(extracted_data, "EPSG:7855")
+  
+  #convert our curvilinear object into just a bbox then update the crs on the bbox
+  curvilinear_bbox <- extracted_data |> 
+    st_bbox() |>
+    st_as_sfc()
+  
+  #get a linear grid target with the same dimensions (number of cells) as our curvilinear grid 
+  reg_stars <- st_as_stars(curvilinear_bbox, #using the bbox to provide the xmin, xmax etc., 
+                           nx = dim(extracted_data)[[1]], #and the dimensions to provide the x and y count. 
+                           ny = dim(extracted_data)[[2]], 
+                           values = NA_real_) #Fill each cell with NA
+  
+  #run st warp, it requires a curvilinear object, and a regular object as a target
+  warped_data <- st_warp(extracted_data, reg_stars)
+  
+  #update the crs
+  dt_region <- st_transform(dt_region, "EPSG:7855")
+  
+  #crop to the actual area of interest
+  reg_grid_cropped_data <- warped_data |> 
+    st_crop(dt_region)
+  
+  #drop dimensions with only 1 value
+  reg_grid_cropped_data <- reg_grid_cropped_data[drop = TRUE]
+  
+  #convert data to a simple feature object
+  sf_data <- st_as_sf(reg_grid_cropped_data, as_points = F, merge = F)
+  
+  #drop the geometry column from the data
+  sf_data <- sf_data |>
+    st_drop_geometry()
+  
+  #add dates, for some reason they get dropped during the conversion to an sf object
+  target_dates <- as.character(st_get_dimension_values(reg_grid_cropped_data, "time"))
+    
+  #assign the dates to the new data
+  colnames(sf_data) <- target_dates
+    
+  #pivot the data longer
+  sf_data <- sf_data |> 
+    pivot_longer(cols = everything(), 
+                 names_to = "Date", 
+                 values_to = "Values")
+    
+  #save the data to file
+  write_csv(sf_data, "example_data.csv")
+  
+}
 
 ```
 
-
-Lets first load in the data:
+The first thing we want to do is load in the example data that we are going to use for this blog.
 
 ```{r}
 #| output: FALSE
 
-load("chl_a_sum_dry_tropics.RData")
-
-test <- st_as_sf(chl_a_sum_dry_tropics, as_points = F, merge = F)
-
-test <- test |>
-  st_drop_geometry()
-
-
-#add dates, for some reason they get dropped during the conversion to an sf object
-  target_dates <- as.character(st_get_dimension_values(chl_a_sum_dry_tropics, "time"))
-  
-  #assign the dates to the new data
-  colnames(test) <- target_dates
-  
-  #pivot the data longer
-  test <- test |> 
-    pivot_longer(cols = everything(), names_to = "Date", values_to = "Values")
-  
-
-write_csv(test, "Chla_ereefs_data_new.csv")
-  
-#read in data
-example_data <- read_csv("chla_ereefs_data.csv")
+#read in our example data
+example_data <- read_csv("example_data.csv")
 
 ```
 
@@ -90,7 +177,7 @@ The value column is the concentration of chlorophyll a in the water column, meas
 ```{r}
 
 #rename the data column
-example_data <- rename(example_data, "Chla (ug/L)" = "Value")
+example_data <- rename(example_data, "Chla (ug/L)" = "Values")
 
 #view the first few rows of data
 head(example_data)
@@ -106,7 +193,7 @@ Please note that it is generally bad form to include spaces in your column names
 Due to our cursory exploration of the data we already know a few things:
 
  - There is a lot of data
- - Data has a time element
+ - The data has a time element
  - There are multiple data points per time step
  - Values are the concentration of chlorophyll a, if you are not an environmental scientist this means the data is continuous, and should not contain negative values.
  
@@ -139,9 +226,9 @@ ggplot(example_data) +
 
 ```
 
-Looking good.
+Yup, using a log10 scale will likely help us get a better visual representation of the data.
 
-Now, knowing a bit more abut the distribution lets consider what kind of plot we want to make. Of course it is up to you, but I know that when I see a time variable and a value, I am thinking lines and/or dot plots.
+Now, knowing a bit more abut the distribution lets consider what kind of plot we want to make. Of course it is up to you, but I know that when I see a time variable and a whole bunch of continuous values, I am thinking lines and/or dot plots.
 
 In its most basic form here is a dot plot:
 
@@ -165,7 +252,7 @@ For the first point, a simple solution is to take a random subset of data to mak
 
 ## Subsetting Data
 
-To do our sub-setting we will use the `slice_sample()` function. To ensure that we get the same number of randomly sampled points from each day we will make sure to first group our data by the Date column. In total we want to randomly select 150 data points from each day - still quite a lot.
+To do our sub-setting we will use the `slice_sample()` function. To ensure that we get the same number of randomly sampled points from each time step (day) we will make sure to first group our data by the Date column. In summary we want to randomly select 150 data points from each day - still quite a lot.
 
 ```{r}
 
@@ -188,11 +275,11 @@ ggplot(example_data_subset) +
 
 ```
 
-Awesome, right away we can see that it is likely that the values dip down towards the end of the graph. Note that this might be a product of the random sampling, but that is highly unlikely.
+Awesome, right away we can see that it is likely that the values dip down towards the end of the graph before suddenly ticking back up. Note that this might be a product of the random sampling, but that is highly unlikely.
 
 ## Additional Visuals
 
-Something that will help us determine how the data trends over time would be a nice would be a line that follows the daily mean. We will calculate this line using the full dataset to make sure of the trend we spotted above.
+Something that will help us determine how the data trends over time would be a nice line that follows the daily mean. We will calculate this line using the full dataset to make sure of the trend we spotted above.
 
 ```{r}
 
@@ -216,7 +303,7 @@ ggplot() +
 
 ```
 
-This line confirms that the values do indeed decrease towards the end of the graph, but the line is a bit ugly no? A common replacement in this scenario is to use a Generalized Additive Model (GAM) which creates a smoothing spline that also reveals trends but is not so harsh: 
+This line confirms that the values do indeed decrease towards the end of the graph before suddenly gaining again, but the line is a bit ugly no? A common replacement in this scenario is to use a Generalized Additive Model (GAM) which creates a smoothing spline that also reveals trends but is not so harsh. Noting that the GAM makes use of the multiple samples per day to acheive the desired results: 
 
 ```{r}
 
@@ -236,7 +323,7 @@ ggplot() +
 
 ```
 
-Something else of interest with time series data is often how things are doing relative to a long-term mean. This mean might be an annual mean, or a mean of all the available data, or a mean of some historical reference period. For us, we will just look at the annual mean:
+Something else of interest with time series data is how things are doing relative to a long-term mean. This long-term mean might be an annual mean, or a mean of all the available data going several years back, or a mean of some historical reference period. For us, we will just look at the annual mean:
 
 ```{r}
 
@@ -264,9 +351,10 @@ ggplot() +
   theme_bw()
 
 ```
-As expected, the smoothed GAM line fluctuates above and below the annual mean. You might initially think that the GAM line goes waaay below the mean towards the end of the plot but remember this is all visualised with a log10 y axis.
 
-The next thing I would like to add is some sort of visual cue to significant season. In the Townsville region where we are currently looking at the data there are only two season; "wet" and "dry". This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred falling in all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef, nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.
+As expected, the smoothed GAM line fluctuates above and below the annual mean. You might initially think that the GAM line goes waaaay below the mean towards the end of the plot and that surely the mean isn't correct, but remember this is all visualised with a log10 y axis.
+
+The next thing I would like to add is some sort of visual cue to signify season. In the Townsville region where we are currently looking at the data there are only two season; "wet" and "dry". This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred falling across all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef - nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.
 
 ```{r}
 
@@ -332,14 +420,11 @@ ggplot() +
 
 ```
 
-Extensions:
+And there you have fairly nice looking singular dot plot, it contains a heck of a lot of information without being too crowed (in my opinion). So extensions you could play around with for this plot could be downloading several years of data and faceting by year, comparing different water quality indicators, or even comparing different locations around the reefs.
 
- - I want to pull in several years of data and create a facet of plots
- - thats it I think
+# Caveats
 
-```{r}
+You may find that the visuals in these plots are not for you, that's okay! Just because I say they look good doesn't mean you have to think that. Play around with colours, do a deep dive on [ggplot2](https://ggplot2.tidyverse.org/) options, experiment with your own ideas and find a style that works for you. There are also plenty of guide around design rules if you are particularly interested, such as this one by [Tableau](https://www.tableau.com/visualization/data-visualization-best-practices)
 
-#save the individual plots
-#ggsave("path", summary_plot, width = 15, height = 5)
 
-```
+
