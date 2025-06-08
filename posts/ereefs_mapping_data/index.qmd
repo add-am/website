@@ -98,6 +98,9 @@ if(!file.exists("example_data.nc")){
   #update the crs
   extracted_data <- st_transform(extracted_data, "EPSG:7855")
   
+  #change all land values to NA
+  extracted_data[(extracted_data > 1000)] <- NA
+  
   #convert our curvilinear object into just a bbox then update the crs on the bbox
   curvilinear_bbox <- extracted_data |> 
     st_bbox() |>
@@ -106,7 +109,7 @@ if(!file.exists("example_data.nc")){
   #get a linear grid target with the same dimensions (number of cells) as our curvilinear grid 
   reg_stars <- st_as_stars(curvilinear_bbox, #using the bbox to provide the xmin, xmax etc., 
                            nx = dim(extracted_data)[[1]], #and the dimensions to provide the x and y count. 
-                           ny = dim(extracted_data)[[2]], 
+                           ny = dim(extracted_data)[[2]],
                            values = NA_real_) #Fill each cell with NA
   
   #run st warp, it requires a curvilinear object, and a regular object as a target
@@ -123,18 +126,36 @@ if(!file.exists("example_data.nc")){
   reg_grid_cropped_data <- reg_grid_cropped_data[drop = TRUE]
   
   #save the data 
-  write_stars(reg_grid_cropped_data, "example_data.nc")
-
+  write_stars(reg_grid_cropped_data, "example_data.nc", driver = "netCDF")
+  
+  #get vector of time values and save them for later
+  saveRDS(st_get_dimension_values(reg_grid_cropped_data, "time"), file = "time_vector.rds")
+  
 }
 
 ```
 
-Thanks to our previous post about extracting the data, it is saved in our file system ready to open no stress:
+Thanks to our previous post about extracting the data, it is saved in our file system ready to open no stress, and we know exactly the preprocessing that we need to do:
 
 ```{r}
+#| output: FALSE
 
 #load in the example data
 example_data <- read_stars("example_data.nc")
+
+#load vector of time values
+time_vals <- readRDS("time_vector.rds")
+
+#merge "attributes" (time) back together
+example_data <- merge(example_data)
+
+#update time dimension values and names
+example_data <- example_data |> 
+  st_set_dimensions(3, time_vals,
+                    names = c("x", "y", "time"))
+  
+#then update the attribute name
+example_data <- setNames(example_data, "Chla")
 
 #read in the dry tropics region dataset that we will use for spatial context
 dt_region <- st_read("dt_region.gpkg") |> 
@@ -142,7 +163,16 @@ dt_region <- st_read("dt_region.gpkg") |>
 
 ```
 
-# Explore Data
+# Analyse Data
+
+There are few goals I have for analysing the data, I would like to be able to:
+
+ 1. Manipulate data using the time dimension, i.e. extract certain dates
+ 2. Manipulate data using spatial dimensions, i.e. extract certain areas
+ 3. Aggregate data using the time dimension, e.g. getting monthly average values
+ 4. Aggregate data using spatial dimensions, .e.g. getting average values per area
+ 
+## Layer Manipulation
 
 Before we can get right into analysis or mapping we need to get a better understanding of the data structure and what we are looking at. Simply by calling the object we can already get a pretty good breakdown:
 
@@ -191,9 +221,18 @@ In this way we have a cursory method of manipulating the data, and can use this 
 
 ```{r}
 
-#create a simple map
-tm_shape(example_data["Chl_a_sum",,,,1]) +
-  tm_raster(col.legend = tm_legend(reverse = T))
+#make a simple palette using our website colours
+my_pal <- c("#A7C3C7", "#7EA0A7", "#55807D", "#2D6056", "#00402F", "#00252A")
+
+#create a simple map of the data
+tm_shape(example_data["Chla",,,1]) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region, is.main = T) +
+  tm_polygons(fill = NULL,
+              col = "black")
 
 ```
 
@@ -201,17 +240,21 @@ Not bad, and just to be clear - if we don't select just 1 time step we would get
 
 ```{r}
 
-#create a map with several facets
-tm_shape(example_data["Chl_a_sum",,,,1:4]) +
-  tm_raster(col.legend = tm_legend(reverse = T))
+#create a simple map of the data
+tm_shape(example_data["Chla",,,1:4]) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region, is.main = T) +
+  tm_polygons(fill = NULL,
+              col = "black")
 
 ```
 
 However trying to do all of our analysis and manipulation this way would be very painful. Thankfully stars objects work with most tidyverse functions.
 
-# Analyse Data
-
-When we use the tidyverse method, knowing the exact names of our dimensions and attributes is key rather than their specific order. For example, if we wanted to once again extract one time layer of data, it is as easy as specifying the dimension we want to slice, and the slice number:
+When we use the tidyverse method, knowing the exact names of our dimensions and attributes is the key for layer manipulation rather than their specific order. For example, if we wanted to once again extract one time layer of data, it is as easy as specifying the dimension we want to slice ("time"), and the slice number:
 
 ```{r}
 
@@ -227,19 +270,25 @@ multi_timestep <- example_data |>
 
 ```{r}
 
-#visualise the single time slice
+#create a simple plot of the data
 tm_shape(single_timestep) +
-  tm_raster(col.legend = tm_legend(reverse = T))
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region, is.main = T) +
+  tm_polygons(fill = NULL,
+              col = "black")
 
 ```
 
-However one downside here is that if you want to slice on multiple dimensions the calls must be run separately:
+Although one downside here is that if you want to slice on multiple dimensions the calls must be run separately:
 
 ```{r}
 
 #slice by latitude and time, not the 
 slice_of_lat_and_time <- example_data |> 
-  slice(j, 1:30) |> 
+  slice(x, 1:30) |> 
   slice(time, 1)
 
 ```
@@ -247,14 +296,24 @@ slice_of_lat_and_time <- example_data |>
 ```{r}
 
 #visualise the slice of lat and time 
-tm_shape(example_data) +
-  tm_raster(col.legend = tm_legend(reverse = T))
+tm_shape(slice_of_lat_and_time) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region, is.main = T) +
+  tm_polygons(fill = NULL,
+              col = "black")
 
 ```
 
-There are a few other functions from the tidyverse that can be used such as `filter()`, `pull()`, `mutate()`, and `select()`, but we won't worry about those here, we will just focus on `slice()`.
+As we can seem using `slice()` just about covers all of our layer manipulation needs without much work... Layer aggregation is not going to be so easy...
 
-## Aggregation Learning
+:::{.callout-note}
+There are a few other functions from the tidyverse that can be used such as `filter()`, `pull()`, `mutate()`, and `select()`, but we won't worry about those here, we will just focus on `slice()`.
+:::
+
+## Layer Aggregation
 
 As we explored above we have quite a few time steps, too many to plot all of them. Our initial solution to be able to create a map was to simply slice out a few layers, but obviously this is not a good solution if we are trying to learn something about the entire dataset. Instead, a common method to deal with this kind of problem (too much data) is to aggregate the data into a workable size. 
 
@@ -276,18 +335,21 @@ In this diagram we can see each of our dimensions represented (latitude, longitu
 
 What MARGIN does, is ask "where do you want to apply the function?" As in what dimension. The dimension that you supply is the dimension that is preserved. For our data there are four margins to choose from:
 
- 1. Latitude
- 2. Longitude
- 3. Depth
- 4. Time
+ 1 = Latitude
+ 2 = Longitude
+ 3 = Depth
+ 4 = Time
  
-If we say MARGIN = 1, we are applying our function over latitude, and the resulting data will only retain the latitude dimension. It would look like this:
+If we say MARGIN = 1, we are applying our function over latitude, and the resulting data will **only retain the latitude dimension**. It would look like this:
 
 ![](image_2.png)
+See how all of the cells that share the same latitude, but have different longitudes, times, or depths, are all combined into the same group.
 
-If we say MARGIN = 2, we are applying our function over longitude, and the resulting data will only retain the longitude dimension. It would look like this:
+If we say MARGIN = 2, we are applying our function over longitude, and the resulting data will **only retain the longitude dimension**. It would look like this:
 
 ![](image_3.png)
+
+This time note that all cells that share the same longitude, but have different latitudes times, or depths, are all combined into the same group.
 
 MARGIN = 3 (depth) would look like this:
 
@@ -301,14 +363,21 @@ Reasonably straight forward so far, but also largely unhelpful - none of these o
 
 ![](image_6.png)
 
+See how both the time and the longitude dimensions are maintained, and only the latitude and depth dimensions are grouped up.
+
 But probably the one we are most interested in is if we set MARGIN = c(1,2) (Latitude and Longitude) which would collapse the time and depth variables leaving us with one raster:
 
 ![](image_7.png)
+
+Note this time the depth and time dimensions are aggregated.
+
+One final thing to note with the MARGIN argument is that while it can take numeric inputs, it can also take the names of the dimensions. So instead of saying `MARGIN = c(1,2)` we could instead say `MARGIN = c("x","y")` to be a bit more clear about what we are doing.
 
 In fact, this is what we will do right now. Note the dimensions of our dataset before the function is run:
 
 ```{r}
 
+#look at dimensions
 example_data
 
 ```
@@ -317,10 +386,12 @@ versus after:
 
 ```{r}
 
+#take the mean over time
 chl_a_mean <- st_apply(example_data, 
-                       c(1,2),
+                       c("x'","y"),
                        mean)
 
+#look at dimensions
 chl_a_mean
 
 ```
@@ -329,15 +400,22 @@ As we explained above, only the latitude and longitude dimensions remain. What w
 
 ```{r}
 
+#create a simple plot of the data
 tm_shape(chl_a_mean) +
-  tm_raster(col.legend = tm_legend(reverse = T))
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black")
 
 ```
 
-Congratulations, using this method we now have a way of aggregating our data - i.e. by getting the mean of all the data into a single spatial layer. But more importantly we now have a very good conceptual understanding of our data, and we also know how we would apply some really complicated functions across different dimensions.
+Congratulations, using this method we now have a way of aggregating our data - i.e. by getting the mean of all the data into a single spatial layer. But more importantly we now have a very good conceptual understanding of our data, and we also know how we would apply some really complicated functions across different dimensions. This is extremely useful when you move on to more in depth spatial analysis.
 
 :::{.callout-note}
-The `st_apply()` function is not limited to just the `mean()` function, or even just simple functions at all. It can take in any custom function that you write - provided it has been written to work with matrices. For example, you could run the `min()` function to get a map that shows the min value at each cell, or if your data has spectral bands you could write a function to calculate the NDVI value for a vegetation assessment.
+The `st_apply()` function is not limited to just the `mean()` function, or even just simple functions at all. It can take in any custom function that you write - provided it has been written to work with matrices. For example, you could run the `min()` function to get a map that shows the min value at each cell, or if your data has spectral bands you could write a function to calculate the NDVI value for a vegetation assessment. The possibilities are endless!
 :::
 
 ### aggregate()
@@ -347,22 +425,41 @@ As noted earlier, the `aggregate()` function is a much simpler method for aggreg
  1. X (the stars object),
  2. by, and
  3. FUN (the function to apply)
+ 4. ... (additional arguments such as na.rm = T)
  
-Again, arguments 1 and 3 are self explanatory, but the second argument is not. The "by" argument takes either an sf object (a spatial object) to do spatial aggregation, or a vector with time values to do temporal aggregation. Note that in this case we have less control over the exact dimension we want to aggregate (e.g. we can specify only longitude), but we also can't combine the space and time dimensions like we did above.
+Again, arguments 1 and 3 are self explanatory, but the second argument is not. The "by" argument takes either an sf object (a spatial object) to do spatial aggregation, or a vector of grouping values. The sf object is fairly simple, it acts similar to a mask - anything inside the object is part of the group, anything outside is not. The vector is a bit more flexible, it could be a vector of time values - for temporal aggregation, or it could be a vector of latitude values for spatial aggregation, or a vector of longitude values for spatial aggregation. What it **can't** be is more than one of those things, if you want a combination you must use the `st_apply()` method. To be fair, I cannot think of a single reason why you would want to supply a lat/long value for aggregation this way when st_apply is so much better, so we will effectively treat the "by" argument as either an sf object, or a time vector.
 
 Lets first demonstrate this with a spatial object:
 
 ```{r}
 
-test <- aggregate(st_transform(example_data, "EPSG:7844"),
-                  dt_region,
-                  mean)
+#demonstrate the aggregate function with an sf object
+agg_example <- aggregate(st_transform(example_data, "EPSG:7844"),
+                         dt_region,
+                         mean,
+                         na.rm = T)
 
-tm_shape(test[,,,1]) + tm_polygons(fill = "Chl_a_sum")
+#create a simple plot of the data
+tm_shape(agg_example[,,1]) +
+  tm_polygons(fill = "Chla", 
+              fill.scale = tm_scale_intervals(n = 6,
+                                              values = my_pal,
+                                              label.format = list(digits = 2)),
+              fill.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black")
 
 ```
 
-Before following up with a temporal vector:
+Which is kind of interesting as we can see that there must be a slight overlap between land and marine for those land polygons to contain values. However, generally I find I don't use this method all that often - despite really wanting to find reasons too.
+
+Of course, the other options is the temporal vector. What I have done here is; 
+
+ 1. Get a vector of all the time layers,
+ 2. Drop the time and day off each layer (keeping only month and year),
+ 3. Extracted the unique year-month values,
+ 3. Provided this as the vector - effectively grouping by month and year
 
 ```{r}
 
@@ -373,25 +470,56 @@ all_times <- st_get_dimension_values(example_data, "time")
 unique_months <- unique(floor_date(all_times, unit = "month"))
 
 #this give us a vector the same length as the number of data layers. e.g. month information is repeated
-test2 <- aggregate(example_data,
-                   by = unique_months,
-                   mean)
+agg_example_2 <- aggregate(example_data,
+                           by = shifted_dates,
+                           mean,
+                           na.rm = T)
 
 ```
 
-However due to weird bugs we have to use the base R mapping tools to visualise the output of this:
+However due to weirdness inside the function before we can visualise the output we need to now fix the dimension values as they are out of order. Specifically, after the aggregation they are:
 
 ```{r}
 
-plot(test2)
+#look at the dimensions of the object
+dim(agg_example_2)
 
 ```
 
-I haven't been able to rectify the issue around mapping these outputs with tmap, so i suppose there are two options a) use a different mapping package, or b) go back to using the `st_apply()` method. Personally I don't like the base R mapping, so that's fine I didn't want to use `aggregate()` anyway, I'll just go back to using `st_appy()` good thing I spent all that time explaining it.
+While we need them to be:
 
-## Aggregation Doing
+```{r}
 
-Now we know how to aggregate our data we need to aggregate our data in a useful way. Unfortunately the single layer we aggregated to above doesn't cut it. It returns an annual overview that doesn't really tell us too much other than what locations have consistently higher chlorophyll a. No, instead I want to learn something about seasonal or monthly trends. To do this we need to provide some kind of indication to `st_apply()` that we want multiple groups.
+#reorder dimensions
+agg_example_2 <- aperm(agg_example_2, c("x", "y", "time"))
+
+#look at dimensions
+dim(agg_example_2)
+
+```
+
+Once reordered, we can then visualise just fine:
+
+```{r}
+
+#create a simple plot of the data
+tm_shape(agg_example_2) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black")
+
+```
+
+And look at that, we now have 12 layers with monthly mean concentration values, cool!!
+
+
+## Layer Aggregation In Practice
+
+Now we know how to aggregate our data we need to aggregate our data in a useful way. Unfortunately the single layer we aggregated to above doesn't cut it. It returns an annual overview that doesn't really tell us too much other than what locations have consistently higher chlorophyll a. No, instead we want to learn something about seasonal or monthly trends. To do this we need to provide some kind of indication to `st_apply()` that we want multiple groups.
 
 ```{r}
 
@@ -412,17 +540,32 @@ time_table <- time_table |>
   
 
 
-map_out_test <- map2(time_table$MinIndex, time_table$MaxIndex, function(x,y) {
+map_out_test <- map2(time_table$MinIndex, time_table$MaxIndex, function(a,b) {
   
-  st_apply(chl_a_sum_dry_tropics[,,,,x:y],
+  st_apply(example_data[,,,a:b],
            MARGIN = 1:2,
            FUN = mean,
+           na.rm = T,
            keep = T)
        
 })
   
 #bind the output into a single stars object. Note there are two "c"s here. The first (left) one binds the args. The second (right one) provides the args (list of stars object) plus the final argument (along = "time") which tells the first c to bind along a new dimension.
 full_out <- do.call(c, c(map_out_test, along = "time"))
+
+```
+
+```{r}
+
+#create a simple plot of the data
+tm_shape(full_out) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black")
 
 ```
 

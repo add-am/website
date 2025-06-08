@@ -275,11 +275,11 @@ ggplot(example_data_subset) +
 
 ```
 
-Awesome, right away we can see that it is likely that the values dip down towards the end of the graph before suddenly ticking back up. Note that this might be a product of the random sampling, but that is highly unlikely.
+Awesome, right away we can see that there appears to be a downtrend in concentration values around the middle of the time series before the values then increase again towards the end of the graph. It should be noted that it is theoretically possible this trend is a product of the random sampling, but that is highly unlikely.
 
 ## Additional Visuals
 
-Something that will help us determine how the data trends over time would be a nice line that follows the daily mean. We will calculate this line using the full dataset to make sure of the trend we spotted above.
+Something that will help us determine with greater precision how the data trends over time, would be a nice line that follows the daily mean. We will calculate this line using the full dataset to make sure of the trend we spotted above.
 
 ```{r}
 
@@ -303,7 +303,7 @@ ggplot() +
 
 ```
 
-This line confirms that the values do indeed decrease towards the end of the graph before suddenly gaining again, but the line is a bit ugly no? A common replacement in this scenario is to use a Generalized Additive Model (GAM) which creates a smoothing spline that also reveals trends but is not so harsh. Noting that the GAM makes use of the multiple samples per day to acheive the desired results: 
+This line confirms that the values do indeed decrease towards the middle of the time series before increasing again towards the end of the graph, but the line is a bit ugly no? A common replacement in this scenario is to use a Generalized Additive Model (GAM) which creates a smoothing spline that also reveals trends but is not so harsh. Noting that the GAM makes use of the multiple samples per day to achieve the desired results:  
 
 ```{r}
 
@@ -352,7 +352,7 @@ ggplot() +
 
 ```
 
-As expected, the smoothed GAM line fluctuates above and below the annual mean. You might initially think that the GAM line goes waaaay below the mean towards the end of the plot and that surely the mean isn't correct, but remember this is all visualised with a log10 y axis.
+As expected, the smoothed GAM line fluctuates above and below the annual mean. You might initially think that the GAM line goes waaaay below the mean compared to how much it goes above the mean and that surely the mean isn't correct, but remember this is all visualised with a log10 y axis.
 
 The next thing I would like to add is some sort of visual cue to signify season. In the Townsville region where we are currently looking at the data there are only two season; "wet" and "dry". This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred falling across all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef - nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.
 
@@ -382,7 +382,9 @@ ggplot() +
 
 ```
 
-There is only one more thing I would like to add to this plot, and it is mainly due to personal preference. But in this case, I would like to overlay a violin plot to further highlight the distribution of the data we are dealing with.
+It is interesting to see that there is a clear relationship visible between season and chlorophyll a concentration. This graph suggests there is a sort of "recharge" and "use" cycle occurring. Where chlorophyll a reach a maximum concentration right after the end of the wet season, before being "used up" over the dry season and requiring a "recharge" by the following wet season.
+
+There is only one more thing I would like to add to this plot, and it is mainly due to personal preference. I would like to overlay a violin plot to further highlight the distribution of the data we are dealing with. Specifically, it will highlight any regions of the plot in which large amounts of data are concentrated, as well as any spots that are particularly skewed. 
 
 ```{r}
 
@@ -420,11 +422,8 @@ ggplot() +
 
 ```
 
-And there you have fairly nice looking singular dot plot, it contains a heck of a lot of information without being too crowed (in my opinion). So extensions you could play around with for this plot could be downloading several years of data and faceting by year, comparing different water quality indicators, or even comparing different locations around the reefs.
+And there you have it, a fairly nice looking singular dot plot. It contains a heck of a lot of information without being too crowed (in my opinion). Some extensions you could play around with for this plot could be downloading several years of data and faceting by year, comparing different water quality indicators, or even comparing different locations around the reefs.
 
 # Caveats
 
 You may find that the visuals in these plots are not for you, that's okay! Just because I say they look good doesn't mean you have to think that. Play around with colours, do a deep dive on [ggplot2](https://ggplot2.tidyverse.org/) options, experiment with your own ideas and find a style that works for you. There are also plenty of guide around design rules if you are particularly interested, such as this one by [Tableau](https://www.tableau.com/visualization/data-visualization-best-practices)
-
-
-

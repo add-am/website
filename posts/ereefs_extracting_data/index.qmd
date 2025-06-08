@@ -697,9 +697,45 @@ extracted_data_multi_day <- read_ncdf(input_file,
 #view the data
 extracted_data_multi_day
 
+#drop the depth dimension
+extracted_data_multi_day <- extracted_data_multi_day[drop = TRUE]
+
+#save the object
+write_stars(extracted_data_multi_day, "multi_day_data.nc")
+
 ```
 
 And Voila, a multi-day dataset.
+
+# Read Data Back In 
+
+As a precaution it is always a good idea to read your data back in to the environment to make sure everything works just fine. You'll be glad you did because there is actually a small quirk I have found where a time dimension with more than 1 value gets read back in as an attribute.
+
+```{r}
+
+multi_day_data <- read_stars("multi_day_data.nc")
+
+multi_day_data
+
+```
+
+I'm not sure why this happens, and it seems to also happen with the practice datasets provided with the `stars` package, so I am going to assume it is intended behavior. The fix is to grab a vector of the time dimension values before you save, then "merge" the attributes together to recreate the time dimension, and update the dimension values with the vector you got before saving. You will also have to update the attribute name again.
+
+```{r}
+
+#get vector of time values
+time_vals <- st_get_dimension_values(extracted_data_multi_day, "time")
+
+#merge "attributes" (time) back together
+multi_day_data <- merge(multi_day_data)
+
+#update time dimension values and names, then update the attribute name
+multi_day_data <- multi_day_data |> 
+  st_set_dimensions(3, time_vals,
+                    names = c("x", "y", "time")) |> 
+  setNames("Chla")
+
+```
 
 # Caveats
 
