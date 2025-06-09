@@ -27,7 +27,7 @@ sf_use_s2(FALSE)
 
 # Introduction
 
-In this blog we are going to learn how to create some visually interesting plots in R. The package we are going to be using is ggplot2, and the data we are going to be using is from eReefs. If you are interested in getting an exact copy of the data I recommend you check out my other blog; [The Extraction of Highly Specialised Modeled Data from eReefs](../ereefs_extracting_data/index.qmd), however you can still follow along just fine using your own data. Once you have completed this blog, I recommend you check out my blog about [Mapping eReefs Data](../ereefs_mapping_data/index.qmd).
+In this blog we are going to learn how to create some visually interesting plots in R. The package we are going to be using is ggplot2, and the data we are going to be using is from eReefs. If you are interested in getting an exact copy of the data I recommend you check out my other blog; [The Extraction of Highly Specialised Modeled Data from eReefs](../ereefs_extracting_data/index.qmd), however you can still follow along just fine using your own data if it shares a similar format. Once you have completed this blog, I also highly recommend you check out my blog about [Mapping eReefs Data](../ereefs_mapping_data/index.qmd), as this blog uses exactly the same dataset and explores its' spatial aspects.
 
 # Data
 
@@ -37,7 +37,7 @@ In this blog we are going to learn how to create some visually interesting plots
 #| code-fold: TRUE
 
 #if our csv does not exists, create it
-if(!file.exists("example_data.csv")){
+if(!file.exists("example_data.nc")){
 
   #read in the dry tropics region dataset and start with a lat/long crs
   dt_region <- st_read("dt_region.gpkg") |> 
@@ -118,69 +118,103 @@ if(!file.exists("example_data.csv")){
   #drop dimensions with only 1 value
   reg_grid_cropped_data <- reg_grid_cropped_data[drop = TRUE]
   
-  #convert data to a simple feature object
-  sf_data <- st_as_sf(reg_grid_cropped_data, as_points = F, merge = F)
+  #save the data 
+  write_stars(reg_grid_cropped_data, "example_data.nc", driver = "netCDF")
   
-  #drop the geometry column from the data
-  sf_data <- sf_data |>
-    st_drop_geometry()
-  
-  #add dates, for some reason they get dropped during the conversion to an sf object
-  target_dates <- as.character(st_get_dimension_values(reg_grid_cropped_data, "time"))
-    
-  #assign the dates to the new data
-  colnames(sf_data) <- target_dates
-    
-  #pivot the data longer
-  sf_data <- sf_data |> 
-    pivot_longer(cols = everything(), 
-                 names_to = "Date", 
-                 values_to = "Values")
-    
-  #save the data to file
-  write_csv(sf_data, "example_data.csv")
+  #get vector of time values and save them for later
+  saveRDS(st_get_dimension_values(reg_grid_cropped_data, "time"), file = "time_vector.rds")
   
 }
 
 ```
 
-The first thing we want to do is load in the example data that we are going to use for this blog.
+The first thing we want to do is load in the example data that we are going to use for this blog. This data comes in a raster format, and was extracted from eReefs. There are few steps to loading it in proper - these are explained in more detail in my other blog.
 
 ```{r}
 #| output: FALSE
 
-#read in our example data
-example_data <- read_csv("example_data.csv")
+#load in the example data
+example_data <- read_stars("example_data.nc")
+
+#load vector of time values
+time_vals <- readRDS("time_vector.rds")
+
+#merge "attributes" (time) back together
+example_data <- merge(example_data)
+
+#update time dimension values and names
+example_data <- example_data |> 
+  st_set_dimensions(3, time_vals,
+                    names = c("x", "y", "time"))
+  
+#then update the attribute name
+example_data <- setNames(example_data, "Chla")
 
 ```
 
-This data has `r dim(example_data)[1]` rows and `r dim(example_data)[2]` columns. The column names are `r colnames(example_data)[1]` and `r colnames(example_data)[2]`:
+## Converting to Tabular Format
+
+Once we have the raster data we then need to convert it to a tabular format so it can be used by our `ggplot2` functions. There is a very handy function for this called `st_as_sf()` from the `stars` package that converts stars objects into sf objects. Sf objects are essentially tables with an extra column for spatial information, we can then convert the sf object to a "normal" table by simply removing the column with the extra spatial information.
+
+:::{.callout-note}
+Sf objects (from the `sf` package), and stars objects (from the `stars` package) are designed to work together as the packages were written by the same author. Thank god for that guy right!
+:::
+
+The `st_as_sf()` function has a few key arguments;
+
+ - x (this is the stars object)
+ - as_points (should each raster cell become a polygon (F) or a point (T)) - I usually prefer polygons
+ - merge (should cells with equal values be merged? Yes (T) or No (F)) - I usually say no, as this can mess with statistics based on cell count
+ - long (should the table be wide or long) - ggplot loves long data, so I usually set this to TRUE
+
+```{r}
+
+#convert data to a simple feature object
+sf_data <- st_as_sf(example_data, as_points = F, merge = F, long = T)
+  
+#drop the geometry column from the data
+sf_data <- sf_data |>
+  st_drop_geometry()
+
+```
+
+## Exploring the Data
+
+Okay, the data has been loaded in, and converted to tabular format. Let's take a quick look at what we are dealing with. This data has `r dim(example_data)[1]` rows and `r dim(example_data)[2]` columns. The column names are `r colnames(example_data)[1]` and `r colnames(example_data)[2]`:
 
 ```{r}
 
 #view the first few rows of the data
-head(example_data)
+head(sf_data)
 
 ```
 
-If we ordered this data by date we would see that there are several hundred rows of data that belong to the exact same date and time. This is because the original source of this data was a spatial file - it had a grid of values for each date:
+If we ordered this data by date we would see that there are several hundred rows of data that belong to the exact same date and time. This is because the original source of this data was a spatial file - it had a grid of values for each date and time:
 
 ```{r}
 
 #order the first few rows by date
-head(arrange(example_data, Date))
+head(arrange(sf_data, Date))
 
 ```
 
-The value column is the concentration of chlorophyll a in the water column, measured in micrograms per litre. Lets update that.
+The value column is the concentration of chlorophyll a in the water column, measured in micrograms per litre. Let's update that.
 
 ```{r}
 
 #rename the data column
-example_data <- rename(example_data, "Chla (ug/L)" = "Values")
+sf_data <- rename(sf_data, "Chla (ug/L)" = "Chla")
+
+```
+
+And to keep things consistent we will capitalise "Time" for the time column.
+
+```{r}
+
+sf_data <- rename(sf_data, "Time" = "time")
 
 #view the first few rows of data
-head(example_data)
+head(sf_data)
 
 ```
 
@@ -204,7 +238,7 @@ However what we don't know is about the distribution of the data. Below is a his
 ```{r}
 
 #create a basic histogram plot of the data
-ggplot(example_data) +
+ggplot(sf_data) +
   geom_histogram(aes(x = `Chla (ug/L)`), 
                  bins = 150,
                  fill = "#00252A") +
@@ -217,7 +251,7 @@ Clearly this data is heavily right skewed. Although we wont be doing any statist
 ```{r}
 
 #create a histogram plot of the data on a log10 scale
-ggplot(example_data) +
+ggplot(sf_data) +
   geom_histogram(aes(x = `Chla (ug/L)`), 
                  bins = 150,
                  fill = "#8E3B46") +
@@ -235,7 +269,7 @@ In its most basic form here is a dot plot:
 ```{r}
 
 #creat a basic dot plot of the data
-ggplot(example_data) +
+ggplot(sf_data) +
   geom_point(aes(x = Date, y = `Chla (ug/L)`), 
              color =  "#E6AA04") +
   scale_y_log10() +
@@ -257,7 +291,7 @@ To do our sub-setting we will use the `slice_sample()` function. To ensure that 
 ```{r}
 
 #get a random subset of data, ensuring an equal sample is taken from each day
-example_data_subset <- example_data |> 
+sf_data_subset <- sf_data |> 
   group_by(Date) |> 
   slice_sample(n = 150) |> 
   ungroup()
@@ -267,7 +301,7 @@ example_data_subset <- example_data |>
 ```{r}
 
 #creat a basic dot plot of the data
-ggplot(example_data_subset) +
+ggplot(sf_data_subset) +
   geom_point(aes(x = Date, y = `Chla (ug/L)`), 
              color =  "#E6AA04") +
   scale_y_log10() +
@@ -284,17 +318,17 @@ Something that will help us determine with greater precision how the data trends
 ```{r}
 
 #calculate a daily mean value
-example_data_daily_mean <- example_data |> 
+sf_data_daily_mean <- sf_data |> 
   group_by(Date) |> 
   summarise(`Chla (ug/L)` = mean(`Chla (ug/L)`))
 
 
 #create a basic dot plot plus daily mean line
 ggplot() +
-  geom_point(data = example_data_subset, 
+  geom_point(data = sf_data_subset, 
              aes(x = Date, y = `Chla (ug/L)`), 
              color = "#E6AA04") +
-  geom_line(data = example_data_daily_mean, 
+  geom_line(data = sf_data_daily_mean, 
             aes(x = Date, y = `Chla (ug/L)`), 
             color = "#00252A",
             lwd = 1) +
@@ -309,10 +343,10 @@ This line confirms that the values do indeed decrease towards the middle of the 
 
 #create a basic dot plot plus GAM line
 ggplot() +
-  geom_point(data = example_data_subset, 
+  geom_point(data = sf_data_subset, 
              aes(x = Date, y = `Chla (ug/L)`), 
              color = "#E6AA04") +
-  geom_smooth(data = example_data,
+  geom_smooth(data = sf_data,
               aes(x = Date, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
@@ -328,20 +362,20 @@ Something else of interest with time series data is how things are doing relativ
 ```{r}
 
 #calculate group mean to use for the yintercept line from the full dataset
-annual_mean <- example_data |>
+annual_mean <- sf_data |>
   summarise(`Mean Chla (ug/L)` = mean(`Chla (ug/L)`, na.rm = T)) |> 
   as.numeric() |> 
   round(4)
 
 #create a more sophisticated plot
 ggplot() +
-  geom_point(data = example_data_subset, 
+  geom_point(data = sf_data_subset, 
              aes(x = Date, y = `Chla (ug/L)`), 
              color = "#E6AA04") +
   geom_hline(yintercept = annual_mean,
              colour = "#628395",
              lwd = 1.3) +
-  geom_smooth(data = example_data,
+  geom_smooth(data = sf_data,
               aes(x = Date, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
@@ -359,19 +393,19 @@ The next thing I would like to add is some sort of visual cue to signify season.
 ```{r}
 
 #assign either the wet or dry season to each row of data
-example_data_subset <- example_data_subset |> 
+sf_data_subset <- sf_data_subset |> 
   mutate(Season = case_when(month(Date) > 4 & month(Date) < 11 ~ "Dry", T ~ "Wet"))
   
 #create a more sophisticated plot
 ggplot() +
-  geom_point(data = example_data_subset, 
+  geom_point(data = sf_data_subset, 
              aes(x = Date, y = `Chla (ug/L)`, 
                  color = Season)) +
   geom_hline(yintercept = annual_mean,
              colour = "#628395",
              lwd = 1.3) +
   scale_color_manual(values = c("#E6AA04", "#8E3B46")) +
-  geom_smooth(data = example_data,
+  geom_smooth(data = sf_data,
               aes(x = Date, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
@@ -389,29 +423,29 @@ There is only one more thing I would like to add to this plot, and it is mainly 
 ```{r}
 
 #mutate the date column back into an actual date variable
-example_data_subset <- example_data_subset |> 
+sf_data_subset <- sf_data_subset |> 
   mutate(Date = as.Date(Date))
 
 #do the same for the full dataset
-example_data <- example_data |> 
+sf_data <- sf_data |> 
   mutate(Date = as.Date(Date))
 
 #create a more sophisticated plot
 ggplot() +
-  geom_point(data = example_data_subset, 
+  geom_point(data = sf_data_subset, 
              aes(x = Date, y = `Chla (ug/L)`, 
                  color = Season)) +
   geom_hline(yintercept = annual_mean,
              colour = "#628395",
              lwd = 1.3) +
   scale_color_manual(values = c("#E6AA04", "#8E3B46")) +
-  geom_smooth(data = example_data,
+  geom_smooth(data = sf_data,
               aes(x = Date, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
               color = "#00252A",
               se = F) +
-  geom_violin(data = example_data_subset,
+  geom_violin(data = sf_data_subset,
               aes(x = Date, y = `Chla (ug/L)`),
               alpha = 0.4, 
               color = "Black") +

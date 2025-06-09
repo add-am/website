@@ -32,11 +32,10 @@ In this blog post I'd like to cover the essentials of extracting data from the e
 The goal today is to learn how to:
 
  1. Extract data from eReefs - a surprisingly hard thing to do
- 2. That's it - the data extraction section is already going to make this a long post.
+ 2. Save the data to file
+ 3. That's it - the data extraction section is already going to make this a long post.
  
-:::{.callout-note}
-If you read this blog and want to learn what to do once you have the data, make sure to check out these two additional blogs that explore [plotting](ereefs_plotting_data/index.qmd) and [mapping](ereefs_mapping_data/index.qmd) eReefs data.
-:::
+There are lots of things we can do once we have got the data, some of these such as creating [maps](ereefs_mapping_data/index.qmd), or converting the data to a tabular format and creating [plots](ereefs_plotting_data/index.qmd) are explored in my other blogs. Each of these blogs pick up right where this blog leaves off, and details exactly how you will need to transform and manipulate the data to achieve what you want.  In particular, the [mapping](ereefs_mapping_data/index.qmd) blog covers how to spatially and/or temporarily aggregate raster data, whilst the [plotting](ereefs_plotting_data/index.qmd) blog focuses more on how to conver raster data into a more familar table, and the things you can do from there.
 
 # Extracting Data
 
@@ -653,26 +652,6 @@ tm_shape(reg_grid_cropped_data) +
 
 Thus actually cropping the data to the bounding box of our target area, and create a map with significantly few NA cells, specifically the curvilinear version has `r sum(is.na(cropped_data_example_1[[1]]))` NA values, and the regular grid version has `r sum(is.na(cropped_data_example_2[[1]]))` NA values - a difference of `r sum(is.na(cropped_data_example_1[[1]])) - sum(is.na(cropped_data_example_2[[1]]))`
 
-# Save Data
-
-I think all that is left now is to save the data, which is done using `write_stars()`. However there is one little trick to remember here, the `write_stars()` function only expects either a 2D (x,y) or a 3D (x,y,time/band) object - it does not support 4D objects (x,y,depth, time) and it also does not support **empty or redundant dimensions** i.e. those with only one layer. If you try to save a 4D object, or an object with a single time step or depth layer the function will fail. To fix this we can simply drop dimensions with 1 value first.
-
-```{r}
-
-#drop dimensions with only 1 value
-reg_grid_cropped_data <- reg_grid_cropped_data[drop = TRUE]
-
-#save the object
-write_stars(reg_grid_cropped_data, "regular_grid_chla.nc")
-
-#FYI this also works on curvilinear data just fine
-curv_lini_cropped_data <- curv_lini_cropped_data[drop = TRUE]
-
-#save the object
-write_stars(curv_lini_cropped_data, "curvilinear_grid_chla.nc")
-
-```
-
 # Bonus Round
 
 If I haven't put you into a coma yet I have a small bonus round for you; extracting multiple years. I will really quickly blast through this as it is not particularly different. The only changes is to supply extract layers to "count" along in the dimensions request:
@@ -694,22 +673,40 @@ extracted_data_multi_day <- read_ncdf(input_file,
                                       var = "Chl_a_sum", 
                                       ncsub = our_dimensions_request)
 
+```
+
+And voila, a multi-day dataset.
+
+```{r}
+
 #view the data
 extracted_data_multi_day
 
-#drop the depth dimension
-extracted_data_multi_day <- extracted_data_multi_day[drop = TRUE]
+```
+
+# Save Data
+
+I think all that is left now is to save the data, which is done using `write_stars()`. However there is one little trick to remember here, the `write_stars()` function only expects either a 2D (x,y) or a 3D (x,y,time/band) object - it **does not** support 4D objects (x,y,depth, time) and it also does not support **empty or redundant dimensions** i.e. those with only one layer. If you try to save a 4D object, or an object with a single time step or depth layer the function will fail. To fix this we can simply drop dimensions with 1 value first.
+
+```{r}
+
+#drop dimensions with only 1 value
+reg_grid_cropped_data <- reg_grid_cropped_data[drop = TRUE]
 
 #save the object
-write_stars(extracted_data_multi_day, "multi_day_data.nc")
+write_stars(reg_grid_cropped_data, "regular_grid_chla.nc")
+
+#FYI this also works on curvilinear data just fine
+curv_lini_cropped_data <- curv_lini_cropped_data[drop = TRUE]
+
+#save the object
+write_stars(curv_lini_cropped_data, "curvilinear_grid_chla.nc")
 
 ```
 
-And Voila, a multi-day dataset.
-
 # Read Data Back In 
 
-As a precaution it is always a good idea to read your data back in to the environment to make sure everything works just fine. You'll be glad you did because there is actually a small quirk I have found where a time dimension with more than 1 value gets read back in as an attribute.
+As a precaution it is always a good idea to read your data back in to the environment to make sure everything works just fine. You'll be glad you did because there is actually a small quirk I have found where a time dimension with more than 1 value gets read back in as an attribute (no idea why).
 
 ```{r}
 
@@ -736,6 +733,13 @@ multi_day_data <- multi_day_data |>
   setNames("Chla")
 
 ```
+
+# Next Steps
+
+That concludes this post today. If would like to know whats next, I would recommend checking out my other two blog posts that make use of this data: 
+
+ - The [mapping](ereefs_mapping_data/index.qmd) blog, which focuses on spatial manipulation, and
+ - The [plotting](ereefs_plotting_data/index.qmd) blog, which transforms data into a friendly tabular format
 
 # Caveats
 

@@ -388,7 +388,7 @@ versus after:
 
 #take the mean over time
 chl_a_mean <- st_apply(example_data, 
-                       c("x'","y"),
+                       c("x","y"),
                        mean)
 
 #look at dimensions
@@ -413,6 +413,87 @@ tm_shape(chl_a_mean) +
 ```
 
 Congratulations, using this method we now have a way of aggregating our data - i.e. by getting the mean of all the data into a single spatial layer. But more importantly we now have a very good conceptual understanding of our data, and we also know how we would apply some really complicated functions across different dimensions. This is extremely useful when you move on to more in depth spatial analysis.
+
+Unfortunately the single layer we aggregated to above doesn't cut it. It returns an annual overview that doesn't really tell us too much other than what locations have consistently higher chlorophyll a. No, instead we want to learn something about seasonal or monthly trends. To do this we need to provide some kind of indication to `st_apply()` that we want multiple groups.
+
+This is achieved using the following steps:
+
+ 1. Extract a table that contains the date and time of each layer
+ 2. Group the individual layers by month and find the first and last layer per month:
+ 
+```{r}
+
+#extract a table that contains the date and time of each layer
+time_table <- data.frame(DateTime = st_get_dimension_values(example_data, "time"))
+
+#extract the year and month into their own columns, add a column that counts the row number
+time_table <- time_table |> 
+  mutate(Year = year(DateTime),
+         Month = month(DateTime),
+         RowId = row_number()) 
+
+#combine the year and month columns
+time_table <- time_table |> 
+  unite(YearMonth, "Year", "Month", sep = "_")
+  
+#group by the YearMonth column and get the min and max row index (layer number) for each month, order by index number
+time_table <- time_table |> 
+    group_by(YearMonth) |> 
+    summarise(MinIndex = min(RowId),
+              MaxIndex = max(RowId)) |> 
+    arrange(MinIndex)
+
+#visualise the data
+head(time_table)
+
+``` 
+ 
+ 3. Use `slice()` to extract all the layers per month
+ 4. Use `st_apply()` to apply the mean function to all the layers in the month
+ 5. Put this inside a `map2()` function to run the code for each month at the same time:
+
+```{r}
+
+#use map to work through each start-end index and use st_apply to apply the mean
+monthly_chla <- map2(time_table$MinIndex, time_table$MaxIndex, function(a,b) {
+  
+  #apply mean to the data slice
+  st_apply(slice(example_data, time, a:b),
+           MARGIN = c("x","y"), #using margin x and y to keep lat and long information
+           FUN = mean,
+           na.rm = T,
+           keep = T)
+       
+})
+
+```
+
+ 6. Combine the list output back into a single stars object:
+
+```{r}
+
+#bind the output into a single stars object. Note there are two "c"s here. The first (left) one binds the args. The second (right one) provides the args (list of stars object) plus the final argument (along = "time") which tells the first c to bind along a new dimension.
+monthly_chla <- do.call(c, c(monthly_chla, along = "time"))
+
+```
+
+Done! We can then visualise the data to confirm it worked:
+
+```{r}
+
+#create a simple plot of the data
+tm_shape(monthly_chla) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black")
+
+```
+
+Seems good to me! Although we would likely have to fix up those layer names/dates.
 
 :::{.callout-note}
 The `st_apply()` function is not limited to just the `mean()` function, or even just simple functions at all. It can take in any custom function that you write - provided it has been written to work with matrices. For example, you could run the `min()` function to get a map that shows the min value at each cell, or if your data has spectral bands you could write a function to calculate the NDVI value for a vegetation assessment. The possibilities are endless!
@@ -454,26 +535,14 @@ tm_shape(agg_example[,,1]) +
 
 Which is kind of interesting as we can see that there must be a slight overlap between land and marine for those land polygons to contain values. However, generally I find I don't use this method all that often - despite really wanting to find reasons too.
 
-Of course, the other options is the temporal vector. What I have done here is; 
-
- 1. Get a vector of all the time layers,
- 2. Drop the time and day off each layer (keeping only month and year),
- 3. Extracted the unique year-month values,
- 3. Provided this as the vector - effectively grouping by month and year
+Of course, the other options is the temporal vector. This actually has some handy short cuts where you can supply a vector of time values, or just a simple string like "months", or "5-days", etc. For our purposes we will use the string "months" which seems to work just fine:
 
 ```{r}
 
-#create a vector of times for each layer
-all_times <- st_get_dimension_values(example_data, "time")
-
-#change these times to only contain the year and month information, then extract unique values
-unique_months <- unique(floor_date(all_times, unit = "month"))
-
-#this give us a vector the same length as the number of data layers. e.g. month information is repeated
+#this aggregates data by month
 agg_example_2 <- aggregate(example_data,
-                           by = shifted_dates,
-                           mean,
-                           na.rm = T)
+                           by = "months",
+                           mean)
 
 ```
 
@@ -514,372 +583,5 @@ tm_shape(agg_example_2) +
 
 ```
 
-And look at that, we now have 12 layers with monthly mean concentration values, cool!!
-
-
-## Layer Aggregation In Practice
-
-Now we know how to aggregate our data we need to aggregate our data in a useful way. Unfortunately the single layer we aggregated to above doesn't cut it. It returns an annual overview that doesn't really tell us too much other than what locations have consistently higher chlorophyll a. No, instead we want to learn something about seasonal or monthly trends. To do this we need to provide some kind of indication to `st_apply()` that we want multiple groups.
-
-```{r}
-
-time_table <- data.frame(DateTime = st_get_dimension_values(example_data, "time"))
-
-time_table <- time_table |> 
-  mutate(Year = year(DateTime),
-         Month = month(DateTime),
-         RowId = row_number()) |> 
-  unite(LayerName, "Year", "Month", sep = "_")
-  
-  #group by LayerName and get the min and max row index (layer number) for each month, then reorder the dataframe by index
-  time_table <- time_table |> 
-    group_by(LayerName) |> 
-    summarise(MinIndex = min(RowId),
-              MaxIndex = max(RowId)) |> 
-    arrange(MinIndex)
-  
-
-
-map_out_test <- map2(time_table$MinIndex, time_table$MaxIndex, function(a,b) {
-  
-  st_apply(example_data[,,,a:b],
-           MARGIN = 1:2,
-           FUN = mean,
-           na.rm = T,
-           keep = T)
-       
-})
-  
-#bind the output into a single stars object. Note there are two "c"s here. The first (left) one binds the args. The second (right one) provides the args (list of stars object) plus the final argument (along = "time") which tells the first c to bind along a new dimension.
-full_out <- do.call(c, c(map_out_test, along = "time"))
-
-```
-
-```{r}
-
-#create a simple plot of the data
-tm_shape(full_out) +
-  tm_raster(col.scale = tm_scale_intervals(n = 6,
-                                           values = my_pal,
-                                           label.format = list(digits = 2)),
-            col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region) +
-  tm_polygons(fill = NULL,
-              col = "black")
-
-```
-
-## Maps
-
-With the plots completed we can move on to creating the monthly mean maps for each of the indicators. First we need to calculate monthly means for each indicator, then stitch the layer back into groups:
-
-```{r}
-#| label: map eReefs data p1
-
-#write a custom function that does each of the required steps to calculate the monthly values
-monthly_mean_data <- map(data_list, function(dataset){
-  
-  #get the list of "times" (dates) stored in the dataset (1 date per layer) and convert it into a dataframe
-  dates <- data.frame(DateTime = st_get_dimension_values(dataset, which = "time"))
-  
-  #extract the year and month and combine into a single unique name and add an index column
-  dates <- dates |> 
-    mutate(Year = year(DateTime),
-           Month = month(DateTime, label = T),
-           RowId = row_number()) |> 
-    unite(LayerName, "Year", "Month", sep = "_")
-  
-  #group by LayerName and get the min and max row index (layer number) for each month, then reorder the dataframe by index
-  dates <- dates |> 
-    group_by(LayerName) |> 
-    summarise(MinIndex = min(RowId),
-              MaxIndex = max(RowId)) |> 
-    arrange(MinIndex)
-  
-  #create a trackers for the objects that will be made
-  created_objects <- c()
-  
-  #loop over each of the unique names
-  for (i in unique(dates$LayerName)){
-  
-    #get the index numbers for the min and max layers from the table
-    min_layer <- dates |> filter(LayerName == i) |> select(MinIndex) |> as.numeric()
-    max_layer <- dates |> filter(LayerName == i) |> select(MaxIndex) |> as.numeric()
-    
-    #extract the month of data using the index numbers 
-    if (str_detect(names(dataset), "Secchi")){# if secchi: [attribute, i (lat), j (long), time] - no depth
-      
-      monthly_mean <- dataset[,,,min_layer:max_layer]
-    
-    } else {#otherwise [attribute, i (lat), j (long), k (depth), time]
-      
-      monthly_mean <- dataset[,,,,min_layer:max_layer]
-    }
-    
-    #and apply the mean function over the i,j dimensions (lat, long)
-    monthly_mean <- st_apply(monthly_mean, 1:2, FUN = mean, keep = TRUE)
-    
-    #assign the monthly_mean dataset to a new object
-    assign(glue("{i}"), monthly_mean)
-    
-    #create a vector that tracks all the names of the created objects
-    created_objects <- c(created_objects, glue("{i}"))
-  
-  }
-  
-  #combine each of the monthly layers into one new dataset ("mget" is "multiple get") and this will be the output of the function
-  dataset <- do.call(c, mget(created_objects))
-  
-})
-
-```
-
-Then we convert these stacks of monthly means into sf objects:
-
-```{r}
-#| label: map eReefs data p2
-
-monthly_mean_df <- map(monthly_mean_data, function(dataset){
-  
-  #extract the datasets into tables
-  dataset_df <- st_as_sf(dataset, as_points = F, merge = F)
-  
-  #pivot the tables longer to make them easier to work with, split the layer information into Financial Year and month, and order by Month
-  dataset_df <- dataset_df |> 
-    pivot_longer(cols = matches("\\d"), names_to = "Layer", values_to = "Value") |> 
-    separate(Layer, into = c("FinancialYear", "Month"), sep = "_", remove = F) |> 
-    mutate(Month = as.factor(Month),
-           Month = fct_relevel(Month, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", 
-                               "Mar", "Apr", "May", "Jun"))
-  
-  #return the object
-  return(dataset_df)
-  
-})
-
-
-```
-
-Next we set up the arguments that are going to vary for each map and each region.
-
-```{r}
-#| label: map eReefs data p3
-
-#create a list of arguments that we will use to inject the correct arguments per region
-args_per_region <- list("Position" = list("Dry Tropics" = c(0.01, 0.99),
-                                          "Wet Tropics" = c(0.77, 0.99),
-                                          "Mackay Whitsunday Isaac" = c(0.79, 0.99)),
-                        "FacetDim" = list("Dry Tropics" = 4,
-                                          "Wet Tropics" = 6,
-                                          "Mackay Whitsunday Isaac" = 4))
-
-#create a list of palettes to switch between for each indicator
-indicator_palettes <- c("brewer.greens", "-brewer.oranges", "-carto.ag_sunset", "brewer.blues")
-
-#create a function that will inject the correct arguments per indicator
-args_per_indicator <- function(x){
-
-  if (str_detect(names(monthly_mean_df)[[x]], "Turb|Nitri")){#if indicator is Turbidity or nitrites use a log scale
-    
-    tm_scale_continuous_log(values = indicator_palettes[x])
-    
-  } else {#otherwise, just use a linear scale
-    
-    tm_scale_continuous(values = indicator_palettes[x])
-    
-  }
-  
-}
-
-#create an function that produces the correct title
-map_name <- function(reg, x){
-  
-  #get the indicator currently being used
-  ind <- names(monthly_mean_df)[[x]]
-  
-  #detect if it should be a log scale or not
-  log <- if(str_detect(ind, "Turb|Nitri")){"(Log Scale)"} else {"(Linear Scale)"}
-  
-  #glue everything together to make the correct title
-  glue("{reg}, {ind}: {log}")
-  
-}
-
-```
-
-Facet maps of the monthly values can then be made:
-
-```{r}
-#| label: map eReefs data p4
-
-#mask reefs to the region we are currently looking at
-target_reefs <- st_intersection(reefs, st_union(target_marine_region))
-
-#for each sf dataframe in our list
-for (i in 1:length(monthly_mean_df)){
-  
-  #create the map
-  map <- tm_shape(qld) +
-    tm_polygons(fill = "#99B5B1",
-                col = "#7bba9d") +
-    tm_shape(target_land_region) +
-    tm_polygons(fill = "grey90", 
-                col = "black") +
-    tm_shape(monthly_mean_df[[i]]) +
-    tm_polygons(fill = "Value", 
-                fill.scale = args_per_indicator(i),
-                fill.legend = tm_legend(reverse = TRUE,
-                                        title = "", 
-                                        width = 2,
-                                        height = 5,
-                                        item.width = 0.2,
-                                        na.show = FALSE,
-                                        position = args_per_region[["Position"]][[proj_region]]),
-                                        
-                fill.free = T,
-                col_alpha = 0) +
-    tm_facets(by = "Month", 
-              ncol = args_per_region[["FacetDim"]][[proj_region]]) +
-    tm_shape(reefs) +
-    tm_borders(fill = "grey60",
-               fill_alpha = 0.2,
-               col = "grey60",
-               col_alpha = 0.4) +
-    tm_shape(target_reefs) +
-    tm_borders(fill = "grey60",
-               fill_alpha = 0.2,
-               col = "black",
-               col_alpha = 0.5) +
-    tm_shape(target_marine_region) +
-    tm_borders(col = "black") +
-    tm_shape(st_buffer(target_marine_region, 0.5), is.main = T) +
-    tm_borders(col = NULL,
-               fill = NULL) +
-    tm_layout(bg.color = "#C1DEEA") +
-    tm_title(text = map_name(proj_region, i),
-             size = 0.8)
-  
-  #extract a clean name for saving
-  indicator_name <- str_extract(names(data_list)[i], "^[^ ]+")
-
-  #and save
-  tmap_save(map, glue("{output_path}/plots/{region_lower}_{indicator_name}_map.png"))
-  
-}
-
-```
-
-Following this, we will make the same facet map except we will use a fixed scale for the maps.
-
-```{r}
-#| label: map eReefs data p5
-
-#mask reefs to the region we are currently looking at
-target_reefs <- st_intersection(reefs, st_union(target_marine_region))
-
-#for each sf dataframe in our list
-for (i in 1:length(monthly_mean_df)){
-  
-  #create the map
-  map <- tm_shape(qld) +
-    tm_polygons(fill = "#99B5B1",
-                col = "#7bba9d") +
-    tm_shape(target_land_region) +
-    tm_polygons(fill = "grey90", 
-                col = "black") +
-    tm_shape(monthly_mean_df[[i]]) +
-    tm_polygons(fill = "Value", 
-                fill.scale = if (i %in% c(3,4)){tm_scale_continuous_log(values = indicator_palettes[i])} #if Turbidity or nitrites use log scale
-                             else {tm_scale_continuous(values = indicator_palettes[i])}, #otherwise use linear scale
-                fill.legend = tm_legend(reverse = TRUE,
-                                        title = if (i == 3){glue("{names(data_list)[i]} (Log)")} #if log, write log
-                                                else {names(data_list)[i]}, #otherwise just write the indicator
-                                        na.show = FALSE), 
-                col_alpha = 0) +
-    tm_facets(by = "Month", ncol = if(proj_region == "Wet Tropics"){6}else{4}) +
-    tm_shape(reefs) +
-    tm_borders(fill = "grey60",
-               fill_alpha = 0.2,
-               col = "grey60",
-               col_alpha = 0.4) +
-    tm_shape(target_reefs) +
-    tm_borders(fill = "grey60",
-               fill_alpha = 0.2,
-               col = "black",
-               col_alpha = 0.5) +
-    tm_shape(target_marine_region) +
-    tm_borders(col = "black") +
-    tm_shape(st_buffer(target_marine_region, 0.5), is.main = T) +
-    tm_borders(col = NULL,
-               fill = NULL) +
-    tm_layout(bg.color = "#C1DEEA",
-              legend.position = tm_pos_out("right", "center"))
-  
-  #extract a clean name for saving
-  indicator_name <- str_extract(names(data_list)[i], "^[^ ]+")
-  #and save
-  tmap_save(map, glue("{output_path}/plots/{region_lower}_{indicator_name}_map_fixed_scale.png"))
-  
-}
-
-```
-
-## Tables
-
-Finally, we will create a table summarizing the key statistics we have found throughout this analysis. These tables will contain:
-
- - monthly mean values
- - annual mean values
-
-```{r}
-#| label: create summary table
-
-#create a folder to store all the data outputs
-dir.create(glue("{output_path}/tables/"))
-
-#read in the custom function to style tables
-source(here("functions/cond_form_tables.R"))
-
-#extract monthly and annual means
-summary_table <- raw_data_df |> 
-  group_by(Indicator) |> 
-  mutate(AnnualMeanValue = mean(Values, na.rm = T)) |> 
-  group_by(Indicator, Month, AnnualMeanValue) |> 
-  summarise(MonthlyMeanValue = mean(Values, na.rm = T)) |> 
-  ungroup() |> 
-  mutate(Month = month(Month, label = T),
-         Month = fct_relevel(Month, "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun")) |> 
-  arrange(Month)
-
-#pivot data wider into a reader friendly format
-summary_table_wide <- summary_table |> 
-  pivot_wider(names_from = Month, values_from = MonthlyMeanValue) |> 
-  relocate("AnnualMeanValue", .after = last_col()) |> 
-  mutate(across(where(is.numeric), ~round(.x, 2)))
-
-#save the table
-write_csv(summary_table_wide, glue("{output_path}/tables/{region_lower}_summary_table.csv"))
-
-#print the table in a visually appealing way
-cond_form_tables(summary_table_wide, header_rows = 1, landscape = F, score_colour = F) |> 
-  set_align(everywhere, everywhere, "center") |> 
-  set_valign(everywhere, everywhere, "middle")
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+And look at that, we now have 12 layers with monthly mean concentration values, which much less effort than `st_apply()`, cool! However do note that we also have much less control over this method.
 
