@@ -17,10 +17,8 @@ include-after-body: "../../html/html_footer.html" #This is our footer
 library(sf)
 library(stars)
 library(tmap)
-#library(ggplot2)
 library(tidyverse)
 library(ereefs)
-#library(scales)
 
 sf_use_s2(FALSE)
 
@@ -157,10 +155,6 @@ example_data <- example_data |>
 #then update the attribute name
 example_data <- setNames(example_data, "Chla")
 
-#read in the dry tropics region dataset that we will use for spatial context
-dt_region <- st_read("dt_region.gpkg") |> 
-  st_transform("EPSG:7844")
-
 ```
 
 # Analyse Data
@@ -229,14 +223,11 @@ tm_shape(example_data["Chla",,,1]) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
-            col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region, is.main = T) +
-  tm_polygons(fill = NULL,
-              col = "black")
+            col.legend = tm_legend(reverse = T))
 
 ```
 
-Not bad, and just to be clear - if we don't select just 1 time step we would get several maps:
+Not bad, the shape might seem a bit odd but this is a result of the boundaries we originally used to extract the data. (Check the [eReefs Extraction](../ereefs_extracting_data/index.qmd) blog if you are curious). And just to be clear - if we don't select just 1 time step we would get several maps:
 
 ```{r}
 
@@ -245,10 +236,7 @@ tm_shape(example_data["Chla",,,1:4]) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
-            col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region, is.main = T) +
-  tm_polygons(fill = NULL,
-              col = "black")
+            col.legend = tm_legend(reverse = T))
 
 ```
 
@@ -275,10 +263,7 @@ tm_shape(single_timestep) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
-            col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region, is.main = T) +
-  tm_polygons(fill = NULL,
-              col = "black")
+            col.legend = tm_legend(reverse = T))
 
 ```
 
@@ -301,9 +286,7 @@ tm_shape(slice_of_lat_and_time) +
                                            values = my_pal,
                                            label.format = list(digits = 2)),
             col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region, is.main = T) +
-  tm_polygons(fill = NULL,
-              col = "black")
+  tm_shape(dt_region, is.main = T)
 
 ```
 
@@ -405,10 +388,7 @@ tm_shape(chl_a_mean) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
-            col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region) +
-  tm_polygons(fill = NULL,
-              col = "black")
+            col.legend = tm_legend(reverse = T))
 
 ```
 
@@ -486,10 +466,7 @@ tm_shape(monthly_chla) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
-            col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region) +
-  tm_polygons(fill = NULL,
-              col = "black")
+            col.legend = tm_legend(reverse = T))
 
 ```
 
@@ -510,12 +487,16 @@ As noted earlier, the `aggregate()` function is a much simpler method for aggreg
  
 Again, arguments 1 and 3 are self explanatory, but the second argument is not. The "by" argument takes either an sf object (a spatial object) to do spatial aggregation, or a vector of grouping values. The sf object is fairly simple, it acts similar to a mask - anything inside the object is part of the group, anything outside is not. The vector is a bit more flexible, it could be a vector of time values - for temporal aggregation, or it could be a vector of latitude values for spatial aggregation, or a vector of longitude values for spatial aggregation. What it **can't** be is more than one of those things, if you want a combination you must use the `st_apply()` method. To be fair, I cannot think of a single reason why you would want to supply a lat/long value for aggregation this way when st_apply is so much better, so we will effectively treat the "by" argument as either an sf object, or a time vector.
 
-Lets first demonstrate this with a spatial object:
+Lets first demonstrate this with a spatial object, for this we are going to need to load in an sf object, so lets just use the one we originally used to extract the data:
 
 ```{r}
 
+#read in the dry tropics region dataset and update crs to projected cords
+dt_region <- st_read("dt_region.gpkg") |> 
+  st_transform("EPSG:7855")
+
 #demonstrate the aggregate function with an sf object
-agg_example <- aggregate(st_transform(example_data, "EPSG:7844"),
+agg_example <- aggregate(example_data,
                          dt_region,
                          mean,
                          na.rm = T)
@@ -526,10 +507,7 @@ tm_shape(agg_example[,,1]) +
               fill.scale = tm_scale_intervals(n = 6,
                                               values = my_pal,
                                               label.format = list(digits = 2)),
-              fill.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region) +
-  tm_polygons(fill = NULL,
-              col = "black")
+              fill.legend = tm_legend(reverse = T))
 
 ```
 
@@ -576,6 +554,44 @@ tm_shape(agg_example_2) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T))
+
+```
+
+And look at that, we now have 12 layers with monthly mean concentration values, which much less effort than `st_apply()`, cool! However it should be noted that we also have much less control over this method, for example if we had ver specific date ranges, or lat and long values it might be a better idea to use the `st_apply()` function.
+
+# Map The Data
+
+Okay so I know we have already mapped the data a bunch of times above, but I would like to explore the visuals just a little further before we round out this blog. Specifically, I would like to add some visual cues to provide a reference point. These include:
+
+ - The sf object that was initially used to extract the data
+ - An sf object for the main land
+ - An sf object for the coral reefs in the region
+
+Lets load in each of these in from file as I have prepared them earlier:
+
+```{r}
+
+#read in the dry tropics region dataset and update crs to projected cords
+dt_region <- st_read("dt_region.gpkg") |> 
+  st_transform("EPSG:7855")
+
+#read in the reefs dataset
+reefs <- st_read("reefs.gpkg")
+
+#read in the queensland border dataset
+qld <- st_read("qld.gpkg")
+
+```
+
+The first thing I'd like to explore is how a continuous scale looks:
+
+```{r}
+
+#create a simple plot of the data
+tm_shape(agg_example_2) +
+  tm_raster(col.scale = tm_scale_continuous(values = my_pal),
+                                           #label.format = list(digits = 2)),
             col.legend = tm_legend(reverse = T)) +
   tm_shape(dt_region) +
   tm_polygons(fill = NULL,
@@ -583,5 +599,51 @@ tm_shape(agg_example_2) +
 
 ```
 
-And look at that, we now have 12 layers with monthly mean concentration values, which much less effort than `st_apply()`, cool! However do note that we also have much less control over this method.
+Is that better? Hard to tell honestly. However I would then like to see if a log scale helps:
+
+```{r}
+
+#create a simple plot of the data
+tm_shape(agg_example_2) +
+  tm_raster(col.scale = tm_scale_continuous_log10(values = my_pal),
+            col.legend = tm_legend(reverse = T,
+                                   title = "Chla (ug/L)")) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black") +
+  tm_facets(nrow = 3) +
+  tm_layout(bg.color = "#C1DEEA",
+            legend.position = tm_pos_out("right", "center"))
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
