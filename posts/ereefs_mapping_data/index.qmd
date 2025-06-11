@@ -570,6 +570,7 @@ Okay so I know we have already mapped the data a bunch of times above, but I wou
 Lets load in each of these in from file as I have prepared them earlier:
 
 ```{r}
+#| output: FALSE
 
 #read in the dry tropics region dataset and update crs to projected cords
 dt_region <- st_read("dt_region.gpkg") |> 
@@ -595,7 +596,7 @@ By the way, if you wanted to learn more about mapping using these `tmap` functio
 tm_shape(qld) +
   tm_polygons(fill = "#99B5B1",
                 col = "#7bba9d") +
-  tm_shape(slice(agg_example_2, time, 1)) +
+  tm_shape(slice(agg_example_2, time, 1), is.main = T) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
@@ -621,7 +622,7 @@ I've created this map as a single layer so we can see the change a bit better, b
 tm_shape(qld) +
   tm_polygons(fill = "#99B5B1",
                 col = "#7bba9d") +
-  tm_shape(agg_example_2) +
+  tm_shape(agg_example_2, is.main = T) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
