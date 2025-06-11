@@ -187,14 +187,14 @@ Ignoring the fact that for both examples these aren't the most visually appealin
  - The arguments: `shadow = TRUE`, and `auto.placement = TRUE`, have been nested under the new argument `options`, which has its own helper function `opt_tm_text()`. (`auto.placement` has also been changed to `point.label`).    + 
     + Thus: `options = opt_tm_text(shadow = TRUE, point.label = TRUE)`
  - More helper functions have been added such as the afor mentioned `opt_tm_text()`, the various scale helpers `tm_scale_...`, and functions for positioning things such as `tm_pos_out`.
-    + I never used to really use the helper functions before this update, but they really do make things easier. For a deeper dive on these, check out my other blog post: [Making Beautiful Maps in R](../making_beauiful_maps_in_r/index.qmd)
+    + I never used to really use the helper functions before this update, but they really do make things easier. For a deeper dive on these, check out my other blog post: [Making Beautiful Maps in R](../making_beautiful_maps_in_r/index.qmd)
 
 # A Visually Appealing Map
 
 Okay lets be honest, I've been doing a lot of posturing without actually creating a map that is even remotely visually appealing. Thus, lets produce a map that is actually not half bad! Here is one I prepared earlier:
 
 :::{.callout-note}
-There is a lot of code that happens to produce this map, if you're interested in learning whats going on, I break it down in detail over in my other blog post: [Making Beautiful Maps in R](../making_beauiful_maps_in_r/index.qmd)
+There is a lot of code that happens to produce this map, if you're interested in learning whats going on, I break it down in detail over in my other blog post: [Making Beautiful Maps in R](../making_beautiful_maps_in_r/index.qmd)
 :::
 
 ![Beautiful Map of Netherlands](../making_beautiful_maps_in_r/final_map.png)
