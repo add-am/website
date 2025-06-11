@@ -2,7 +2,11 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/ereefs_extracting_data/index.html",
+      "/posts/ereefs_mapping_data/index.html",
+      "/posts/ereefs_plotting_data/index.html",
       "/posts/automated_output_organisation/index.html",
+      "/posts/shiny_a_web_app_built_in_r/index.html",
       "/posts/an_opinionated_dataframe_cleaner/index.html",
       "/posts/making_beautiful_maps_in_r/index.html",
       "/posts/tmap_migrating_to_v4/index.html",

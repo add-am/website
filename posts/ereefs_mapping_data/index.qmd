@@ -285,8 +285,7 @@ tm_shape(slice_of_lat_and_time) +
   tm_raster(col.scale = tm_scale_intervals(n = 6,
                                            values = my_pal,
                                            label.format = list(digits = 2)),
-            col.legend = tm_legend(reverse = T)) +
-  tm_shape(dt_region, is.main = T)
+            col.legend = tm_legend(reverse = T))
 
 ```
 
@@ -562,7 +561,7 @@ And look at that, we now have 12 layers with monthly mean concentration values, 
 
 # Map The Data
 
-Okay so I know we have already mapped the data a bunch of times above, but I would like to explore the visuals just a little further before we round out this blog. Specifically, I would like to add some visual cues to provide a reference point. These include:
+Okay so I know we have already mapped the data a bunch of times above, but I would like to explore the visuals just a little further before we round out this blog. Specifically, I would like to add some visual cues to provide a point of reference. These include:
 
  - The sf object that was initially used to extract the data
  - An sf object for the main land
@@ -584,66 +583,88 @@ qld <- st_read("qld.gpkg")
 
 ```
 
-The first thing I'd like to explore is how a continuous scale looks:
+Following this, lets slap each of those onto the data.
+
+:::{.callout-note}
+By the way, if you wanted to learn more about mapping using these `tmap` functions, you can check out my blog dedicated to the functions [here](../making_beautiful_maps_in_r/index.qmd)
+:::
 
 ```{r}
 
 #create a simple plot of the data
-tm_shape(agg_example_2) +
-  tm_raster(col.scale = tm_scale_continuous(values = my_pal),
-                                           #label.format = list(digits = 2)),
+tm_shape(qld) +
+  tm_polygons(fill = "#99B5B1",
+                col = "#7bba9d") +
+  tm_shape(slice(agg_example_2, time, 1)) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
             col.legend = tm_legend(reverse = T)) +
   tm_shape(dt_region) +
   tm_polygons(fill = NULL,
-              col = "black")
+              col = "black") +
+  tm_shape(reefs) +
+  tm_borders(fill = "grey60",
+             fill_alpha = 0.2,
+             col = "grey60",
+             col_alpha = 0.4)
 
 ```
 
-Is that better? Hard to tell honestly. However I would then like to see if a log scale helps:
+Looking much better, we can see exactly where the coastline and the continental shelf is, where the reefs are, and have a good understanding of the overall region in which we are looking at.
+
+I've created this map as a single layer so we can see the change a bit better, but now I will roll these changes out to the facet map as well.
 
 ```{r}
 
 #create a simple plot of the data
-tm_shape(agg_example_2) +
-  tm_raster(col.scale = tm_scale_continuous_log10(values = my_pal),
-            col.legend = tm_legend(reverse = T,
-                                   title = "Chla (ug/L)")) +
+tm_shape(qld) +
+  tm_polygons(fill = "#99B5B1",
+                col = "#7bba9d") +
+  tm_shape(agg_example_2) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
   tm_shape(dt_region) +
   tm_polygons(fill = NULL,
               col = "black") +
-  tm_facets(nrow = 3) +
-  tm_layout(bg.color = "#C1DEEA",
-            legend.position = tm_pos_out("right", "center"))
-
+  tm_shape(reefs) +
+  tm_borders(fill = "grey60",
+             fill_alpha = 0.2,
+             col = "grey60",
+             col_alpha = 0.4)
 
 ```
 
+Saving maps is no problem either, simply pass the mapping code into an object, and then use `tmap_save()`:
 
+```{r}
 
+#create a simple plot of the data
+our_final_map <- tm_shape(qld) +
+  tm_polygons(fill = "#99B5B1",
+                col = "#7bba9d") +
+  tm_shape(agg_example_2) +
+  tm_raster(col.scale = tm_scale_intervals(n = 6,
+                                           values = my_pal,
+                                           label.format = list(digits = 2)),
+            col.legend = tm_legend(reverse = T)) +
+  tm_shape(dt_region) +
+  tm_polygons(fill = NULL,
+              col = "black") +
+  tm_shape(reefs) +
+  tm_borders(fill = "grey60",
+             fill_alpha = 0.2,
+             col = "grey60",
+             col_alpha = 0.4)
 
+#save the map
+tmap_save(our_final_map, "our_final_map.png")
 
+```
 
+# Caveats
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+As always I would like to remind you to thoughtfully consider everything you read on the internet. This blog is my own work based on my own research into the topic. There may be practices I use that aren't considered "best practice" that I am not aware of, and I highly recommend that you do further exploration into the topic if it is something that interests you.
 

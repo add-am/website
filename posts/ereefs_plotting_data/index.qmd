@@ -194,7 +194,7 @@ If we ordered this data by date we would see that there are several hundred rows
 ```{r}
 
 #order the first few rows by date
-head(arrange(sf_data, Date))
+head(arrange(sf_data, time))
 
 ```
 
@@ -270,7 +270,7 @@ In its most basic form here is a dot plot:
 
 #creat a basic dot plot of the data
 ggplot(sf_data) +
-  geom_point(aes(x = Date, y = `Chla (ug/L)`), 
+  geom_point(aes(x = Time, y = `Chla (ug/L)`), 
              color =  "#E6AA04") +
   scale_y_log10() +
   theme_bw()
@@ -292,7 +292,7 @@ To do our sub-setting we will use the `slice_sample()` function. To ensure that 
 
 #get a random subset of data, ensuring an equal sample is taken from each day
 sf_data_subset <- sf_data |> 
-  group_by(Date) |> 
+  group_by(Time) |> 
   slice_sample(n = 150) |> 
   ungroup()
 
@@ -302,7 +302,7 @@ sf_data_subset <- sf_data |>
 
 #creat a basic dot plot of the data
 ggplot(sf_data_subset) +
-  geom_point(aes(x = Date, y = `Chla (ug/L)`), 
+  geom_point(aes(x = Time, y = `Chla (ug/L)`), 
              color =  "#E6AA04") +
   scale_y_log10() +
   theme_bw()
@@ -319,17 +319,17 @@ Something that will help us determine with greater precision how the data trends
 
 #calculate a daily mean value
 sf_data_daily_mean <- sf_data |> 
-  group_by(Date) |> 
+  group_by(Time) |> 
   summarise(`Chla (ug/L)` = mean(`Chla (ug/L)`))
 
 
 #create a basic dot plot plus daily mean line
 ggplot() +
   geom_point(data = sf_data_subset, 
-             aes(x = Date, y = `Chla (ug/L)`), 
+             aes(x = Time, y = `Chla (ug/L)`), 
              color = "#E6AA04") +
   geom_line(data = sf_data_daily_mean, 
-            aes(x = Date, y = `Chla (ug/L)`), 
+            aes(x = Time, y = `Chla (ug/L)`), 
             color = "#00252A",
             lwd = 1) +
   scale_y_log10() +
@@ -344,10 +344,10 @@ This line confirms that the values do indeed decrease towards the middle of the 
 #create a basic dot plot plus GAM line
 ggplot() +
   geom_point(data = sf_data_subset, 
-             aes(x = Date, y = `Chla (ug/L)`), 
+             aes(x = Time, y = `Chla (ug/L)`), 
              color = "#E6AA04") +
   geom_smooth(data = sf_data,
-              aes(x = Date, y = `Chla (ug/L)`), 
+              aes(x = Time, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
               color = "#00252A",
@@ -370,13 +370,13 @@ annual_mean <- sf_data |>
 #create a more sophisticated plot
 ggplot() +
   geom_point(data = sf_data_subset, 
-             aes(x = Date, y = `Chla (ug/L)`), 
+             aes(x = Time, y = `Chla (ug/L)`), 
              color = "#E6AA04") +
   geom_hline(yintercept = annual_mean,
              colour = "#628395",
              lwd = 1.3) +
   geom_smooth(data = sf_data,
-              aes(x = Date, y = `Chla (ug/L)`), 
+              aes(x = Time, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
               color = "#00252A",
@@ -394,19 +394,19 @@ The next thing I would like to add is some sort of visual cue to signify season.
 
 #assign either the wet or dry season to each row of data
 sf_data_subset <- sf_data_subset |> 
-  mutate(Season = case_when(month(Date) > 4 & month(Date) < 11 ~ "Dry", T ~ "Wet"))
+  mutate(Season = case_when(month(Time) > 4 & month(Time) < 11 ~ "Dry", T ~ "Wet"))
   
 #create a more sophisticated plot
 ggplot() +
   geom_point(data = sf_data_subset, 
-             aes(x = Date, y = `Chla (ug/L)`, 
+             aes(x = Time, y = `Chla (ug/L)`, 
                  color = Season)) +
   geom_hline(yintercept = annual_mean,
              colour = "#628395",
              lwd = 1.3) +
   scale_color_manual(values = c("#E6AA04", "#8E3B46")) +
   geom_smooth(data = sf_data,
-              aes(x = Date, y = `Chla (ug/L)`), 
+              aes(x = Time, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
               color = "#00252A",
@@ -424,34 +424,34 @@ There is only one more thing I would like to add to this plot, and it is mainly 
 
 #mutate the date column back into an actual date variable
 sf_data_subset <- sf_data_subset |> 
-  mutate(Date = as.Date(Date))
+  mutate(Time = as.Date(Time))
 
 #do the same for the full dataset
 sf_data <- sf_data |> 
-  mutate(Date = as.Date(Date))
+  mutate(Time = as.Date(Time))
 
 #create a more sophisticated plot
 ggplot() +
   geom_point(data = sf_data_subset, 
-             aes(x = Date, y = `Chla (ug/L)`, 
+             aes(x = Time, y = `Chla (ug/L)`, 
                  color = Season)) +
   geom_hline(yintercept = annual_mean,
              colour = "#628395",
              lwd = 1.3) +
   scale_color_manual(values = c("#E6AA04", "#8E3B46")) +
   geom_smooth(data = sf_data,
-              aes(x = Date, y = `Chla (ug/L)`), 
+              aes(x = Time, y = `Chla (ug/L)`), 
               method = "gam", 
               formula = y ~ s(x), 
               color = "#00252A",
               se = F) +
   geom_violin(data = sf_data_subset,
-              aes(x = Date, y = `Chla (ug/L)`),
+              aes(x = Time, y = `Chla (ug/L)`),
               alpha = 0.4, 
               color = "Black") +
   scale_y_log10() +
   scale_x_date(breaks = pretty_breaks(6)) +
-  labs(x = "Date", y = "Chla (ug/L) (Log10 Scale)") +
+  labs(x = "Time", y = "Chla (ug/L) (Log10 Scale)") +
   theme_bw()
 
 ```

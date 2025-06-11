@@ -35,7 +35,7 @@ The goal today is to learn how to:
  2. Save the data to file
  3. That's it - the data extraction section is already going to make this a long post.
  
-There are lots of things we can do once we have got the data, some of these such as creating [maps](ereefs_mapping_data/index.qmd), or converting the data to a tabular format and creating [plots](ereefs_plotting_data/index.qmd) are explored in my other blogs. Each of these blogs pick up right where this blog leaves off, and details exactly how you will need to transform and manipulate the data to achieve what you want.  In particular, the [mapping](ereefs_mapping_data/index.qmd) blog covers how to spatially and/or temporarily aggregate raster data, whilst the [plotting](ereefs_plotting_data/index.qmd) blog focuses more on how to conver raster data into a more familar table, and the things you can do from there.
+There are lots of things we can do once we have got the data, some of these such as creating [maps](../ereefs_mapping_data/index.qmd), or converting the data to a tabular format and creating [plots](../ereefs_plotting_data/index.qmd) are explored in my other blogs. Each of these blogs pick up right where this blog leaves off, and details exactly how you will need to transform and manipulate the data to achieve what you want.  In particular, the [mapping](../ereefs_mapping_data/index.qmd) blog covers how to spatially and/or temporarily aggregate raster data, whilst the [plotting](../ereefs_plotting_data/index.qmd) blog focuses more on how to conver raster data into a more familar table, and the things you can do from there.
 
 # Extracting Data
 
@@ -571,7 +571,7 @@ dim(curv_lini_cropped_data)
 
 ```
 
-Indeed, if you inspect each of the objects again, using `extracted_data`, and `cropped_data_example_1` you can see that the only thing that really changed is that there are now more NA values. So what `st_crop()` actually did in this scenario was just replace values outside our area with NA:
+Indeed, if you inspect each of the objects again, using `extracted_data`, and `curv_lini_cropped_data` you can see that the only thing that really changed is that there are now more NA values. So what `st_crop()` actually did in this scenario was just replace values outside our area with NA:
 
 ```{r}
 
@@ -650,7 +650,7 @@ tm_shape(reg_grid_cropped_data) +
 
 ```
 
-Thus actually cropping the data to the bounding box of our target area, and create a map with significantly few NA cells, specifically the curvilinear version has `r sum(is.na(cropped_data_example_1[[1]]))` NA values, and the regular grid version has `r sum(is.na(cropped_data_example_2[[1]]))` NA values - a difference of `r sum(is.na(cropped_data_example_1[[1]])) - sum(is.na(cropped_data_example_2[[1]]))`
+Thus actually cropping the data to the bounding box of our target area, and create a map with significantly few NA cells, specifically the curvilinear version has `r sum(is.na(curv_lini_cropped_data[[1]]))` NA values, and the regular grid version has `r sum(is.na(reg_grid_cropped_data[[1]]))` NA values - a difference of `r sum(is.na(curv_lini_cropped_data[[1]])) - sum(is.na(reg_grid_cropped_data[[1]]))`
 
 # Bonus Round
 
@@ -738,8 +738,8 @@ multi_day_data <- multi_day_data |>
 
 That concludes this post today. If would like to know whats next, I would recommend checking out my other two blog posts that make use of this data: 
 
- - The [mapping](ereefs_mapping_data/index.qmd) blog, which focuses on spatial manipulation, and
- - The [plotting](ereefs_plotting_data/index.qmd) blog, which transforms data into a friendly tabular format
+ - The [mapping](../ereefs_mapping_data/index.qmd) blog, which focuses on spatial manipulation, and
+ - The [plotting](../ereefs_plotting_data/index.qmd) blog, which transforms data into a friendly tabular format
 
 # Caveats
 
