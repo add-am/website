@@ -38,7 +38,7 @@ website:
       - text: CV
         href: cv/index.qmd
       - text: Posts
-        href: posts/index.qmd
+        href: posts/index.html
     right:
       - text: "![](/images/coffee_icon.svg){height=1.5em style='vertical-align: -0.1em;'}"
         href: https://www.buymeacoffee.com/adamshand22
