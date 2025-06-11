@@ -15,7 +15,7 @@ website:
   title: "ADAM SHAND"
   description: "Environmental Scientist | Data Analyst"
   favicon: "images/logo.svg"
-  site-url: https://www.adamshand22.com
+  site-url: "https://www.adamshand22.com/"
   image: "images/favicon.ico"
   
   #repo-url: "https://github.com/add-am/tbd"
