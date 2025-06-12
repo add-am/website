@@ -1,4 +1,4 @@
-# temp:
+# Specific files that need to be ignored due to size
 posts/ereefs_plotting_data/example_data.csv
 
 # History files
