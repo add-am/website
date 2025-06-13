@@ -290,7 +290,7 @@ Note
 </section>
 <section id="exploring-the-data" class="level2" data-number="2.2">
 <h2 data-number="2.2" data-anchor-id="exploring-the-data"><span class="header-section-number">2.2</span> Exploring the Data</h2>
-<p>Okay, the data has been loaded in, and converted to tabular format. Let’s take a quick look at what we are dealing with. This data has 161 rows and 179 columns. The column names are y and NA:</p>
+<p>Okay, the data has been loaded in, and converted to tabular format. Let’s take a quick look at what we are dealing with. This data has 161 rows and 179 columns. The column names are time and Chla:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -446,7 +446,7 @@ Note
 </section>
 <section id="subsetting-data" class="level2" data-number="3.2">
 <h2 data-number="3.2" data-anchor-id="subsetting-data"><span class="header-section-number">3.2</span> Subsetting Data</h2>
-<p>To do our sub-setting we will use the <code>slice_sample()</code> function. To ensure that we get the same number of randomly sampled points from each time step (day) we will make sure to first group our data by the Date column. In summary we want to randomly select 150 data points from each day - still quite a lot.</p>
+<p>To do our sub-setting we will use the <code>slice_sample()</code> function. To ensure that we get the same number of randomly sampled points from each time step (day) we will make sure to first group our data by the Time column. In summary we want to randomly select 150 data points from each day - still quite a lot.</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -475,11 +475,11 @@ Note
 </div>
 </div>
 </div>
-<p>Awesome, right away we can see that there appears to be a downtrend in concentration values around the middle of the time series before the values then increase again towards the end of the graph. It should be noted that it is theoretically possible this trend is a product of the random sampling, but that is highly unlikely.</p>
+<p>Awesome, right away we can see that there appears to be a downtrend in concentration values around the middle of the time series before the values then increase again towards the end of the graph. It is easier to see this using this plot because we can see that there is a lower density of points in the middle of the plot near the top, where as even with the random sampling there is still a very high density of points in the middle of the plot near the bottom. It should be noted that it is theoretically possible the areas of high and low density are a product of the random sampling, but that is highly unlikely.</p>
 </section>
 <section id="additional-visuals" class="level2" data-number="3.3">
 <h2 data-number="3.3" data-anchor-id="additional-visuals"><span class="header-section-number">3.3</span> Additional Visuals</h2>
-<p>Something that will help us determine with greater precision how the data trends over time, would be a nice line that follows the daily mean. We will calculate this line using the full dataset to make sure of the trend we spotted above.</p>
+<p>Something that will help us determine with greater precision how the data trends over time, would be a nice line that follows the daily mean. We will calculate this line using the full dataset to make 100% sure of the trend we spotted above.</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -571,7 +571,7 @@ Note
 </div>
 </div>
 <p>As expected, the smoothed GAM line fluctuates above and below the annual mean. You might initially think that the GAM line goes waaaay below the mean compared to how much it goes above the mean and that surely the mean isn’t correct, but remember this is all visualised with a log10 y axis.</p>
-<p>The next thing I would like to add is some sort of visual cue to signify season. In the Townsville region where we are currently looking at the data there are only two season; “wet” and “dry”. This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred falling across all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef - nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.</p>
+<p>The next thing I would like to add is some sort of visual cue to signify season. In the Townsville region (where we are currently looking at the data) there are only two season; “wet” and “dry”. This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred millimeters falling across all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef - nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -655,7 +655,7 @@ Note
 </section>
 <section id="caveats" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Caveats</h1>
-<p>You may find that the visuals in these plots are not for you, that’s okay! Just because I say they look good doesn’t mean you have to think that. Play around with colours, do a deep dive on <a href="https://ggplot2.tidyverse.org/">ggplot2</a> options, experiment with your own ideas and find a style that works for you. There are also plenty of guide around design rules if you are particularly interested, such as this one by <a href="https://www.tableau.com/visualization/data-visualization-best-practices">Tableau</a></p>
+<p>You may find that the visuals in these plots are not for you, that’s okay! Just because I say they look good doesn’t mean you have to think that. Play around with colours, do a deep dive on <a href="https://ggplot2.tidyverse.org/">ggplot2</a> options, experiment with your own ideas and find a style that works for you. There are also plenty of guide around design rules if you are particularly interested, such as this one by <a href="https://www.tableau.com/visualization/data-visualization-best-practices">Tableau</a>.</p>
 
 
 </section>
@@ -665,7 +665,7 @@ Note
 
   <h1>Thanks For Reading!</h1>
 
-  <p>If you like the content, please consider donating to let me know. Also please stick around and have a read of several of my other posts. You'll find work on everything from simple data management and organisation skills, all the way to writting custom functions, tackling complex environmental problems, and my journey when learning new environmental data analyst skills.
+  <p>If you like the content, please consider donating to let me know. Also please stick around and have a read of several of my other posts. You'll find work on everything from simple data management and organisation skills, all the way to writing custom functions, tackling complex environmental problems, and my journey when learning new environmental data analyst skills.
 
   </p><hr style="margin-bottom: 0;">
 

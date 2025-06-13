@@ -180,7 +180,7 @@ sf_data <- sf_data |>
 
 ## Exploring the Data
 
-Okay, the data has been loaded in, and converted to tabular format. Let's take a quick look at what we are dealing with. This data has `r dim(example_data)[1]` rows and `r dim(example_data)[2]` columns. The column names are `r colnames(example_data)[1]` and `r colnames(example_data)[2]`:
+Okay, the data has been loaded in, and converted to tabular format. Let's take a quick look at what we are dealing with. This data has `r dim(example_data)[1]` rows and `r dim(example_data)[2]` columns. The column names are `r colnames(sf_data)[1]` and `r colnames(sf_data)[2]`:
 
 ```{r}
 
@@ -286,7 +286,7 @@ For the first point, a simple solution is to take a random subset of data to mak
 
 ## Subsetting Data
 
-To do our sub-setting we will use the `slice_sample()` function. To ensure that we get the same number of randomly sampled points from each time step (day) we will make sure to first group our data by the Date column. In summary we want to randomly select 150 data points from each day - still quite a lot.
+To do our sub-setting we will use the `slice_sample()` function. To ensure that we get the same number of randomly sampled points from each time step (day) we will make sure to first group our data by the Time column. In summary we want to randomly select 150 data points from each day - still quite a lot.
 
 ```{r}
 
@@ -309,11 +309,11 @@ ggplot(sf_data_subset) +
 
 ```
 
-Awesome, right away we can see that there appears to be a downtrend in concentration values around the middle of the time series before the values then increase again towards the end of the graph. It should be noted that it is theoretically possible this trend is a product of the random sampling, but that is highly unlikely.
+Awesome, right away we can see that there appears to be a downtrend in concentration values around the middle of the time series before the values then increase again towards the end of the graph. It is easier to see this using this plot because we can see that there is a lower density of points in the middle of the plot near the top, where as even with the random sampling there is still a very high density of points in the middle of the plot near the bottom. It should be noted that it is theoretically possible the areas of high and low density are a product of the random sampling, but that is highly unlikely.
 
 ## Additional Visuals
 
-Something that will help us determine with greater precision how the data trends over time, would be a nice line that follows the daily mean. We will calculate this line using the full dataset to make sure of the trend we spotted above.
+Something that will help us determine with greater precision how the data trends over time, would be a nice line that follows the daily mean. We will calculate this line using the full dataset to make 100% sure of the trend we spotted above.
 
 ```{r}
 
@@ -388,7 +388,7 @@ ggplot() +
 
 As expected, the smoothed GAM line fluctuates above and below the annual mean. You might initially think that the GAM line goes waaaay below the mean compared to how much it goes above the mean and that surely the mean isn't correct, but remember this is all visualised with a log10 y axis.
 
-The next thing I would like to add is some sort of visual cue to signify season. In the Townsville region where we are currently looking at the data there are only two season; "wet" and "dry". This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred falling across all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef - nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.
+The next thing I would like to add is some sort of visual cue to signify season. In the Townsville region (where we are currently looking at the data) there are only two season; "wet" and "dry". This is loosely associated with summer and winter, with hundreds to thousands of millimeters of rain falling in summer and often less than one hundred millimeters falling across all of winter. The reason we care about rainfall is that it is one of the most significant drivers of chlorophyll a concentrations in the ocean. The rain on land brings lots of nutrients down the rivers and out onto the reef - nutrients which phytoplankton consume and then produce chlorophyll a (simplified explanation).The exact cut-off dates we will use for the wet season/dry season are March and October.
 
 ```{r}
 
@@ -460,4 +460,4 @@ And there you have it, a fairly nice looking singular dot plot. It contains a he
 
 # Caveats
 
-You may find that the visuals in these plots are not for you, that's okay! Just because I say they look good doesn't mean you have to think that. Play around with colours, do a deep dive on [ggplot2](https://ggplot2.tidyverse.org/) options, experiment with your own ideas and find a style that works for you. There are also plenty of guide around design rules if you are particularly interested, such as this one by [Tableau](https://www.tableau.com/visualization/data-visualization-best-practices)
+You may find that the visuals in these plots are not for you, that's okay! Just because I say they look good doesn't mean you have to think that. Play around with colours, do a deep dive on [ggplot2](https://ggplot2.tidyverse.org/) options, experiment with your own ideas and find a style that works for you. There are also plenty of guide around design rules if you are particularly interested, such as this one by [Tableau](https://www.tableau.com/visualization/data-visualization-best-practices).
