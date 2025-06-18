@@ -1,7 +1,8 @@
 #a simple function to create a stylish printed table.
 #Input: a df object
 
-library(huxtable)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(huxtable)
 
 cond_form_tables <- function(df, header_rows = 1){
   

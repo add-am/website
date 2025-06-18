@@ -29,3 +29,5 @@ posts/ereefs_plotting_data/example_data.csv
 /.quarto/
 
 
+
+/.luarc.json

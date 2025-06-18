@@ -4,6 +4,9 @@ draft: false
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "!posts/shiny_a_web_app_built_in_r/"
   
   resources:
     - "images/**"
