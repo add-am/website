@@ -1,0 +1,315 @@
+---
+title: "An Opinionated Dataframe Cleaner"
+date: "04/13/2025"
+abstract-title: "ABSTRACT"
+abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+---
+
+# Introduction
+
+In this blog I would like to explore the basics of data modelling using the tidymodels set of packages in R. If you're anything like me the phrase "modelling" has probably come to fill you with doubt. The term is often thrown around loosely and could apply to everything from simple regression, all the way to some crazy AI implimentation that only 2 people in the entire world understand. It can be hard to differentiate between these extremes, and to the lay person sometimes these are basically the same thing. I have imagined several scenarios in which I say "model" to a manager and they picture the next AI revolution has come to fix all of their problems (what I actually mean is I did some linear regression).
+
+To combat this, for my own peace of mind, and hopefully yours, I have decided to write a blog about learning how to use the tidymodels packages in R. Ideally, by the end of this blog we are both able to explain in more detail exactly what we are doing to our colleagues. In this blog I'd like to cover
+
+ - Pre-processing
+ - Training
+ - Validating
+
+
+get data into a training and testing set
+
+ ```{r}
+
+install.packages("tidymodels")
+library(tidymodels)
+
+#use the iris data, this is already loaded with base R
+#it contains information about different species of flower - looking at petal W and L, and sepal W and L
+head(iris)
+
+#split data into a training and testing set, standard is 3/4, but can use prop to adjust
+#the idea here is that the model trains, and then is tested on data it hasn't seen. A good split is random, but represents all scenarios
+iris_split <- initial_split(iris)
+
+#note this is no longer just a df, it is a rplit object. When looking at it you can see the division of rows
+iris_split
+
+#to see the training or testing part of the data, use training() or testing()
+iris_split |> 
+    testing() |> 
+    glimpse()
+
+#these sampling functions come from the rsample package
+
+ ```
+
+
+ create a data recipe
+
+ ```{r}
+
+iris_recipe <- training(iris_split) |> 
+    recipe(Species ~ .) |> 
+    step_corr(all_predictors()) |> 
+    step_center(all_predictors(), -all_outcomes()) |> 
+    step_scale(all_predictors(), -all_outcomes()) |> 
+    prep()
+
+iris_recipe
+
+ ```
+
+
+ ```{r}
+
+iris_testing <- iris_recipe |> 
+    bake(testing(iris_split))
+
+glimpse(iris_testing)
+
+ ```
+
+ ```{r}
+
+iris_training <- juice(iris_recipe)
+
+glimpse(iris_training)
+glimpse(iris)
+
+ ```
+
+ model training
+
+ ```{r}
+
+install.packages("ranger")
+
+iris_ranger <- rand_forest(trees = 100, mode = "classification") |> 
+    set_engine("ranger") |> 
+    fit(Species ~., data = iris_training)
+
+iris_ranger
+
+ ```
+
+Validate
+
+```{r}
+
+iris_ranger |> 
+    predict(iris_testing) |> 
+    bind_cols(iris_testing) |> 
+    glimpse()
+
+```
+
+```{r}
+
+iris_ranger |> 
+    predict(iris_testing) |> 
+    bind_cols(iris_testing) |> 
+    metrics(truth = Species, estimate = .pred_class)
+
+```
+
+```{r}
+
+iris_ranger |> 
+    predict(iris_testing, type = "prob") |> 
+    glimpse()
+
+```
+
+```{r}
+
+iris_prob <- iris_ranger |> 
+    predict(iris_testing, type = "prob") |> 
+    bind_cols(iris_testing)
+
+```
+
+
+```{r}
+
+iris_prob |> 
+    gain_curve(Species, .pred_setosa:.pred_virginica) |> 
+    glimpse()
+
+```
+
+```{r}
+
+iris_prob |> 
+    gain_curve(Species, .pred_setosa:.pred_virginica) |> 
+    autoplot()
+
+```
+
+
+```{r}
+
+iris_prob |> 
+    roc_curve(Species, .pred_setosa:.pred_virginica) |> 
+    autoplot()
+
+```
+
+```{r}
+
+predict(iris_ranger, iris_testing, type = "prob") %>%
+  bind_cols(predict(iris_ranger, iris_testing)) %>%
+  bind_cols(select(iris_testing, Species)) %>%
+  glimpse()
+
+```
+
+
+```{r}
+
+predict(iris_ranger, iris_testing, type = "prob") %>%
+  bind_cols(predict(iris_ranger, iris_testing)) %>%
+  bind_cols(select(iris_testing, Species)) %>%
+  metrics(truth = Species, .pred_setosa:.pred_virginica, estimate = .pred_class)
+
+```
+
+
+linear regression practice
+
+ - make a simple model
+ - evaluate its success
+ - demonstrate using the model to predict new values
+ - idea: tree size is related to elevation (linear), note at the end that we could then look at being "too" high (e.g. snow), and introduce nonlinear(?) regression?
+
+To start off with I'll briefly cover linear regression.
+
+Lets create a hypothetical dataset of tree height and elevation. In this dataset we are going to say that this species of tree likes to grow at high elevations. Therefore as elevation increases, so do tree height:
+
+```{r}
+
+tree_height_x_elevation_df <- data.frame(elevation = c(0,100,200,300,400,500,600,700,800,900),
+                                         tree_height = c(0,5,23,32,24,33,40,48,40,50))
+
+```
+
+On a plot, this is how the data looks, obviously the trend is pretty easy to spot since this is made up data:
+
+```{r}
+
+ggplot(tree_height_x_elevation_df, aes(x = elevation, y = tree_height)) +
+    geom_point()
+
+```
+
+Making a linear model is pretty straight forward when we use the tidymodels set of packages, there are only really three steps:
+
+ 1. Define the model to be used
+ 2. Define the "engine" that runs the model
+ 3. Fit the model, i.e. input the required variables
+
+Interestingly, for alot of models (not just linear regression) made using tidymodels packages, these general steps are almost the same. You can swap out a different model and engine while keeping the same inputs if you wanted.
+
+Here is the linear model:
+
+```{r}
+
+#create a linear model based on the example data
+my_lin_mod <- linear_reg() |> #set up the framework
+    set_engine("lm") |> #chose the linear model method
+    fit(tree_height ~ elevation, data = tree_height_x_elevation_df) #dependent ~ independent, define the dataset
+
+```
+
+We can the use `tidy()` function to view this model:
+
+```{r}
+
+tidy(my_lin_mod)
+
+```
+
+On its own, it is not really anything special - just a table. But intepreting the table can allow us to understand a bit about the model.
+
+ - The intercept estimate is the y-intercept (where the regression line crosses the y axis)
+ - The eleveation estimate is the slope of the line
+ - Together, these define the equation of the line, which would be: y(pred) = 6.24 + 0.0517x
+
+Putting this line on the plot from earlier will hopefully demonstrate this:
+
+```{r}
+
+ggplot(tree_height_x_elevation_df, aes(x = elevation, y = tree_height)) +
+    geom_point() +
+    geom_abline(slope = 0.0517, intercept = 6.24)
+
+```
+
+Pretty cool.
+
+Looking at the table again there are a few additional columns to cover. These mostly speak to the accuracy of the regression line.
+ - The std.error column is the standard error of the estimate, small values indicate greater precision - these are decent (we will look at some bad ones later)
+ - The statistic is the estimate/std.error. In this case large values are often a case for some kind of statistical significance
+ - The p.value is one familar to most introductory statistics students, and loosely represents the likelihood of randomly observing the slope (elevation estimate). I.e. if elevation had no real effect on tree height (true slope = 0), then the chances of getting a slope as large as 0.0517 just from random noise are about 0.009%.
+
+So why is one row significant and one row not? Well the first row is talking about the intercept. It is saying, is the intercept statistically significant from 0? I.e., is a tree of 6.24m any more or less likely than a tree of 0m when elevation is zero? The answer is no - because the p value is high and the statistic is low we don't have any strong evidence to disprove this. Conversely, the second row the table is talking about the slope. It is saying, is the slope significantly different from 0? I.e. Does tree height change with elevation? The answer is yes - because the p value is low and the statistic is high we have strong evidence to disprove the null hypothesis.
+
+Now that we have established our linear model is not useless, what is the point of the model? Well point 1 is simply to be able to confirm "yes, tree height does change with elevation", congratulations we can all go home. But that is kind of boring and doesn't have a satisifying conclusion. Point 2 is that we can use this model to predict the height of trees that we have never observed before.
+
+Imagine that the data I just made up is from Hill A:
+[insert diagram]
+Now, just over the way, is a second hill; Hill B:
+[insert diagram]
+Unfortunately there is no road to get to that hill and all you know about the hill is its elevation profile, but your team is particularly interested in the height of trees there.
+
+If we assume that the tree species is the same on each hill, we can use our fancy new model to predict the height of the trees on Hill B, without ever going there.
+
+This is acheived using the predict() function from the tidymodels group of packages. To use predict, obviously I need some create data to predict on, so I will also do that here.
+
+```{r}
+
+#create another set of fake data, this time its is the elevation of Hill B
+hill_b_elevation <- data.frame(elevation = c(317, 842, 569, 74, 926, 458, 13, 731, 287, 652))
+
+#use the linear model to predict values
+hill_b_output <- my_lin_mod |> 
+    predict(hill_b_elevation)
+
+```
+
+The output of the predict function is provided as a table, rather than a vector, because a common next step with the predicted values is to join them back to the original elevation values. Thus we will do that now:
+
+```{r}
+
+hill_b_output <- hill_b_output |> 
+    bind_cols(hill_b_elevation)
+
+head(hill_b_output)
+
+```
+
+And now we have predicted tree height values for trees on Hill B, without ever having gone to that hill! Thats fun.
+
+Also here is a final visualisation of the new data combined with the old data. Something that might not be clear until seeing this that each of the predictions land exactly on the regression line:
+
+```{r}
+
+ggplot() +
+    geom_point(data = tree_height_x_elevation_df, aes(x = elevation, y = tree_height), col = "blue") +
+    geom_abline(slope = 0.0517, intercept = 6.24) +
+    geom_point(data = hill_b_output, aes(x = elevation, y = .pred), col = "red")
+
+
+```
+
+Next steps:
+
+ - creating training and testing dataset
+        - other validation steps explored at the top
+ - considering additional variables such as temperature (multiple linear regression)
+ - consider non-linear regression
+
+
