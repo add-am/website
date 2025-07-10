@@ -13,68 +13,29 @@ include-after-body: "../../html/html_footer.html" #This is our footer
 
 In this blog I would like to explore the basics of data modelling using the tidymodels set of packages in R. If you're anything like me the phrase "modelling" has probably come to fill you with doubt. The term is often thrown around loosely and could apply to everything from simple regression, all the way to some crazy AI implimentation that only 2 people in the entire world understand. It can be hard to differentiate between these extremes, and to the lay person sometimes these are basically the same thing. I have imagined several scenarios in which I say "model" to a manager and they picture the next AI revolution has come to fix all of their problems (what I actually mean is I did some linear regression).
 
-To combat this, for my own peace of mind, and hopefully yours, I have decided to write a blog (or two) about learning how to use the tidymodels packages in R. Ideally, by the end of this series we are both able to explain in more detail exactly what we are doing to our colleagues. In this blog I'd like to cover
-
- - Pre-processing
- - Training
- - Validating
-
-
-
-```{r}
-
-iris_prob <- iris_ranger |> 
-    predict(iris_testing, type = "prob") |> 
-    bind_cols(iris_testing)
-
-```
-
-
-```{r}
-
-iris_prob |> 
-    gain_curve(Species, .pred_setosa:.pred_virginica) |> 
-    glimpse()
-
-```
-
-```{r}
-
-iris_prob |> 
-    gain_curve(Species, .pred_setosa:.pred_virginica) |> 
-    autoplot()
-
-```
-
-
-```{r}
-
-iris_prob |> 
-    roc_curve(Species, .pred_setosa:.pred_virginica) |> 
-    autoplot()
-
-```
-
+To combat this, for my own peace of mind, and hopefully yours, I have decided to write a blog (or two) about learning how to use the tidymodels packages in R. Ideally, by the end of this series we are both able to explain in more detail exactly what we are doing to our colleagues.
 
 # Linear Regression
 
-To start off with I'll briefly cover linear regression. Lets create a hypothetical dataset of tree height and elevation. In this dataset we are going to say that this species of tree likes to grow at high elevations. Therefore as elevation increases, so does tree height. Why do these tree like high ground? I don't know. What makes them grow taller? Who cares. Is this scenario realistic? No, but it makes for a very clear story telling experience. Let's go:
+To start off with I'd like to explore linear regression. Lets create a hypothetical dataset of tree height and elevation. In this dataset we are going to say that this species of tree likes to grow at high elevations. Therefore as elevation increases, so does tree height. Why do these tree like high ground? I don't know. What makes them grow taller? Who cares. Is this scenario realistic? No, but it makes for a very clear story telling experience. Let's go:
+
+## Building A Dataset
+
+The first thing we need to do is build a dataset that explores this relationship between elevation and tree_height. I am going to manually add 11 elevations values evenly spaced between 0m and 1000m, and then assign tree heights to each elevation. Note that we want to show a relationship so I will deliberately increase tree heights as elevation increases, however to make things interesting I will make sure it is not a completely perfect reationship.
 
 ```{r}
 
 library(tidymodels)
 
 #create an example dataset, note that we are being very delibrate to make tree height increase with elevation
-tree_height_x_elevation_df <- data.frame(elevation = c(0,100,200,300,400,500,600,700,800,900),
-                                         tree_height = c(0,5,23,32,24,33,40,48,40,50))
+tree_height_x_elevation_df <- data.frame(elevation = seq(0, 1000, 100),
+                                         tree_height = c(0,5,23,32,24,33,40,48,40,50,55))
 
 ```
 
-On a plot, this is how the data looks, obviously the trend is pretty easy to spot since this is made up data:
+On a plot, this is how our make believe data looks, obviously the trend is pretty easy to spot since we specifically created the data for this purpose:
 
 ```{r}
-
-library(ggplot2)
 
 #create a simple plot to show the data pointsw
 ggplot(tree_height_x_elevation_df, aes(x = elevation, y = tree_height)) +
@@ -82,19 +43,23 @@ ggplot(tree_height_x_elevation_df, aes(x = elevation, y = tree_height)) +
 
 ```
 
-Making a linear model with this data is pretty straight forward when we use the tidymodels set of packages, there are only really three steps:
+## Building A Linear Regression Model
 
- 1. Define the model to be used
- 2. Define the "engine" that runs the model
- 3. Fit the model, i.e. input the required variables
+To make a linear model using this dataset we are going to leverage the tidymodels() package, which is actually a wrapper for a collection of packages that do a wide range of things within the modelling ecosystem such as preparing data, creating models, and evaluating model performance. Making a linear model is actually pretty straight forward when we use these packages, there are only really three steps:
+
+ 1. Define the model to be used (for us this is a linear regression)
+ 2. Define the "engine" that runs the model (for us there is only one option "linear model", but for more complex models there are multiple methods of implementation)
+ 3. Fit the model, i.e. input the required variables (for us our independant variable is elevation, and our dependent variable is tree height)
 
 :::{.callout-note}
-When you are using "real" data that wasn't made up for educational purposes there are extra steps in the model building stage such as removing colinearity and normalsing numeric data to have a standard deviation of one. But we are not going to cover those in this example.
+When you are using "real" data that wasn't made up for educational purposes there are extra steps in the model building stage focused on properly preparing the data such as removing colinearity and normalsing numeric data to have a standard deviation of one. But we are not going to cover those in this example.
 :::
 
-Interestingly, for alot of models (not just linear regression) made using tidymodels packages, these general steps are almost the same. You can swap out a different model and engine while keeping the same inputs if you wanted.
+:::{.callout-note}
+Interestingly, for a lot of models (not just linear regression) made using tidymodels packages, these general steps are almost the same. You can swap out a different model and engine while keeping the same inputs if you wanted.
+:::
 
-Here is the linear model:
+The code to create our linear model is as follows:
 
 ```{r}
 
@@ -105,7 +70,7 @@ my_lin_mod <- linear_reg() |> #set up the framework
 
 ```
 
-We can the use `tidy()` function to view this model:
+Next, to view the model that we just created we can use the ` tidy()` function to return a nice layout:
 
 ```{r}
 
@@ -114,13 +79,13 @@ tidy(my_lin_mod)
 
 ```
 
-On its own, it is not really anything special - just a table. But intepreting the table can allow us to understand a bit about the model.
+Which, on its own, it is not really anything special - just a table. But intepreting the table can allow us to understand a bit about the linear regression model that we just created.
 
  - The intercept estimate is the y-intercept (where the regression line crosses the y axis)
- - The elevation estimate is the slope of the line
- - Together, these define the equation of the line, which would be: y(pred) = `r tidy(my_lin_mod)[[1,2]]` + `r tidy(my_lin_mod)[[2,2]]`x
+ - The elevation estimate is the slope of the regression line
+ - Together, these define the equation of the regression line, which would be: y(pred) = `r tidy(my_lin_mod)[[1,2]]` + `r tidy(my_lin_mod)[[2,2]]`x
 
-Putting this line on the plot from earlier will hopefully demonstrate this:
+Putting this line on the plot from earlier demonstrates this nicely:
 
 ```{r}
 
@@ -130,30 +95,45 @@ ggplot(tree_height_x_elevation_df, aes(x = elevation, y = tree_height)) +
 
 ```
 
-Pretty cool.
+Pretty cool. Note how the regression line seems to split right down the middle of all our datapoints, the close the line is to all the points, the better our model is "fitted" to the data. Speaking of model fit, we can now look at the "fit" (i.e. the accuracy) of our model by the numbers!
 
-Looking at the table again there are a few additional columns to cover. These mostly speak to the accuracy of the regression line.
- - The std.error column is the standard error of the estimate, small values indicate greater precision - these are decent
- - The statistic is the estimate divided by the std.error. In this case large values are often a case for some kind of statistical significance (that is to say that the std.error is much smaller than what ever the estimate value is).
- - The p.value is one familar to most introductory statistics students, and represents the likelihood of randomly observing the slope (elevation estimate). I.e. if elevation had no real effect on tree height (slope of the regression line = 0), then the chances of getting a slope as large as 0.0517 just from random noise are about `r tidy(my_lin_mod)[[2,5]]`%.
+## Evaluating a Linear Regression Model
 
-So why is one row significant and one row not? Well the first row is talking about the intercept. It is saying, is the intercept statistically different from 0? I.e., when elevation is 0, is a tree of 6.24m any more or less likely than a tree of 0m? The answer is no (because the p value is high and the statistic is low we don't have any strong evidence to disprove this). Conversely, the second row the table is talking about the slope. It is saying, is the slope significantly different from 0? (zero being no relation) I.e. Does tree height change with elevation? The answer is yes - because the p value is low and the statistic is high we have strong evidence to disprove the null hypothesis. Further more, because the slope is positive, not negative, we can say that tree height increases with elevation.
-
-Now that we have established our linear model is not useless, what is the point of the model? Well point 1 is simply to be able to confirm "yes, tree height does change with elevation", congratulations we can all go home. But that is kind of boring and doesn't have a satisifying conclusion, particularly because we specifically made this data up to have that relationship. Point 2 is that we can use this model to predict the height of trees that we have never observed before.
-
-Imagine that the data I just made up is from Hill A:
-[insert diagram]
-Now, just over the way, is a second hill; Hill B:
-[insert diagram]
-Unfortunately there is no road to get to that hill and all you know about the hill is its elevation profile, but your team is particularly interested in the height of trees there.
-
-If we assume that the tree species is the same on each hill, we can use our fancy new model to predict the height of the trees on Hill B, without ever going there.
-
-This is acheived using the predict() function from the tidymodels group of packages. To use predict, obviously I need to create some elevation data to predict on, so I will also do that here.
+The performance of a linear model can be evaluated several ways, and we are going to touch on pretty much all of them. Firstly lets bring up the tabular summary of the model again:
 
 ```{r}
 
-#create another set of fake data, this time its is the elevation of Hill B
+#re print the tabular summary of the model
+tidy(my_lin_mod)
+
+```
+
+Looking at the table again there are a few additional columns to cover, these speak to the accuracy of the regression line.
+ - The std.error column is the standard error of the estimate, with smaller values indicating greater precision. You can think of this as how each of the observations are from the regression line.
+ - The statistic is the estimate divided by the std.error. In this case large values are often a case for some kind of statistical significance (that is to say that the std.error is much smaller than what ever the estimate value is). 
+ - The p.value is the one familar to most introductory statistics students, and represents the likelihood of randomly observing the slope (estimate for dependent variable - e.g. elevation). I.e. if elevation had no real effect on tree height (slope of the regression line = 0), then the chances of getting a slope as large as `r tidy(my_lin_mod)[[2,2]]` just from random noise are about `r tidy(my_lin_mod)[[2,5]]`%.
+
+So why is one row significant and one row not? Well the first row is talking about the intercept. It is saying, is the intercept statistically different from 0? I.e., when elevation is 0, is a tree of `r tidy(my_lin_mod)[[1,2]]`m any more or less likely than a tree of 0m? The answer is no (because the p value is high (>0.05) and the statistic is low we don't have any strong evidence to disprove this). Conversely, the second row the table is talking about the slope. It is saying, is the slope significantly different from 0? (zero being no relation) I.e. Does tree height change with elevation? The answer is yes - because the p value is low (<0.05) and the statistic is high we have strong evidence to disprove the null hypothesis. Further more, because the slope is positive, not negative, we can say that tree height increases with elevation.
+
+:::{.callout-note}
+There are additional methods for evalutation the performance of our model, but we will explore these further into the blog.
+:::
+
+## Using a Linear Regression Model
+
+Now that we have established our linear model is not useless, what is the point of the model, and how do we use it? Well point 1 is simply to be able to confirm "yes, tree height does change with elevation", congratulations we can all go home. But that is kind of boring and doesn't have a satisifying conclusion, particularly because we specifically made this data up to have that relationship. Point 2 is that we can use this model to predict the height of trees that we have never observed before.
+
+Imagine that the data I just made up is from Hill A, and just over the way, is a second hill; Hill B:
+
+![insert diagram](image_1.png)
+
+Unfortunately there is no road to get to that hill and all you know about the hill is its elevation profile, but your team is particularly interested in the height of trees there. If we assume that the tree species is the same on each hill, we can use our fancy new model to predict the height of the trees on Hill B, without ever going there.
+
+This is acheived using the predict() function from the tidymodels group of packages. To use predict, obviously I need to create some elevation data for Hill B for us to predict on, so I will also do that here.
+
+```{r}
+
+#create another set of fake data, this time its is the elevation of Hill B, it will not contain tree height - we are going to predict that
 hill_b_elevation <- data.frame(elevation = c(317, 842, 569, 74, 926, 458, 13, 731, 287, 652))
 
 #use the linear model to predict values
