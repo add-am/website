@@ -2,7 +2,7 @@
 title: "Linear Modelling in R"
 date: "07/16/2025"
 abstract-title: "ABSTRACT"
-abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
+abstract: "..."
 image: "image.png"
 format: html
 title-block-banner: true #This is our banner
