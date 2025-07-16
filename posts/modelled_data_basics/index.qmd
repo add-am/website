@@ -1,6 +1,6 @@
 ---
-title: "An Opinionated Dataframe Cleaner"
-date: "04/13/2025"
+title: "Linear Modelling in R"
+date: "07/16/2025"
 abstract-title: "ABSTRACT"
 abstract: "Naming your dataframe columns doesn't have to be hard, does it? Here I demonstrate the benefits of implimenting an opionated dataframe cleaner to help keep your columns organised."
 image: "image.png"
@@ -334,10 +334,8 @@ So now, our model is telling us that when we go below sea level (e.g. under wate
 
 This is an important lesson in the application of models, and a warning about applying your model in unfamilar scenarios.
 
-Looking at these silly scenario's has hopefully made you ask how you can address the problem, or avoid it, or model the scenario better.
+Looking at these silly scenario's has hopefully made you ask how you can address the problem/avoid it/model the scenario better. There are plenty of ways to do this, the most obvious of which is to deploy your model with a string of caveats. E.g. "Model only valid for Hill A and Hill B", "Model should not be used beyond 1000m", etc. etc. However, these caveats don't actually stop anyone from using the model in this way - particularly if they are like D.W from Arthor:
 
-Next steps:
- - considering additional variables such as temperature (multiple linear regression)
- - consider non-linear regression
+![image_2](image_2.png)
 
-
+Instead, statisticians will often seek to better model the environment using things like multiple linear regression, or non-linear regression to name a few. Don't worry though, we will explore some of these more advanced methods in another blog. For now, thats it! Thanks for reading.
