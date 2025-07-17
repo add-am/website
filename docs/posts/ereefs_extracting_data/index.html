@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-2f24fd9e25f784bbee3d36216199cec5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a1fb61b6f0d406def1a148e0e8a65b4a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -102,6 +102,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&amp;display=swap" rel="stylesheet">
 
 
 </head>
@@ -227,10 +232,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   </ul></li>
   <li><a href="#bonus-round" id="toc-bonus-round" class="nav-link" data-scroll-target="#bonus-round"><span class="header-section-number">4</span> Bonus Round</a></li>
-  <li><a href="#save-data" id="toc-save-data" class="nav-link" data-scroll-target="#save-data"><span class="header-section-number">5</span> Save Data</a></li>
-  <li><a href="#read-data-back-in" id="toc-read-data-back-in" class="nav-link" data-scroll-target="#read-data-back-in"><span class="header-section-number">6</span> Read Data Back In</a></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps"><span class="header-section-number">7</span> Next Steps</a></li>
-  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats"><span class="header-section-number">8</span> Caveats</a></li>
+  <li><a href="#save-data" id="toc-save-data" class="nav-link" data-scroll-target="#save-data"><span class="header-section-number">5</span> Save Data</a>
+  <ul class="collapse">
+  <li><a href="#write-stars" id="toc-write-stars" class="nav-link" data-scroll-target="#write-stars"><span class="header-section-number">5.1</span> Write Stars</a></li>
+  <li><a href="#write-mdim" id="toc-write-mdim" class="nav-link" data-scroll-target="#write-mdim"><span class="header-section-number">5.2</span> Write Mdim</a></li>
+  </ul></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps"><span class="header-section-number">6</span> Next Steps</a></li>
+  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats"><span class="header-section-number">7</span> Caveats</a></li>
   </ul>
 </nav>
     </div>
@@ -266,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#read in the dry tropics region dataset and start with a lat/long crs</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dt_region <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"dt_region.gpkg"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dt_region <span class="ot">&lt;-</span> <span class="fu">st_read</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"posts/ereefs_extracting_data/dt_region.gpkg"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="st">"EPSG:7844"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -322,7 +330,7 @@ Note
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ereefs)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#run the function</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">substitute_filename</span>(<span class="st">"catalog"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#substitute_filename("catalog")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Once we have made our selection it will return a url. This url is how we are going to connected to the correct database, if you are interested, <a href="https://thredds.nci.org.au/thredds/catalog/catalogs/fx3/catalog.html">this</a> is a manual view of the range of data that we are choosing from.</p>
@@ -406,7 +414,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -457,12 +465,12 @@ Note
 <p>If we combine these two grids together we can get a table in which every cell contains a pair of values, one x_grid value and one y_grid value:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 2%">
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 19%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -795,7 +803,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -826,7 +834,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -875,7 +883,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -894,7 +902,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -910,7 +918,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -941,7 +949,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -990,7 +998,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1054,7 +1062,7 @@ Note
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1110,83 +1118,151 @@ time                       NULL
 curvilinear grid</code></pre>
 </div>
 </div>
-</section>
-<section id="save-data" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Save Data</h1>
-<p>I think all that is left now is to save the data, which is done using <code>write_stars()</code>. However there is one little trick to remember here, the <code>write_stars()</code> function only expects either a 2D (x,y) or a 3D (x,y,time/band) object - it <strong>does not</strong> support 4D objects (x,y,depth, time) and it also does not support <strong>empty or redundant dimensions</strong> i.e.&nbsp;those with only one layer. If you try to save a 4D object, or an object with a single time step or depth layer the function will fail. To fix this we can simply drop dimensions with 1 value first.</p>
+<p>We will also quickly create a regular grid of this same dataset as this is useful for demonstration purposes when saving.</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#drop dimensions with only 1 value</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>reg_grid_cropped_data <span class="ot">&lt;-</span> reg_grid_cropped_data[drop <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co">#save the object</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_stars</span>(reg_grid_cropped_data, <span class="st">"regular_grid_chla.nc"</span>)</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co">#FYI this also works on curvilinear data just fine</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>curv_lini_cropped_data <span class="ot">&lt;-</span> curv_lini_cropped_data[drop <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co">#save the object</span></span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write_stars</span>(curv_lini_cropped_data, <span class="st">"curvilinear_grid_chla.nc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#convert our curvilinear object into just a bbox then update the crs on the bbox</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>curvilinear_bbox <span class="ot">&lt;-</span> extracted_data_multi_day <span class="sc">|&gt;</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_bbox</span>() <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sfc</span>()</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co">#get a linear grid target with the same dimensions (number of cells) as our curvilinear grid </span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>reg_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(curvilinear_bbox, <span class="co">#using the bbox to provide the xmin, xmax etc., </span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">nx =</span> <span class="fu">dim</span>(extracted_data_multi_day)[[<span class="dv">1</span>]], <span class="co">#and the dimensions to provide the x and y count. </span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ny =</span> <span class="fu">dim</span>(extracted_data_multi_day)[[<span class="dv">2</span>]], </span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">values =</span> <span class="cn">NA_real_</span>) <span class="co">#Fill each cell with NA</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="co">#run st warp, it requires a curvilinear object, and a regular object as a target</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>warped_data_multi_day <span class="ot">&lt;-</span> <span class="fu">st_warp</span>(extracted_data_multi_day, reg_stars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="read-data-back-in" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Read Data Back In</h1>
-<p>As a precaution it is always a good idea to read your data back in to the environment to make sure everything works just fine. You’ll be glad you did because there is actually a small quirk I have found where a time dimension with more than 1 value gets read back in as an attribute (no idea why).</p>
+<section id="save-data" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Save Data</h1>
+<p>I think all that is left now is to save the data. Annoyingly, this can be quite a handful depending on your requirements. The first option is <code>write_stars()</code>. However this function does have some limitations (explored below). If you run into these limitations, I would then reccomend using <code>write_mdim()</code>.</p>
+<section id="write-stars" class="level2" data-number="5.1">
+<h2 data-number="5.1" data-anchor-id="write-stars"><span class="header-section-number">5.1</span> Write Stars</h2>
+<p>The <code>write_stars()</code> function is best used when the stars object is only 2D (lat and long), while it can save 3D, it seems to struggle with storing dimensions properly (see below). The <code>write_stars()</code> function is particuarly useful when saving curvilinear data as well. However, it <strong>does not</strong> support 4D objects (x,y,depth, time) and it also does not support <strong>empty or redundant dimensions</strong> i.e.&nbsp;those with only one layer. If you try to save a 4D object, or an object with a single time step or depth layer the function will fail. To fix this we can use a different function for 4D objects, and also simply drop dimensions with 1 value first.</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>multi_day_data <span class="ot">&lt;-</span> <span class="fu">read_stars</span>(<span class="st">"multi_day_data.nc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#drop dimensions with only 1 value</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>warped_data_multi_day <span class="ot">&lt;-</span> warped_data_multi_day[drop <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co">#save the object</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_stars</span>(warped_data_multi_day, <span class="st">"regular_grid_chla.nc"</span>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co">#FYI this also works on curvilinear data just fine</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>curv_lini_cropped_data <span class="ot">&lt;-</span> curv_lini_cropped_data[drop <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="co">#save the object</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write_stars</span>(curv_lini_cropped_data, <span class="st">"curvilinear_grid_chla.nc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>However, the final issue with the <code>write_stars()</code> function is that when you read the data back in, the third dimension is read as an attribute:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">#read data back in</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>multi_day_data <span class="ot">&lt;-</span> <span class="fu">read_stars</span>(<span class="st">"regular_grid_chla.nc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Band1, Band2, Band3, </code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>multi_day_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#demonstrate the mix up</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>multi_day_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>stars object with 2 dimensions and 3 attributes
 attribute(s):
-              Min.     1st Qu.     Median         Mean   3rd Qu.  Max.
-Band1  0.006107863 0.009816753 0.01446432 2.387412e+34 0.4554679 1e+35
-Band2  0.006179249 0.010277151 0.01649703 2.387412e+34 0.4733291 1e+35
-Band3  0.005951627 0.010424919 0.01740555 2.387412e+34 0.5129399 1e+35
+              Min.    1st Qu.     Median         Mean 3rd Qu.  Max.  NA's
+Band1  0.006108753 0.01037929 0.01802355 3.051726e+34   1e+35 1e+35 47993
+Band2  0.006179249 0.01107571 0.02319600 3.051726e+34   1e+35 1e+35 47993
+Band3  0.005951695 0.01098879 0.02888991 3.051726e+34   1e+35 1e+35 47993
 dimension(s):
-  from  to offset delta         refsys x/y
-x    1 312      0     0 WGS 84 (CRS84) [x]
-y    1 314      0     0 WGS 84 (CRS84) [y]</code></pre>
+  from  to offset    delta         refsys x/y
+x    1 312  145.1   0.0135 WGS 84 (CRS84) [x]
+y    1 314 -16.84 -0.01164 WGS 84 (CRS84) [y]</code></pre>
 </div>
 </div>
-<p>I’m not sure why this happens, and it seems to also happen with the practice datasets provided with the <code>stars</code> package, so I am going to assume it is intended behavior. The fix is to grab a vector of the time dimension values before you save, then “merge” the attributes together to recreate the time dimension, and update the dimension values with the vector you got before saving. You will also have to update the attribute name again.</p>
+<p>I’m not sure why this happens, and it seems to also happen with the practice datasets provided with the <code>stars</code> package, so I am going to assume it is intended behavior. If you were deadset on using <code>write_stars()</code>, the fix is to grab a vector of the time dimension values before you save, then “merge” the attributes together to recreate the time dimension, and update the dimension values with the vector you got before saving. You will also have to update the attribute name again.</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get vector of time values</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>time_vals <span class="ot">&lt;-</span> <span class="fu">st_get_dimension_values</span>(extracted_data_multi_day, <span class="st">"time"</span>)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co">#merge "attributes" (time) back together</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>multi_day_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(multi_day_data)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co">#update time dimension values and names, then update the attribute name</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>multi_day_data <span class="ot">&lt;-</span> multi_day_data <span class="sc">|&gt;</span> </span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_dimensions</span>(<span class="dv">3</span>, time_vals,</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"time"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="st">"Chla"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get vector of time values</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>time_vals <span class="ot">&lt;-</span> <span class="fu">st_get_dimension_values</span>(warped_data_multi_day, <span class="st">"time"</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co">#merge "attributes" (time) back together</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>multi_day_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(multi_day_data)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co">#update time dimension values and names, then update the attribute name</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>multi_day_data <span class="ot">&lt;-</span> multi_day_data <span class="sc">|&gt;</span> </span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_dimensions</span>(<span class="dv">3</span>, time_vals,</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"time"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="st">"Chla"</span>)</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>multi_day_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>stars object with 3 dimensions and 1 attribute
+attribute(s):
+             Min.    1st Qu.     Median         Mean 3rd Qu.  Max.   NA's
+Chla  0.005951695 0.01083655 0.02240733 3.051726e+34   1e+35 1e+35 143979
+dimension(s):
+     from  to                  offset    delta         refsys x/y
+x       1 312                   145.1   0.0135 WGS 84 (CRS84) [x]
+y       1 314                  -16.84 -0.01164 WGS 84 (CRS84) [y]
+time    1   3 2020-03-07 02:00:00 UTC   1 days        POSIXct    </code></pre>
+</div>
 </div>
 </section>
-<section id="next-steps" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Next Steps</h1>
+<section id="write-mdim" class="level2" data-number="5.2">
+<h2 data-number="5.2" data-anchor-id="write-mdim"><span class="header-section-number">5.2</span> Write Mdim</h2>
+<p>The <code>write_mdim()</code> function is a realtively new method developed in stars that uses GDAL’s multidimensional array API. It has been designed to handle 3D and 4D objects. It works well, but throws a cacophony of warnings. These are directly from GDAL, and are usually related to the dimensions not being named how GDAL wants. However, for the most part you can just ignore the warnings:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#save the object using mdim instead</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_mdim</span>(warped_data_multi_day, <span class="st">"mdim_example.nc"</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co">#read the data back in</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>mdim_example <span class="ot">&lt;-</span> <span class="fu">read_mdim</span>(<span class="st">"mdim_example.nc"</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="co">#check that it is fine</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>mdim_example</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>stars object with 3 dimensions and 1 attribute
+attribute(s):
+                  Min.    1st Qu.     Median         Mean 3rd Qu.  Max.   NA's
+Chl_a_sum  0.005951695 0.01083655 0.02240733 3.051726e+34   1e+35 1e+35 143979
+dimension(s):
+     from  to                  offset  delta         refsys
+x       1 312                      NA     NA WGS 84 (CRS84)
+y       1 314                      NA     NA WGS 84 (CRS84)
+time    1   3 2020-03-07 01:59:28 UTC 1 days        POSIXct
+                                             values x/y
+x        [145.0845,145.098),...,[149.2833,149.2968) [x]
+y    [-16.84163,-16.85327),...,[-20.48456,-20.4962) [y]
+time                                           NULL    </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="next-steps" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Next Steps</h1>
 <p>That concludes this post today. If would like to know whats next, I would recommend checking out my other two blog posts that make use of this data:</p>
 <ul>
 <li>The <a href="../../posts/ereefs_mapping_data/index.html">mapping</a> blog, which focuses on spatial manipulation, and</li>
 <li>The <a href="../../posts/ereefs_plotting_data/index.html">plotting</a> blog, which transforms data into a friendly tabular format</li>
 </ul>
 </section>
-<section id="caveats" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Caveats</h1>
+<section id="caveats" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Caveats</h1>
 <p>As always I would like to remind you to thoughtfully consider everything you read on the internet. This blog is my own work based on my own research into the topic. There may be practices I use that aren’t considered “best practice” that I am not aware of, and I highly recommend that you do further exploration into the topic if it is something that interests you. I suggest checking out:</p>
 <ul>
 <li>This <a href="https://www.esri.com/training/catalog/5d9cd7de5edc347a71611ccc/gis-basics/">ESRI GIS Basics</a> course for a general introduction to GIS,</li>

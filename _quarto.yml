@@ -6,7 +6,7 @@ project:
   output-dir: docs
   render:
     - "*.qmd"
-    - "!posts/shiny_a_web_app_built_in_r/"
+    - "!/posts/shiny_a_web_app_built_in_r/index.qmd"
   
   resources:
     - "images/**"
@@ -82,4 +82,4 @@ format:
     number-sections: true
     anchor-sections: false
     reference-location: margin
-   
+    include-in-header: "html/fonts.html"

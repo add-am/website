@@ -1,7 +1,7 @@
 ---
 title: "Environmental Bytes for a Better Earth"
 abstract-title: ""
-abstract: "One of my favourite hobbies is learning new things, as well as helping others to do the same. On this page you can find my blogs documenting the wide range of skills I have learnt as an Environmental Data Analyst, with everything from low level R coding concepts, all the way to fully fledge data analysis pipelines, dashboards built with Tableau, and examples of SQL and database management."
+abstract: "One of my favourite hobbies is learning new things, as well as helping others to do the same. On this page you will find blogs documenting the wide range of skills I have learnt as an Environmental Data Analyst, with everything from low level R coding concepts, all the way to fully fledged environmental data analysis pipelines, interactive dashboards built in Shiny and Tableau, and examples of SQL and database management. I try to post regularly, so come back often to see what's new!"
 listing:
   type: default
   sort: date desc
@@ -10,6 +10,19 @@ listing:
   date-format: "DD MMM, YYYY"
   sort-ui: TRUE
   fields: [image, date, title, author, description]
+  contents: 
+    - "!/an_opinionated_dataframe_cleaner/index.qmd"
+    - "!/automated_output_organisation/index.qmd"
+    - "/ereefs_extracting_data/index.qmd"
+    - "!/ereefs_mapping_data/index.qmd"
+    - "!/ereefs_plotting_data/index.qmd"
+    - "!/going_loopy_for_for_loops/index.qmd"
+    - "!/learning_to_create_custom_functions/index.qmd"
+    - "!/loops_and_vectorised_functions/index.qmd"
+    - "!/making_beautiful_maps_in_r/index.qmd"
+    - "!/shiny_a_web_app_built_in_r/index.qmd"
+    - "!/tmap_migrating_to_v4/index.qmd"
+    
 format:
     html:
       body-classes: project-page
