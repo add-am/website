@@ -1,6 +1,6 @@
 ---
 title: "Going Loopy for For Loops"
-date: last-modified
+date: today
 abstract-title: "ABSTRACT"
 abstract: "Whats the point of for loops? Well for looping of course. In this post I break down how to write for loops in R, how you can easily understand them, and compelling reasons that you might want to learn them yourself!"
 image: "image.png"

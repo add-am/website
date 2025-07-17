@@ -1,6 +1,6 @@
 ---
 title: "An Epic Battle Between Vectorised Functions and For Loops"
-date: last-modified
+date: today
 abstract-title: "ABSTRACT"
 abstract: "The choice between using a vectorised function or a for loop can sometimes be a hard one. Don't know what they are? Or which one is right for which scenario? This blog is for you."
 image: "image.png"
