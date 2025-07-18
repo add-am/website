@@ -20,10 +20,25 @@ format:
   <title>Document</title>
 </head>
 
+<style>
+
+  .half-front {
+    flex: 1; /* each takes 50% */
+    display: flex;
+    flex-direction: column; /* stack children vertically */
+    justify-content: center; /* center vertically */
+    align-items: center; /* center horizontally */
+    padding: 2rem; /* optional for spacing */
+    box-sizing: border-box;
+  }
+</style>
+
 <body class="landing-body">
   <div class="landing-background">
     <div class="half">
-      <h1 style="font-size:64px;"><span id=hero-landing>Hi, Im </span><span id=hero-adam>Adam</span>.</h1>
+      <div class="hero-heading">
+        <span id="hero-landing">Hi, I'm </span><span id="hero-adam">Adam</span>.
+      </div>
       <i>An environmental data analyst decoding nature's secrets.</i>
       <br>
       <br>

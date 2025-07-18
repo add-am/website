@@ -74,6 +74,11 @@ $footer-fg:     $background !default; //The text/symbols on the bar
 }
 
 // Landing page specifics
+.hero-heading {
+  font-size: 64px;
+  text-align: center; /* if needed */
+  margin: 0; /* to kill any unwanted spacing */
+}
 
 #hero-landing {
   color: $text; //the normal text colour
