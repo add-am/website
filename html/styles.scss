@@ -21,6 +21,9 @@ $callout-color-caution: #27ced720; //a dark muted red at 20%
 $callout-color-warning: #27ced720; //a dark muted red at 20%
 $callout-color-important: #e6aa0420;  //a light orange at 20%
 
+// Set the main font family to use
+$font-family-sans-serif: "Funnel Display", sans-serif;
+
 .quarto-title, .quarto-title-banner, h1, h2, h3, h4, h5, h6, .quarto-title-meta-heading, .header-section-number {
   color:  $secondary !important; //Make the heading in the blog posts dark green
 }
@@ -71,6 +74,11 @@ $footer-fg:     $background !default; //The text/symbols on the bar
 }
 
 // Landing page specifics
+.hero-heading {
+  font-size: 64px;
+  text-align: center; /* if needed */
+  margin: 0; /* to kill any unwanted spacing */
+}
 
 #hero-landing {
   color: $text; //the normal text colour

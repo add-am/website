@@ -36,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b2cf215541eb64b86a39207ce05e25d1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-4ea7404470187c8f2c97c2b64c74e9df.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -64,6 +64,11 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&amp;display=swap" rel="stylesheet">
 
 
 </head>
@@ -137,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
         
     </div>
 <!-- main -->
-<main class="content page-columns page-full column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 style="font-size:64px;" class="title display-7"><span id="hero-landing">Hi, Im </span><span id="hero-adam">Adam</span>.</h1></header>
+<main class="content page-columns page-full column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
@@ -151,10 +156,25 @@ ul.task-list li input[type="checkbox"] {
   <title>Document</title>
 
 
+<style>
+
+  .half-front {
+    flex: 1; /* each takes 50% */
+    display: flex;
+    flex-direction: column; /* stack children vertically */
+    justify-content: center; /* center vertically */
+    align-items: center; /* center horizontally */
+    padding: 2rem; /* optional for spacing */
+    box-sizing: border-box;
+  }
+</style>
+
 
   <div class="landing-background">
     <div class="half">
-      
+      <div class="hero-heading">
+        <span id="hero-landing">Hi, I'm </span><span id="hero-adam">Adam</span>.
+      </div>
       <i>An environmental data analyst decoding nature's secrets.</i>
       <br>
       <br>

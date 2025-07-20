@@ -1,6 +1,6 @@
 ---
 title: "Automate Your Output Folders"
-date: "05/19/2025"
+date: today
 abstract-title: "ABSTRACT"
 abstract: "Got a bunch of scripts and are confused which output belongs to which script? Maybe you promised yourself your file organisation would be good this time? Never fear, this post is for you!"
 image: "image.png"

@@ -1,6 +1,6 @@
 ---
 title: "Ooh Shiny! A Web App Built in R"
-date: "05/15/2025"
+date: today
 abstract-title: "ABSTRACT"
 abstract: "Did you know you can build a web app in R? Did you know this web app could be a custom dashboard showing off your latest data analysis and results? In this blog I am learning how to create my very own Shiny web app, and I am taking you along for the ride."
 image: "image.png"
