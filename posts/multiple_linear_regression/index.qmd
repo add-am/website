@@ -1,0 +1,418 @@
+---
+title: "Multiple Linear Regression Modelling in R"
+date: "07/16/2025"
+abstract-title: "ABSTRACT"
+abstract: '...'
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+---
+
+# Introduction
+
+Today I'd like to discuss multiple linear regression. What is it? What can we use it for? How should the results be interpreted? How can we actually implement it in R? I'll be answering all of these questions and more! 
+
+Just as a quick recap, In a previous blog I wrote about using simple linear regression to predict tree height based on elevation (a completely made-up relationship). Before reading this blog I encourage you to take a look at that post as it covers some of the more basic aspects of modelling. 
+
+Ideally, by the end of this series we are both able to explain in more detail exactly what we are doing to our colleagues.
+
+# Multiple Linear Regression
+
+You might recall that linear regression uses the equation:
+
+$y = slope*x + y-intercept$
+
+It is sometimes also written as $y = mx+b$ or as $y_{i} = f(x_{i},\beta) + e_{i}$
+
+All of these mean the same thing despite their varying levels of stupidly confusing mathematical symbols. In every case:
+
+ - $y$, $y$, or $y_{i}$ means "the dependent variable" 
+ - $y-intercept$, $b$, or $e_{i}$ means "where does the line cross the y-axis", and
+ - $slope*x$, $mx$, or $f(x_{i},\beta)$ all just mean "the independent variable (x) multiplied by some constant"
+
+The equation simply represents the line that best fits all of the points in a dataset. Where the dataset contains one indepent variable (x) and one dependent variable (y). The idea of linear regression two fold:
+
+ 1. Establish if there is a relationship between x and y, and
+ 2. Use the equation to predict unknown y values based on x
+
+Multiple linear regression is the natural extension of this equation. The only thing that changes is there is now an additional independent variable, or several additional independent variables. The equation for multiple linear regression looks like this:
+
+$y_{i} = \beta_{0} + \beta_{1}*x_{i,1}+\beta_{2}*x_{i,2}+...+\beta_{n}*x_{i,n}$
+
+Again, I'll acknowledge that mathemeticians must have been on crack when they decided how to write these things. Anyway, it is essentially the same thing as above, there are now just more independent variables. Some important notes about this equation:
+
+ - We are always trying to predict y. No matter how fancy the right side of the equation is, just remember we are predicting y
+ - To predict y we input several independent variables, these are the $x_{i,n}$ terms.
+    - The "i" just means that each group of independent variables we plug in will return 1 y value. (This makes sense later)
+    - The "n" is just signifying that each "x" is unique. Note in the full equation how the first "x" is 1, then the second "x" is 2 and so on. This is important because it signifies that each of the x terms is going to be a different value.
+ - The y-intercept has been replaced with $\beta_{0}$ however the idea is still the same, it just looks more "mathy" now.
+
+Enough of that boringness though, lets get right into things. To do this I'm going to create a hypothetical dataset for us to practice on. This dataset is going to look at mouse weight as a factor of body length and tail length.
+
+## Building A Dataset
+
+The first thing we need to do is build a dataset that explores this relationship mouse weight, body length and tail length. I am going to manually create 15 of each of these values. Note that we want to show a relationship so I will deliberately try to add a trend, however to make things interesting I will make sure it is not a completely perfect reationship. We will achieve this by asking for random numbers between 0g and 1000g for weight, 0cm and 30cm for the body, and 0cm to 25cm for the tail. Then each of these will be ordered smallest to largest to create a trend:
+
+:::{.callout-note}
+I will say that the total length of the mouse is body + tail.
+:::
+
+```{r}
+
+#load libraries
+library(tidymodels)
+library(gt)
+
+#create each variable
+weight <- runif(15)*1000
+body_length <- runif(15)*30
+tail_length <- runif(15)*25
+
+#create an example dataset, note that we are being very delibrate to establish a trend by ordering each var from small to large
+mouse_df <- data.frame(
+    Weight = weight[order(weight)],
+    BodyLength = body_length[order(body_length)],
+    TailLength = tail_length[order(tail_length)])
+
+```
+
+On a plot, this is how our make believe data looks, obviously the trends are pretty easy to spot since we specifically created the data for this purpose:
+
+```{r}
+
+#create a simple plot to show the data pointsw
+plot(mouse_df)
+
+```
+
+However something to note here (that is particularly important when doing this type of analysis for real) is that the two independent variables (body length and tail length) seem to also be highly correlated. This can introduce problems in your model for a few reasons:
+
+ - redundant information, which can confuse the model and also impose limitations on the data you might be able to collect/use
+ - large swings in coefficent estimates, i.e. a small change in the data can wildly change the estimate
+ - difficulty interpreting effects, if the two variables change together it can be hard to determine which variable is a greater factor
+
+ You can address collinearity in a few different ways:
+ 
+  - If it is mild you could ignore it,
+  - If it affects variables you are not going to use in the final model you can also ignore it (or apparently if it affects control variables - i am not sure i understand that one yet)
+  - If you are using the model for predictions, rather than to find statistically significant independent variables, you can also ignore collinearity. The reason being that it does not inhibit our ability to obtain a good fit nor does it tend to affect inferences about mean responses or predictions of new observations.
+
+Our objective in this blog is to simply learn about multiple regression, plus make some predictions... So I going to ignore it :)
+
+## Building A Linear Regression Model
+
+To make a linear model using this dataset we are going to leverage the tidymodels() package, which is actually a wrapper for a collection of packages that do a wide range of things within the modelling ecosystem such as preparing data, creating models, and evaluating model performance. Making a linear model is actually pretty straight forward when we use these packages, there are only really three steps:
+
+ 1. Define the model to be used (for us this is a linear regression)
+ 2. Define the "engine" that runs the model (for us there is only one option "linear model", but for more complex models there are multiple methods of implementation)
+ 3. Fit the model, i.e. input the required variables (for us our independant variable is elevation, and our dependent variable is tree height)
+
+:::{.callout-note}
+When you are using "real" data that wasn't made up for educational purposes there are extra steps in the model building stage focused on properly preparing the data such as removing colinearity and normalsing numeric data to have a standard deviation of one. But we are not going to cover those in this example.
+:::
+
+:::{.callout-note}
+Interestingly, for a lot of models (not just linear regression) made using tidymodels packages, these general steps are almost the same. You can swap out a different model and engine while keeping the same inputs if you wanted.
+:::
+
+The code to create our linear model is as follows:
+
+```{r}
+
+#create a linear model based on the example data
+my_lin_mod <- linear_reg() |> #set up the framework
+    set_engine("lm") |> #choose the linear model method as the "engine"
+    fit(tree_height ~ elevation, data = tree_height_x_elevation_df) #dependent ~ independent, define the dataset
+
+```
+
+Next, to view the model that we just created we can use the ` tidy()` function to return a nice layout:
+
+```{r}
+
+#get a nicer view of the information inside the object
+gt(tidy(my_lin_mod))
+
+```
+
+Which, on its own, it is not really anything special - just a table. But intepreting the table can allow us to understand a bit about the linear regression model that we just created.
+
+ - The intercept estimate is the y-intercept (where the regression line crosses the y axis)
+ - The elevation estimate is the slope of the regression line
+ - Together, these define the equation of the regression line, which would be: y(pred) = `r round(tidy(my_lin_mod)[[1,2]],2)` + `r round(tidy(my_lin_mod)[[2,2]],2)`x
+
+Putting this line on the plot from earlier demonstrates this nicely:
+
+```{r}
+
+ggplot(tree_height_x_elevation_df, aes(x = elevation, y = tree_height)) +
+    geom_point(col = "#8E3B46") +
+    geom_abline(slope = 0.0517, intercept = 6.24, col = "#00252A") +
+    labs(x = "Elevation (m)", y = "Tree Height (m)") +
+    theme_bw()
+
+```
+
+Pretty cool. Note how the regression line seems to split right down the middle of all our datapoints, the close the line is to all the points, the better our model is "fitted" to the data. Speaking of model fit, we can now look at the "fit" (i.e. the accuracy) of our model by the numbers!
+
+## Evaluating a Linear Regression Model
+
+The performance of a linear model can be evaluated several ways, and we are going to touch on pretty much all of them. Firstly lets bring up the tabular summary of the model again:
+
+```{r}
+
+#re print the tabular summary of the model
+gt(tidy(my_lin_mod))
+
+```
+
+Looking at the table again there are a few additional columns to cover, these speak to the accuracy of the regression line.
+
+ - The std.error column is the standard error of the estimate, with smaller values indicating greater precision. You can think of this as how each of the observations are from the regression line.
+ - The statistic is the estimate divided by the std.error. In this case large values are often a case for some kind of statistical significance (that is to say that the std.error is much smaller than what ever the estimate value is). 
+ - The p.value is the one familar to most introductory statistics students, and represents the likelihood of randomly observing the slope (estimate for dependent variable - e.g. elevation). I.e. if elevation had no real effect on tree height (slope of the regression line = 0), then the chances of getting a slope as large as `r round(tidy(my_lin_mod)[[2,2]],2)` just from random noise are about `r round(tidy(my_lin_mod)[[2,5]],2)`%.
+
+So why is one row significant and one row not? Well the first row is talking about the intercept. It is saying, is the intercept statistically different from 0? I.e., when elevation is 0, is a tree of `r round(tidy(my_lin_mod)[[1,2]],2)`m any more or less likely than a tree of 0m? The answer is no (because the p value is high (>0.05) and the statistic is low we don't have any strong evidence to disprove this). Conversely, the second row the table is talking about the slope. It is saying, is the slope significantly different from 0? (zero being no relation) I.e. Does tree height change with elevation? The answer is yes - because the p value is low (<0.05) and the statistic is high we have strong evidence to disprove the null hypothesis. Further more, because the slope is positive, not negative, we can say that tree height increases with elevation.
+
+:::{.callout-note}
+There are additional methods for evalutation the performance of our model, but we will explore these further into the blog.
+:::
+
+## Using a Linear Regression Model
+
+Now that we have established our linear model is not useless, what is the point of the model, and how do we use it? Well point 1 is simply to be able to confirm "yes, tree height does change with elevation", congratulations we can all go home. But that is kind of boring and doesn't have a satisifying conclusion, particularly because we specifically made this data up to have that relationship. Point 2 is that we can use this model to predict the height of trees that we have never observed before.
+
+Imagine that the data I just made up is from Hill A, and just over the way, is a second hill; Hill B:
+
+![](image_1.png)
+
+Unfortunately there is no road to get to that hill and all you know about the hill is its elevation profile, but your team is particularly interested in the height of trees there. If we assume that the tree species is the same on each hill, we can use our fancy new model to predict the height of the trees on Hill B, without ever going there.
+
+This is acheived using the predict() function from the tidymodels group of packages. To use predict, obviously I need to create some elevation data for Hill B for us to predict on, so I will also do that here.
+
+```{r}
+
+#create another set of fake data, this time its is the elevation of Hill B, it will not contain tree height - we are going to predict that
+hill_b_elevation <- data.frame(elevation = c(317, 842, 569, 74, 926, 458, 13, 731, 287, 652))
+
+#use the linear model to predict values
+hill_b_output <- my_lin_mod |> 
+    predict(hill_b_elevation) #note that the column name must match what was used in the model
+
+#view the output
+gt(hill_b_output)
+
+```
+
+The output of the predict function is provided as a table, rather than a vector, because a common next step with the predicted values is to join them back to the original elevation values. Thus we will do that now:
+
+```{r}
+
+#add the columns from the original dataset onto the predicted values
+hill_b_output <- hill_b_output |> 
+    bind_cols(hill_b_elevation)
+
+#view the data
+gt(hill_b_output)
+
+```
+
+And now we have predicted tree height values for trees on Hill B, without ever having gone to that hill! Thats fun.
+
+Also here is a visualisation of the new data combined with the old data. Something that might not be clear until seeing this that each of the predictions land exactly on the regression line:
+
+```{r}
+
+#plot the original data, the line from the linear model, and the predicted dat
+ggplot() +
+    geom_point(data = tree_height_x_elevation_df, aes(x = elevation, y = tree_height), col = "#8E3B46") +
+    geom_abline(slope = 0.0517, intercept = 6.24, col = "#00252A") +
+    geom_point(data = hill_b_output, aes(x = elevation, y = .pred), col = "#E6AA04") +
+    labs(x = "Elevation (m)", y = "Tree Height (m)") +
+    theme_bw()
+
+```
+
+What probably comes to mind looking at this is "how accurate is this line?" Yes we know that the linear model proved there was a significant relationship between elevation and tree height, but how strong is the relationship? How accurate is that line on the graph?
+
+An easy way to test the accuracy of the model is to have some training data, and some testing data. Training data is data used to train the model. This data is like the red dots on our graph, for each data point we know both the height of the tree, and the elevation. The training data is shown to the model, and the regression line is created. Testing data is additional data that we withhold from the model. 
+
+Note that in the testing dataset we also know both the height of the tree, and the elevation. Generally, training data and testing data come from the same parent dataset, and each group is created randomly. The training dataset normally receives about 80% of the total data, and 20% of the data is withheld for testing, however the split could be whatever you want - if you can justify it.
+
+To split the dataset into testing and training we can use the `initial_split()` function:
+
+```{r}
+
+#create a split of the data
+t_e_split <- initial_split(tree_height_x_elevation_df)
+
+```
+
+Note that the output of this is no longer just a df, it is a rplit object. When looking at it you can see the division of rows:
+
+```{r}
+
+#view object
+t_e_split
+
+```
+
+To access specifically the training or testing data from this object you can use the `training()` or `testing()` functions:
+
+```{r}
+
+#to see the training or testing part of the data, use training() or testing()
+t_e_split |> 
+    testing() |> 
+    gt()
+
+```
+
+With our dataset split we can the create a new linear model the same way we did before, but this time we are only going to show it 80% of the data (the training data):
+
+```{r}
+
+#train a new model on just the training data
+new_lm <- linear_reg() |> 
+    set_engine("lm") |> 
+    fit(tree_height ~ elevation, data = training(t_e_split))
+
+#view new model
+gt(tidy(new_lm))
+
+```
+
+With the new model trained, we can now use it to predict values based on the testing data. Remember that in this case we know both the elevation value and the true tree height value of our testing data (this varies from the scenario above with Hill B where we only knew the elevation). The goal of predicting on values that we already know the tree height for is to see how close we get to the real answer:
+
+```{r}
+
+#test new model on just the testing data
+testing_output <- new_lm |> 
+    predict(testing(t_e_split)) |> #use model to predict tree heights based on elevation
+    bind_cols(testing(t_e_split)) #bind the full testing dataset on to the predicted outputs
+
+gt(testing_output)
+
+```
+
+Looking at the table, the .pred column is the models predictions based on the elevation, and the tree_height column is the actual height of the tree measured at that elevation. The model does seem to be broadly correct, but how correct? Thankfully the tidymodels package also gives us an easy way to compare the predicted values against the true values using the `metric()` function:
+
+```{r}
+
+#you can see accuracy metrics using the metrics() function
+testing_output_metrics <- testing_output |> 
+    metrics(truth = tree_height, estimate = .pred)
+
+gt(testing_output_metrics)
+
+```
+
+Okay cool, but what do these values actually mean?
+
+  - RMSE is Root Mean Square Error, it is the average difference between the predicted values and the actual values. So for us, it is saying our model is on average `r round(testing_output_metrics[[1,3]],2)` meters from the real value.
+  - RSQ is "R Squared", it tells us as a proportion how much of the variance in the dependent variable is predictable from the independent variable. In our case it is saying our model can explain `r round((testing_output_metrics[[2,3]])*100,2)`% of the variance in tree height using the elevation. Nice!
+  - MAE is Mean Absolute Error, it is also looking at the average distance between the predicted and actual values, but it is not squaring this number. In a nutshell this make RMSE very sensitive to large errors, but MAE treats all errors equally. In our case, the MAE is saying our model is on average `r round(testing_output_metrics[[3,3]],2)` meters from the real value. This is a fairly similar value to RMSE and thus also tells us that there are not any particularly large errors distorting the average error.
+
+# Extending the Linear Model
+
+So far we have only looked at modelling values within the original bounds of our training dataset. By that I mean, in our training data elevation ranged from 0m to 1000m, and when we have predicted values, we have only predicted values for elevations from 0m to 1000m. So what happens if we look further afield?
+
+Let's pretend there is a third hill; Hill C. This hill is huge, and has a max elevation of 5000m! Could we use our model to try and predict tree height on this hill? In theory yes, but there are important caveats and precautions that need to be taken. Let's take a look.
+
+```{r}
+
+#create hill C data
+hill_c_elevation <- data.frame(elevation = c(3172, 4821, 1398, 2784, 4502, 3567, 1210, 4935, 2123, 3894))
+
+#use the linear model to predict values
+hill_c_output <- my_lin_mod |> 
+    predict(hill_c_elevation) |> #note that the column name must match what was used in the model
+    bind_cols(hill_c_elevation)
+
+#view the output
+gt(hill_c_output)
+
+```
+
+So far so good, and here is the plot:
+
+```{r}
+
+#plot the original data, the line from the linear model, and the predicted dat
+ggplot() +
+    geom_point(data = tree_height_x_elevation_df, aes(x = elevation, y = tree_height), col = "#8E3B46") +
+    geom_abline(slope = 0.0517, intercept = 6.24, col = "#00252A") +
+    geom_point(data = hill_c_output, aes(x = elevation, y = .pred), col = "#E6AA04") +
+    labs(x = "Elevation (m)", y = "Tree Height (m)") +
+    theme_bw()
+
+```
+
+It is at this point that some warning sirens should be going off in your head. Looking at the data used to train our model (red) and the data we are predicting (orange) you can immediately see there is no overlap. Right now we are just crossing our fingers and trusting that the relationship between elevation and tree height holds true. 
+
+Let us push this a little further, the tip of Mount Everest is 8849m above sea level, lets use our model to see how tall a tree would be at the top of Mount Everest:
+
+```{r}
+
+mt_everest <- data.frame(elevation = c(8849))
+
+mt_ev_model <- my_lin_mod |> 
+    predict(mt_everest) |> 
+    bind_cols(mt_everest)
+
+gt(mt_ev_model)
+
+```
+
+This says the tree would be `r round(mt_ev_model[[1,1]],2)`m tall. Fun fact, the worlds tallest tree is 115m tall... So not only is this tree ridiculously, unrealistically, stupidly tall. It is also on the top of everest.... where nothing grows.
+
+If this is not clear enough yet, lets get truely absurb and predict on some negative elevation (i.e) moving below sea level:
+
+```{r}
+
+#create hill C data
+under_da_sea <- data.frame(elevation = c(-437, -982, -153, -764, -305, -621, -48, -889, -230, -519))
+
+#use the linear model to predict values
+under_da_sea_output <- my_lin_mod |> 
+    predict(under_da_sea) |> #note that the column name must match what was used in the model
+    bind_cols(under_da_sea)
+
+#view the output
+gt(under_da_sea_output)
+
+```
+
+```{r}
+
+#plot the original data, the line from the linear model, and the predicted dat
+ggplot() +
+    geom_point(data = tree_height_x_elevation_df, aes(x = elevation, y = tree_height), col = "#8E3B46") +
+    geom_abline(slope = 0.0517, intercept = 6.24, col = "#00252A") +
+    geom_point(data = under_da_sea_output, aes(x = elevation, y = .pred), col = "#E6AA04") +
+    labs(x = "Elevation (m)", y = "Tree Height (m)") +
+    theme_bw()
+
+```
+
+So now, our model is telling us that when we go below sea level (e.g. under water, although someplaces in the world e.g. the Netherlands are still above water even with <0. elevation) our trees should have negative height values. Does this make any sense at all? No obviously not. 
+
+This is an important lesson in the application of models, and a warning about applying your model in unfamilar scenarios.
+
+Looking at these silly scenario's has hopefully made you ask how you can address the problem/avoid it/model the scenario better. There are plenty of ways to do this;
+
+ - The most obvious of which is to deploy your model with a string of caveats. E.g. "Model only valid for Hill A and Hill B", "Model should not be used beyond 1000m", etc. etc. However, these caveats don't actually stop anyone from using the model in this way - particularly if they are like D.W from Arthur:
+
+![](image_2.png)
+
+ - The second solution is to collect more observations, the more data that we have the more "training" the model can do. This will improve the models accuracy within the bounds of the data.
+ - However, if this second solution only "*improves the models accuracy within the bounds of the data"* how do we improve the model for scenarios outside its original bounds? To do this we would need to measure trees at higher or lower elevations. This will help the model  "understand" how tall trees are at those elevations and expand the applicability of our model.
+ - Following this, we could introduce extra independent variables (remember that elevation was our original independent variable). These extra independent variables could be useful in creating a more accurate model that can predict tree height better. An example of an extra variable might be air temperature, or oxgen ratio in the atmosphere or who knows what! By introducing additional independent variables we move from a model that uses linear regression, to a model that uses multiple (linear) regression.
+ - And the final way we could improve our model is by completely changing it to a different model, such as a non-linear model. Don't worry though, we will be exploring multiple regression and non-linear regression in future blogs.
+
+# Caveats
+
+I started my career as a marine scientist - I know how to drive a boat, scuba dive, ID a fish, and pilot a drone. I am in no way a mathemetician or statitician. Point being, my explanations here are based on my own learnings outside of traditional "institutes" of knowledge such as universities. This hopefully means I can explain things for newbies in a more relatable way, but it also means that I am often learning as I go. Please consider everything you read here critically and ask if it makes sense for you, I would highly recommend further research into any topic you are interested in - YouTube has some amazing content that has helped me on my journey for this blog.
+
+Until next time! Cheers.
