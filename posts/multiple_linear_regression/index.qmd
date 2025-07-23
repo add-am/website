@@ -34,25 +34,26 @@ All of these mean the same thing despite their varying levels of stupidly confus
 The equation simply represents the line that best fits all of the points in a dataset. Where the dataset contains one indepent variable (x) and one dependent variable (y). The idea of linear regression two fold:
 
  1. Establish if there is a relationship between x and y, and
- 2. Use the equation to predict unknown y values based on x
+ 2. Use the equation to predict unknown y values based on known x values
 
-Multiple linear regression is the natural extension of this equation. The only thing that changes is there is now an additional independent variable, or several additional independent variables. The equation for multiple linear regression looks like this:
+Multiple linear regression is the natural extension of this equation. The only thing that changes is there is now additional independent variables. The equation for multiple linear regression looks like this:
 
 $y_{i} = \beta_{0} + \beta_{1}*x_{i,1}+\beta_{2}*x_{i,2}+...+\beta_{n}*x_{i,n}$
 
-Again, I'll acknowledge that mathemeticians must have been on crack when they decided how to write these things. Anyway, it is essentially the same thing as above, there are now just more independent variables. Some important notes about this equation:
+Again, I'll just acknowledge that mathematicians must have been on crack when they decided how to write these things. Anyway, it is essentially the same thing as above, there are now just more independent variables. Some important notes about this equation:
 
  - We are always trying to predict y. No matter how fancy the right side of the equation is, just remember we are predicting y
  - To predict y we input several independent variables, these are the $x_{i,n}$ terms.
-    - The "i" just means that each group of independent variables we plug in will return 1 y value. (This makes sense later)
-    - The "n" is just signifying that each "x" is unique. Note in the full equation how the first "x" is 1, then the second "x" is 2 and so on. This is important because it signifies that each of the x terms is going to be a different value.
+    - The "i" in this just means that each group of independent variables we plug in will return 1 y value - note there is also an "i" over on the left side of the equation. (This makes sense later)
+    - The "n" is just signifying that each "x" is unique. Note in the full equation how the first "x" is 1, then the second "x" is 2 and so on. This is important because it signifies that each of the x terms is going to be different.
+ - The $\beta_{1}$ terms are the constants that are applied to each independent variable. Note that these values also have numbers associated with them, it signifies that each one is matched up to a specific independent variable and each one will be different.
  - The y-intercept has been replaced with $\beta_{0}$ however the idea is still the same, it just looks more "mathy" now.
 
 Enough of that boringness though, lets get right into things. To do this I'm going to create a hypothetical dataset for us to practice on. This dataset is going to look at mouse weight as a factor of body length and tail length.
 
 ## Building A Dataset
 
-The first thing we need to do is build a dataset that explores this relationship mouse weight, body length and tail length. I am going to manually create 15 of each of these values. Note that we want to show a relationship so I will deliberately try to add a trend, however to make things interesting I will make sure it is not a completely perfect reationship. We will achieve this by asking for random numbers between 0g and 1000g for weight, 0cm and 30cm for the body, and 0cm to 25cm for the tail. Then each of these will be ordered smallest to largest to create a trend:
+The first thing we need to do is build a dataset that explores this relationship between mouse weight, body length and tail length. I am going to manually create 15 of each of these values. Note that we want to show a relationship so I will deliberately try to add a trend, however to make things interesting I will make sure it is not a completely perfect reationship. We will achieve this by asking for random numbers between 0g and 1000g for weight, 0cm and 30cm for the body, and 0cm to 25cm for the tail. Then each of these will be ordered smallest to largest to create a trend:
 
 :::{.callout-note}
 I will say that the total length of the mouse is body + tail.
@@ -86,7 +87,7 @@ plot(mouse_df)
 
 ```
 
-However something to note here (that is particularly important when doing this type of analysis for real) is that the two independent variables (body length and tail length) seem to also be highly correlated. This can introduce problems in your model for a few reasons:
+However something to note here (that is particularly important when doing this type of analysis for real) is that the two independent variables (body length and tail length) seem to also be highly correlated - aka collinearity. This can introduce problems in your model for a few reasons:
 
  - redundant information, which can confuse the model and also impose limitations on the data you might be able to collect/use
  - large swings in coefficent estimates, i.e. a small change in the data can wildly change the estimate
@@ -95,18 +96,20 @@ However something to note here (that is particularly important when doing this t
  You can address collinearity in a few different ways:
  
   - If it is mild you could ignore it,
-  - If it affects variables you are not going to use in the final model you can also ignore it (or apparently if it affects control variables - i am not sure i understand that one yet)
+  - If it affects variables you are not going to use in the final model you can also ignore it (also if it affects control variables - I'm not sure I understand that one yet)
   - If you are using the model for predictions, rather than to find statistically significant independent variables, you can also ignore collinearity. The reason being that it does not inhibit our ability to obtain a good fit nor does it tend to affect inferences about mean responses or predictions of new observations.
+  - If you **can't** ignore it, you can consider removing offending variables, combining them together, or using more advanced statistical methods I won't be covering here.
+        - In any case, If you're stuck the first thing I'd reccomending is seeking more experienced advice
 
 Our objective in this blog is to simply learn about multiple regression, plus make some predictions... So I going to ignore it :)
 
-## Building A Linear Regression Model
+## Building A Multiple Regression Model
 
-To make a linear model using this dataset we are going to leverage the tidymodels() package, which is actually a wrapper for a collection of packages that do a wide range of things within the modelling ecosystem such as preparing data, creating models, and evaluating model performance. Making a linear model is actually pretty straight forward when we use these packages, there are only really three steps:
+Making a multiple regression model is very straight forward in R - if you use the right set of packages. Following on from my first modelling blog, I am going to be leveraging the tidymodels() package, which is actually a wrapper for a collection of packages that do a wide range of things within the modelling ecosystem such as preparing data, creating models, and evaluating model performance. Thanks to this collection of packages the model creating process is reduced to three simple steps:
 
  1. Define the model to be used (for us this is a linear regression)
  2. Define the "engine" that runs the model (for us there is only one option "linear model", but for more complex models there are multiple methods of implementation)
- 3. Fit the model, i.e. input the required variables (for us our independant variable is elevation, and our dependent variable is tree height)
+ 3. Fit the model, i.e. input the required variables (the dependent variable is mouse weight, and our two independent variables are body length and tail length)
 
 :::{.callout-note}
 When you are using "real" data that wasn't made up for educational purposes there are extra steps in the model building stage focused on properly preparing the data such as removing colinearity and normalsing numeric data to have a standard deviation of one. But we are not going to cover those in this example.
@@ -116,14 +119,14 @@ When you are using "real" data that wasn't made up for educational purposes ther
 Interestingly, for a lot of models (not just linear regression) made using tidymodels packages, these general steps are almost the same. You can swap out a different model and engine while keeping the same inputs if you wanted.
 :::
 
-The code to create our linear model is as follows:
+The code to create our multiple regression model is as follows:
 
 ```{r}
 
 #create a linear model based on the example data
 my_lin_mod <- linear_reg() |> #set up the framework
     set_engine("lm") |> #choose the linear model method as the "engine"
-    fit(tree_height ~ elevation, data = tree_height_x_elevation_df) #dependent ~ independent, define the dataset
+    fit(Weight ~ BodyLength + TailLength, data = mouse_df) #dependent ~ independent(1) + independent(2) + ..., define the dataset
 
 ```
 
@@ -136,21 +139,39 @@ gt(tidy(my_lin_mod))
 
 ```
 
-Which, on its own, it is not really anything special - just a table. But intepreting the table can allow us to understand a bit about the linear regression model that we just created.
+Which, on its own, it is not really anything special - just a table. But intepreting the table can allow us to understand a bit about the multiple regression model that we just created.
 
  - The intercept estimate is the y-intercept (where the regression line crosses the y axis)
- - The elevation estimate is the slope of the regression line
- - Together, these define the equation of the regression line, which would be: y(pred) = `r round(tidy(my_lin_mod)[[1,2]],2)` + `r round(tidy(my_lin_mod)[[2,2]],2)`x
+ - The BodyLength estimate is the constant that is applied to the BodyLength input value
+ - The TailLength estimate is the constant that is applied to the TailLength input value
+        - i.e. in the equation earlier these are the $\beta_{1}$ values
+ - Together, these define the equation of the regression line, which would be: y(pred) = `r round(tidy(my_lin_mod)[[1,2]],2)` + `r round(tidy(my_lin_mod)[[2,2]],2)`$x_{BodyLength}$ + `r round(tidy(my_lin_mod)[[3,2]],2)`$x_{TailLength}$
 
 Putting this line on the plot from earlier demonstrates this nicely:
 
 ```{r}
 
-ggplot(tree_height_x_elevation_df, aes(x = elevation, y = tree_height)) +
-    geom_point(col = "#8E3B46") +
-    geom_abline(slope = 0.0517, intercept = 6.24, col = "#00252A") +
-    labs(x = "Elevation (m)", y = "Tree Height (m)") +
-    theme_bw()
+library(plotly)
+
+grid <- expand.grid(BodyLength = mouse_df$BodyLength, TailLength = mouse_df$TailLength)
+
+# Predict y on grid
+grid <- my_lin_mod |> 
+    predict(grid) |> 
+    bind_cols(grid)
+
+# Plot
+plot_ly() %>%
+  add_markers(data = mouse_df, x = ~BodyLength, y = ~TailLength, z = ~Weight,
+              marker = list(size = 4)) %>%
+  add_surface(x = ~mouse_df$BodyLength, y = ~mouse_df$TailLength,
+              z = matrix(grid$.pred, nrow = 15),
+              showscale = FALSE, name = "Regression Plane") %>%
+  layout(scene = list(
+    xaxis = list(title = "Body Length (x-axis)"),
+    yaxis = list(title = "Tail Length (y-axis)"),
+    zaxis = list(title = "Weight (z-axis)")
+  ))
 
 ```
 
