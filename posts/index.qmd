@@ -7,14 +7,14 @@ listing:
   sort: date desc
   image-height: "2cm"
   image-placeholder: "../images/place_holder.png"
-  date-format: "DD MMM, YYYY"
+  date-format: "medium"
   sort-ui: TRUE
   fields: [image, date, title, author, description]
   contents: 
     - "!/an_opinionated_dataframe_cleaner/index.qmd"
     - "!/automated_output_organisation/index.qmd"
     - "/ereefs_extracting_data/index.qmd"
-    - "!/ereefs_mapping_data/index.qmd"
+    - "/ereefs_mapping_data/index.qmd"
     - "!/ereefs_plotting_data/index.qmd"
     - "!/going_loopy_for_for_loops/index.qmd"
     - "!/learning_to_create_custom_functions/index.qmd"

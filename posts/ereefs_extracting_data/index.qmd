@@ -1,6 +1,6 @@
 ---
 title: "The Extraction of Highly Specialised Modelled Data from eReefs"
-date: today
+date: "07-21-2025"
 abstract-title: "ABSTRACT"
 abstract: 'In this blog I talk about the skills needed and the steps taken to execute the extraction of modelled environmental data such as ocean currents, nutrient loads, and water clarity from the online platform "eReefs".'
 image: "image.png"
@@ -780,7 +780,7 @@ mdim_example
 
 That concludes this post today. If would like to know whats next, I would recommend checking out my other two blog posts that make use of this data:
 
--   The mapping (TBD) blog, which focuses on spatial manipulation, and
+-   The [mapping](../ereefs_mapping_data/index.qmd) blog, which focuses on spatial manipulation, and
 -   The plotting (TBD) blog, which transforms data into a friendly tabular format
 
 # Caveats
