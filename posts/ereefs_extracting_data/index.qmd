@@ -1,6 +1,6 @@
 ---
 title: "The Extraction of Highly Specialised Modelled Data from eReefs"
-date: "21-07-2025"
+date: "07-21-2025"
 abstract-title: "ABSTRACT"
 abstract: 'In this blog I talk about the skills needed and the steps taken to execute the extraction of modelled environmental data such as ocean currents, nutrient loads, and water clarity from the online platform "eReefs".'
 image: "image.png"
