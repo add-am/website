@@ -147,11 +147,66 @@ Which, on its own, it is not really anything special - just a table. But intepre
         - i.e. in the equation earlier these are the $\beta_{1}$ values
  - Together, these define the equation of the regression line, which would be: y(pred) = `r round(tidy(my_lin_mod)[[1,2]],2)` + `r round(tidy(my_lin_mod)[[2,2]],2)`$x_{BodyLength}$ + `r round(tidy(my_lin_mod)[[3,2]],2)`$x_{TailLength}$
 
-Putting this line on the plot from earlier demonstrates this nicely:
+Unfortunately, unlike with the simple linear model, it is not easy to then visualise this equation in a graph. Thats because we are now dealing with two independent variables, and would thus need two axis to show the changes across both of these variables - resulting in a 3D graph. Furthermore, if you added a third independent variable, that equates to another dimension, a forth variable equals another dimension, and so on. 
+
+For now, we can actually produce a 3D graph to explore our data, but generally from this point onwards the way we try to visualise our data/model is going to have to change.
+
+First up, here is just the points in space, I've made this plot interactive so you can get a good understanding of the data:
 
 ```{r}
 
 library(plotly)
+
+#plot the points in 3D space
+plot_ly() |> 
+  add_markers(data = mouse_df, x = ~BodyLength, y = ~TailLength, z = ~Weight,
+              marker = list(size = 4)) |> 
+  layout(scene = list(
+    xaxis = list(title = "Body Length (x-axis)"),
+    yaxis = list(title = "Tail Length (y-axis)"),
+    zaxis = list(title = "Weight (z-axis)")
+  ))
+
+```
+
+To add the multiple regression equation to this graph we are going to have to do a bit of thinking. If we consider the simple linear model again, the way we added the equation was basically by giving the graph two points of data, and then drawing a line between the two. However, if we:
+
+ 1. Give the model some mouse body length and tail length values,
+ 2. Predict some weight values based off this information
+ 3. Then plot these new points:
+
+```{r}
+
+line_data <- data.frame(BodyLength = c(0, 5, 15, 30), TailLength = c(0, 5, 20, 25))
+
+
+# Predict y on grid
+line_data <- my_lin_mod |> 
+    predict(line_data) |> 
+    bind_cols(line_data)
+
+#plot the points in 3D space
+plot_ly() |> 
+  add_markers(data = mouse_df, x = ~BodyLength, y = ~TailLength, z = ~Weight,
+              marker = list(size = 4)) |> 
+  add_trace(data = line_data, x = ~BodyLength, y = ~TailLength, z = ~.pred,
+            line = list(color = 'rgb(44, 160, 44)', width = 1)) |> 
+  layout(scene = list(
+    xaxis = list(title = "Body Length (x-axis)"),
+    yaxis = list(title = "Tail Length (y-axis)"),
+    zaxis = list(title = "Weight (z-axis)")
+  ))
+  
+
+
+```
+
+The line looks kind of strange, it's bent, and doesn't clearly represent the "line of best fit". This is because in a multiple regression model we are no longer getting the **line** of best fit, but a higher dimensional object of best fit, in this a plane, but with extra independent variables I'm not even sure what it is called. (Once again another reason that visualising the model starts to breakdown at this point).
+
+```{r}
+
+
+
 
 grid <- expand.grid(BodyLength = mouse_df$BodyLength, TailLength = mouse_df$TailLength)
 
@@ -160,18 +215,6 @@ grid <- my_lin_mod |>
     predict(grid) |> 
     bind_cols(grid)
 
-# Plot
-plot_ly() %>%
-  add_markers(data = mouse_df, x = ~BodyLength, y = ~TailLength, z = ~Weight,
-              marker = list(size = 4)) %>%
-  add_surface(x = ~mouse_df$BodyLength, y = ~mouse_df$TailLength,
-              z = matrix(grid$.pred, nrow = 15),
-              showscale = FALSE, name = "Regression Plane") %>%
-  layout(scene = list(
-    xaxis = list(title = "Body Length (x-axis)"),
-    yaxis = list(title = "Tail Length (y-axis)"),
-    zaxis = list(title = "Weight (z-axis)")
-  ))
 
 ```
 
