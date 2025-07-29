@@ -781,7 +781,7 @@ mdim_example
 That concludes this post today. If would like to know whats next, I would recommend checking out my other two blog posts that make use of this data:
 
 -   The [mapping](../ereefs_mapping_data/index.qmd) blog, which focuses on spatial manipulation, and
--   The plotting (TBD) blog, which transforms data into a friendly tabular format
+-   The [plotting](../ereefs_plotting_data/index.qmd) blog, which transforms data into a friendly tabular format
 
 # Caveats
 

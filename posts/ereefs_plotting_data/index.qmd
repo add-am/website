@@ -1,6 +1,6 @@
 ---
 title: "Creating Beautiful Plots using eReefs Data"
-date: today
+date: "07-30-2025"
 abstract-title: "ABSTRACT"
 abstract: "In this blog I demonstrate how you can make beautiful plots in R using example data extracted from the eReefs platform. You can also follow along with any of your own data."
 image: "image.png"
