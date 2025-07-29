@@ -177,15 +177,15 @@ To add the multiple regression equation to this graph we are going to have to do
 
 ```{r}
 
+#create a dataframe of new lengths to predict weight from
 line_data <- data.frame(BodyLength = c(0, 5, 15, 30), TailLength = c(0, 5, 20, 25))
 
-
-# Predict y on grid
+# Predict weight based on this data
 line_data <- my_lin_mod |> 
     predict(line_data) |> 
     bind_cols(line_data)
 
-#plot the points in 3D space
+#plot the points in 3D space and add the prediction line based on the four predictions
 plot_ly() |> 
   add_markers(data = mouse_df, x = ~BodyLength, y = ~TailLength, z = ~Weight,
               marker = list(size = 4)) |> 
@@ -201,20 +201,52 @@ plot_ly() |>
 
 ```
 
-The line looks kind of strange, it's bent, and doesn't clearly represent the "line of best fit". This is because in a multiple regression model we are no longer getting the **line** of best fit, but a higher dimensional object of best fit, in this a plane, but with extra independent variables I'm not even sure what it is called. (Once again another reason that visualising the model starts to breakdown at this point).
+The line looks kind of strange, it's bent, and doesn't clearly represent the "line of best fit". This is because in a multiple regression model we are no longer getting the **line** of best fit, but a higher dimensional object of best fit, in this case it is a plane, but with extra independent variables I'm not even sure what it is called. (Once again another reason that visualising the model starts to breakdown at this point).
+
+The solution to this is that we need to visualise the entire "plane-of-best-fit" to see exactly where each prediction will land. To do this we need to create a grid of all possible points within the space, calculate a prediction for all of those points, then plot those points as a plane:
 
 ```{r}
 
+#sequence from the smallest body length to the largest
+body_length_vals <- seq(min(mouse_df$BodyLength), max(mouse_df$BodyLength), by = 0.05)
 
+#sequence from the smallest tail length to the largest
+tail_length_vals <- seq(min(mouse_df$TailLength), max(mouse_df$TailLength), by = 0.05)
 
+#build a grid based off every combination of these values
+grid <- expand.grid("BodyLength" = body_length_vals, "TailLength" = tail_length_vals)
 
-grid <- expand.grid(BodyLength = mouse_df$BodyLength, TailLength = mouse_df$TailLength)
+# Predict the weight based on this grid of values
+grid_predictions <- my_lin_mod |> 
+    predict(grid)
 
-# Predict y on grid
-grid <- my_lin_mod |> 
-    predict(grid) |> 
-    bind_cols(grid)
+#convert the prediction values into a matrix, the dimensions of the matrix are based on the original indepedent variables
+plane_o_b_f <- matrix(
+    data = grid_predictions$.pred,
+    nrow = length(body_length_vals), 
+    ncol = length(tail_length_vals), 
+    byrow = FALSE)
 
+#plot the points in 3D space and add the prediction line based on the four predictions
+plot_ly() |> 
+  add_markers(
+    data = mouse_df, 
+    x = ~BodyLength, 
+    y = ~TailLength, 
+    z = ~Weight,
+    marker = list(size = 4)) |> 
+  add_surface(
+    x = ~body_length_vals,
+    y = ~tail_length_vals,
+    z = ~plane_o_b_f,
+    showscale = FALSE,
+    opacity = 0.8,
+    name = "Prediction Plane") |> 
+  layout(scene = list(
+    xaxis = list(title = "Body Length (x-axis)"),
+    yaxis = list(title = "Tail Length (y-axis)"),
+    zaxis = list(title = "Weight (z-axis)")
+  ))
 
 ```
 
