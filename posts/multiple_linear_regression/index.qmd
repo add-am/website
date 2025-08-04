@@ -207,16 +207,24 @@ The solution to this is that we need to visualise the entire "plane-of-best-fit"
 
 ```{r}
 
-#sequence from the smallest body length to the largest
+
+y_int <- round(tidy(my_lin_mod)[[1,2]],2)
+bod_const <- round(tidy(my_lin_mod)[[2,2]],2)
+tai_const <- round(tidy(my_lin_mod)[[3,2]],2)
+x <- 23
+y <- 0.7
+y_int + bod_const*x + tai_const*y
+
+#sequence from the smallest body length to the largest, increaes by 0.05cm each time
 body_length_vals <- seq(min(mouse_df$BodyLength), max(mouse_df$BodyLength), by = 0.05)
 
-#sequence from the smallest tail length to the largest
+#sequence from the smallest tail length to the largest increaes by 0.05cm each time
 tail_length_vals <- seq(min(mouse_df$TailLength), max(mouse_df$TailLength), by = 0.05)
 
 #build a grid based off every combination of these values
 grid <- expand.grid("BodyLength" = body_length_vals, "TailLength" = tail_length_vals)
 
-# Predict the weight based on this grid of values
+#predict the weight based on this grid of values
 grid_predictions <- my_lin_mod |> 
     predict(grid)
 
