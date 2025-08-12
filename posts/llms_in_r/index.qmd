@@ -1,0 +1,62 @@
+---
+title: "Using Large Language Models (AI) in R"
+date: "07/16/2025"
+abstract-title: "ABSTRACT"
+abstract: '...'
+image: "image.png"
+format: html
+title-block-banner: true #This is our banner
+include-after-body: "../../html/html_footer.html" #This is our footer
+---
+
+# Introduction
+
+**L**arge **L**anguage **M**odels (LLMs) such as ChatGPT are currently the focal point of today's "Space Race", with every business and their dog either making an LLM, screaming the sky is falling about LLMs, using LLMs, or in some cases, over using LLMs. Therefore, given the immense level of noise being made, it seems prudent on both a personal and professional level that we all do our best to keep a handle on what exactly is going on in the space. This blog is my contribution, I'll be breifly covering LLMs in general, before diving into exactly how LLMs are currently being used in the R and data analytics world. I hope you learn something! I know I sure did.
+
+# What is an LLM
+
+Some **L**arge **L**anguage **M**odels (LLMs) you might recognise include "ChatGPT", "Gemini", "Claude", "Groq", and "Perplexity AI". There are tens or even hundreads of LLMs to choose from these days! An LLM is simply put: "Artificial Intelligence" (AI)... but this is an all together unsatisifying answer and skips over alot of the interesting detail. I won't go too much into the weeds here because there are countless resouces out there that do, such as:
+
+ - Matt Parker (?) Youtube
+ - Some written media
+
+However, I think the most suprising revolution for me was to discover that an LLM is just a really really really good guessing machine that just predicts the next word(s) after your prompt. This is an important distinction to make because to some people "AI" is simply magic, or they confuse it with a truely thinking, feeling robot like you would see in iRobot, or Terminator or something. By the way this kind of robot would be considered "AGI" (Artificial General Intelligence) and is considered the holy grain by AI developers.
+
+LLMs are also just one of many types of AI, although are definetly the most widely recognised. While LLMs are great for chatbots with a prompt and reply interface, other types of AI include:
+
+ - Image Classifiers (CNNs)
+ - TBD
+ - TBD
+
+Just like everyone has a different job specialising in different things, each type of AI is best suited for a particulary type of task. This also remains true within a specific type of AI, there are LLMs best suited for solving complex coding problems, LLMs for making websites, LLMs designed to help artists, and much much more. 
+
+:::{.callout-note}
+The idea of specialist LLMs is quite important and we will revisit it later.
+:::
+
+# Using LLMs
+
+These days it is unbelievably simple to use an LLM:
+
+ 1. Open Google
+ 2. Type "ChatGPT"
+ 3. Profit
+
+For the general reader this is likely to be enough 95% of the time. They can simply type in a prompt (i.e. talk to the chatbot), and get an answer that is helpful.
+
+Points to hit
+ - briefly, how can we utilise llms? focus more on chatbots in browser
+ - take a small detour to warn about hallucinations - give an example such as a simple math problem, or counting the number of a specific letter in a sentence
+ - how can we use llm's more effectively in R? Look at sticking points such as:
+    - copy pasting code in and out
+    - R being object orientated - thus being unable to "copy out" full context easily
+ - this brings us to local models Ollama, custom models with RAG (regionally(??) augmented G??), and built in models such as Copilot and CLine (Vscode extension). Look at sticking points such as:
+    - the language agnostic nature of a general chat bot
+    - still having limited access to view object context
+ - finally, explore R specific options such as the ellmer package, touch on:
+    - getting it to work (API key)
+    - very simple examples of using it
+    - a more advanced project... ?
+ - extensions on this:
+    - Ragnar R package (RAG an llm)
+    - tidymodels (built on ellmer, not sure this really does much "more" so to speak - TBD)
