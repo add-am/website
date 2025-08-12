@@ -2,7 +2,7 @@
 title: "Multiple Linear Regression Modelling in R"
 date: "07/16/2025"
 abstract-title: "ABSTRACT"
-abstract: '...'
+abstract: 'Did you know that "multiple regression" is a type of machine learning? I sure did until I started learning for this blog! Read on to find out more.'
 image: "image.png"
 format: html
 title-block-banner: true #This is our banner
@@ -31,7 +31,7 @@ All of these mean the same thing despite their varying levels of stupidly confus
  - $y-intercept$, $b$, or $e_{i}$ means "where does the line cross the y-axis", and
  - $slope*x$, $mx$, or $f(x_{i},\beta)$ all just mean "the independent variable (x) multiplied by some constant"
 
-The equation simply represents the line that best fits all of the points in a dataset. Where the dataset contains one indepent variable (x) and one dependent variable (y). The idea of linear regression two fold:
+The equation simply represents the line that best fits all of the points in a dataset. Where the dataset contains one indepent variable (x) and one dependent variable (y). The idea of linear regression is two fold:
 
  1. Establish if there is a relationship between x and y, and
  2. Use the equation to predict unknown y values based on known x values
@@ -53,7 +53,7 @@ Enough of that boringness though, lets get right into things. To do this I'm goi
 
 ## Building A Dataset
 
-The first thing we need to do is build a dataset that explores this relationship between mouse weight, body length and tail length. I am going to manually create 15 of each of these values. Note that we want to show a relationship so I will deliberately try to add a trend, however to make things interesting I will make sure it is not a completely perfect reationship. We will achieve this by asking for random numbers between 0g and 1000g for weight, 0cm and 30cm for the body, and 0cm to 25cm for the tail. Then each of these will be ordered smallest to largest to create a trend:
+The first thing we need to do is build a dataset that explores this relationship between mouse weight, body length and tail length. I am going to manually create 50 of each of these values. Note that we want to show a relationship so I will deliberately try to add a trend, however to make things interesting I will make sure it is not a completely perfect reationship. We will achieve this by asking for random numbers between 0g and 1000g for weight, 0cm and 30cm for the body, and 0cm to 25cm for the tail. Then each of these will be ordered smallest to largest to create a trend:
 
 :::{.callout-note}
 I will say that the total length of the mouse is body + tail.
@@ -114,7 +114,7 @@ Making a multiple regression model is very straight forward in R - if you use th
  3. Fit the model, i.e. input the required variables (the dependent variable is mouse weight, and our two independent variables are body length and tail length)
 
 :::{.callout-note}
-When you are using "real" data that wasn't made up for educational purposes there are extra steps in the model building stage focused on properly preparing the data such as removing colinearity and normalsing numeric data to have a standard deviation of one. But we are not going to cover those in this example.
+When you are using "real" data that wasn't made up for educational purposes there are extra steps in the model building stage focused on properly preparing the data such as removing colinearity and normalising numeric data to have a standard deviation of one. But we are not going to cover those in this example.
 :::
 
 :::{.callout-note}
@@ -177,7 +177,7 @@ plot_ly() |>
 
 ```
 
-To add the multiple regression equation to this graph we are going to have to do a bit of thinking. If we consider the simple linear model again, the way we added the equation was basically by giving the graph two points of data, predicting the results based on each point of data, and then drawing a line between the two. However, if we:
+To add the multiple regression equation to this graph we are going to have to do a bit of thinking. If we consider the simple linear model again, the way we added the equation was basically by giving the simple linear model two points of data, predicting the results based on each point of data, and then drawing a line on the graph between the two. However, if we:
 
  1. Give the model some mouse body length and tail length values,
  2. Predict some weight values based off this information
@@ -313,7 +313,7 @@ Imagine that the data I just made up is from a group of mouse from Pet Store A, 
 
 ![](image_1.png)
 
-Unfortunately this pet store is very small, and doesn't have the funds to own a scale to weight mice on. Thankfully, due to the data we obtained from Pet Store A, we can simply ask Pet Store B to measure the body and tail length of their mice and we will be able to calculate the weight of each mouse with pretty good accuracy.
+Unfortunately this pet store is very small, and doesn't have the funds to own a scale to weigh mice on. Thankfully, due to the data we obtained from Pet Store A, we can simply ask Pet Store B to measure the body and tail length of their mice and we will be able to calculate the weight of each mouse with pretty good accuracy.
 
 This is acheived using the predict() function from the tidymodels group of packages. To use predict, obviously I need to create some new mouse data for Pet Store B for us to predict on, so I will also do that here.
 
@@ -595,11 +595,11 @@ So if we are currently just assuming that the relationship is maintained, is the
 
 Alternatively, we could collect more observations such as for mice with extra long tails, and include this data into our training dataset. This can help our model be more accurate in situations where it needs to predict the body weight of mice with really long tails.
 
-Another option would be to include addition information about the mice, such as the size of their feet, or their gender. In the first case this is easily acheived without many changes to our model as size is a continous variable and we have been working with these alot. However, gender is binary - the mouse is either male or female, including this might seem a bit harder, but thankfully R will handle alot of this under the hood - we just need to make sure the data is provided as a factor. In fact, lets quickly demonstrate this:
+Another option would be to include addition information about the mice, such as the size of their feet, or their gender. In the first case this is easily acheived without any changes to our understanding of how the model works, as size is a continous variable and we have been working with these alot. However, gender is binary - the mouse is either male or female, including this might seem a bit harder, but thankfully R will handle alot of this under the hood - we just need to make sure the data is provided as a factor. In fact, lets quickly demonstrate this:
 
 ```{r}
 
-#create a vector of M/F with a bias for male mice to occur later in the vector
+#create a vector of M/F with a bias for male mice to occur later in the vector (i.e. bigger)
 first_half <- sample(c("M", "F"), 25, replace = T, prob = c(0.2, 0.8))
 second_half <- sample(c("M", "F"), 25, replace = T, prob = c(0.8, 0.2))
 gender <- c(first_half, second_half)
@@ -618,13 +618,16 @@ gt(tidy(my_lin_mod))
 
 ```
 
-Easy as that!
+Easy as that! 
 
- - Following this, we could introduce extra independent variables (remember that elevation was our original independent variable). These extra independent variables could be useful in creating a more accurate model that can predict tree height better. An example of an extra variable might be air temperature, or oxgen ratio in the atmosphere or who knows what! By introducing additional independent variables we move from a model that uses linear regression, to a model that uses multiple (linear) regression.
- - And the final way we could improve our model is by completely changing it to a different model, such as a non-linear model. Don't worry though, we will be exploring multiple regression and non-linear regression in future blogs.
+:::{.callout-note}
+Note that at this point, trying to visualise all our variables on a single plot will no longer work. Instead we would need to start facetting our variables.
+:::
+
+The final way we could improve our model is by changing the actual model that we are using. For example we could swap from a linear regression model to a non-linear model. I won't be exploring that in this post, but perhaps I will come back to the topic in the future.
 
 # Caveats
 
-I started my career as a marine scientist - I know how to drive a boat, scuba dive, ID a fish, and pilot a drone. I am in no way a mathemetician or statitician. Point being, my explanations here are based on my own learnings outside of traditional "institutes" of knowledge such as universities. This hopefully means I can explain things for newbies in a more relatable way, but it also means that I am often learning as I go. Please consider everything you read here critically and ask if it makes sense for you, I would highly recommend further research into any topic you are interested in - YouTube has some amazing content that has helped me on my journey for this blog.
+As with every post I write, please be aware that I am not an expert in this field. A lot of the work done here I have learnt along the way, or have taught myself. Hopefully my journey has been fun for you too.
 
 Until next time! Cheers.
