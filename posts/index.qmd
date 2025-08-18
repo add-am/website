@@ -17,7 +17,7 @@ listing:
     - "/ereefs_mapping_data/index.qmd"
     - "/ereefs_plotting_data/index.qmd"
     - "/going_loopy_for_for_loops/index.qmd"
-    - "!/learning_to_create_custom_functions/index.qmd"
+    - "/learning_to_create_custom_functions/index.qmd"
     - "!/loops_and_vectorised_functions/index.qmd"
     - "!/modelled_data_basics/index.qmd"
     - "!/multiple_linear_regression/index.qmd"

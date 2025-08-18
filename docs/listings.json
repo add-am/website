@@ -2,6 +2,7 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/learning_to_create_custom_functions/index.html",
       "/posts/going_loopy_for_for_loops/index.html",
       "/posts/ereefs_plotting_data/index.html",
       "/posts/ereefs_mapping_data/index.html",
