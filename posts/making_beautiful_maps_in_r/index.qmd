@@ -1,6 +1,6 @@
 ---
 title: "Making Beautiful Maps in R"
-date: today
+date: "08-26-2025"
 abstract-title: "ABSTRACT"
 abstract: "Creating maps using a programming language can be a painful process. In this blog I explore the R package 'tmap' and how it can be used to programmatically make beautiful, report ready maps, with as little stress as possible."
 image: "image.png"
@@ -50,11 +50,7 @@ There a few reason that sell it for me:
  1. I already use R, and if I do say so myself I'm quite proficient. But more importantly, it means I can transition from statistical analysis to spatial analysis seamlessly. No need to export the data and load it somewhere else.
  2. R is programmatic. A lot of the time I find that I need to create multiple maps with almost the same styling. R makes this easy due to its programmatic nature.
  3. Control. Once you understand mapping in R, the control you have over the design is immense. Almost anything can be adjusted.
- 4. Range. R has a surprisingly wide range of mapping capabilities. Did you know you can:
-    4.1 Create interactive maps
-    4.2 Create 3D maps
-    4.3 Map every type of spatial object (netcdf, raster, vector, dem, etc.)
-    4.4 Embed maps in shiny applications
+ 4. Range. R has a surprisingly wide range of mapping capabilities. Did you know you can 1) Create interactive maps. 2) Create 3D maps. 3) Map every type of spatial object (netcdf, raster, vector, dem, etc.), and 4) Embed maps in shiny applications
 
 And I'll tell you a little secret. I still use ArcGIS and QGIS, but mostly as support tools.
 
