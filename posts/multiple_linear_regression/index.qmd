@@ -309,9 +309,9 @@ There are additional methods for evalutation the performance of our model, but w
 
 Now that we have established our multiple regression model is not useless, what is the point of the model, and how do we use it? Well point 1 is simply to be able to confirm "yes, mouse weight does change with body length and tail length", congratulations we can all go home. But that is kind of boring and doesn't have a satisifying conclusion, particularly because we specifically made this data up to have that relationship. Point 2 is that we can use this model to predict the weight of mice that we have never weighed before.
 
-Imagine that the data I just made up is from a group of mouse from Pet Store A, and on the other side of the city is a second store; Pet Store B:
+Imagine that the data I just made up is from a group of mouse from Pet Store A, and on the other side of the country is a second store; Pet Store B:
 
-![](image_1.png)
+![](image_2.png)
 
 Unfortunately this pet store is very small, and doesn't have the funds to own a scale to weigh mice on. Thankfully, due to the data we obtained from Pet Store A, we can simply ask Pet Store B to measure the body and tail length of their mice and we will be able to calculate the weight of each mouse with pretty good accuracy.
 
