@@ -2,6 +2,7 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/automated_output_organisation/index.html",
       "/posts/loops_and_vectorised_functions/index.html",
       "/posts/making_beautiful_maps_in_r/index.html",
       "/posts/learning_to_create_custom_functions/index.html",

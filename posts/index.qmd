@@ -12,7 +12,7 @@ listing:
   fields: [image, date, title, author, description]
   contents: 
     - "!/an_opinionated_dataframe_cleaner/index.qmd"
-    - "!/automated_output_organisation/index.qmd"
+    - "/automated_output_organisation/index.qmd"
     - "/ereefs_extracting_data/index.qmd"
     - "/ereefs_mapping_data/index.qmd"
     - "/ereefs_plotting_data/index.qmd"
