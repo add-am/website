@@ -23,7 +23,7 @@ listing:
     - "!/multiple_linear_regression/index.qmd"
     - "/making_beautiful_maps_in_r/index.qmd"
     - "!/shiny_a_web_app_built_in_r/index.qmd"
-    - "!/tmap_migrating_to_v4/index.qmd"
+    - "/tmap_migrating_to_v4/index.qmd"
     
 format:
     html:
