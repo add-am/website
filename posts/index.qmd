@@ -11,6 +11,8 @@ listing:
   sort-ui: TRUE
   fields: [image, date, title, author, description]
   contents: 
+    - "!/shiny_a_web_app_built_in_r/index.qmd"
+    - "basic_data_manipulation/index.qmd"
     - "/an_opinionated_dataframe_cleaner/index.qmd"
     - "/automated_output_organisation/index.qmd"
     - "/ereefs_extracting_data/index.qmd"
@@ -19,10 +21,9 @@ listing:
     - "/going_loopy_for_for_loops/index.qmd"
     - "/learning_to_create_custom_functions/index.qmd"
     - "/loops_and_vectorised_functions/index.qmd"
-    - "!/modelled_data_basics/index.qmd"
-    - "!/multiple_linear_regression/index.qmd"
+    - "/modelled_data_basics/index.qmd"
+    - "/multiple_linear_regression/index.qmd"
     - "/making_beautiful_maps_in_r/index.qmd"
-    - "!/shiny_a_web_app_built_in_r/index.qmd"
     - "/tmap_migrating_to_v4/index.qmd"
     
 format:

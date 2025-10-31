@@ -2,7 +2,10 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/multiple_linear_regression/index.html",
+      "/posts/modelled_data_basics/index.html",
       "/posts/tmap_migrating_to_v4/index.html",
+      "/posts/basic_data_manipulation/index.html",
       "/posts/an_opinionated_dataframe_cleaner/index.html",
       "/posts/automated_output_organisation/index.html",
       "/posts/loops_and_vectorised_functions/index.html",
