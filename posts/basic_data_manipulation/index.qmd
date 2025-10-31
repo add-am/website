@@ -1,6 +1,6 @@
 ---
 title: "Basic Data Manipulation"
-date: "09-16-2025"
+date: "11/18/2025"
 abstract-title: "ABSTRACT"
 abstract: "Data manipulation is a foundational skill of any good scientist. The ability to filter, select, mutate, and transform is essential. While you may be introduced to these skills early on, mastering them is a long journey."
 image: "image.png"
@@ -11,7 +11,7 @@ include-after-body: "../../html/html_footer.html" #This is our footer
 
 # Introduction
 
-Welcome to "The Basics of Data". In this session we are going to really start getting into the actual coding experience within the IDE (Positron or RStudio). We will explore some basic coding actions that you will encounter when working with scientific data, this includes:
+Welcome to "The Basics of Data", after some gentle nudging I'm going to take a gigantic step back in terms of what I've been blogging about and really focus on the absolute basics. In this session we are going to explore how you would start getting into data analysis within your Integrated Developer Environment (AKA, your IDE, AKA Positron or RStudio). Specifically we will explore some basic coding actions that you will encounter when working with scientific data, this includes:
 
  - loading a dataset, 
  - filtering, 
@@ -24,9 +24,12 @@ To compliment this we will also touch on some important R concepts and coding "b
 
 # Loading Data
 
-The first thing we are going to do is load in some data. This data is **not** stored on your local machine, this data is shipped with the R programming language. When you download R you also download this dataset (along with a few others). These datasets are shipped with R for this exact purpose - testing and learning.
+The first thing we are going to do is load in some data that we can practice on. This data is **not** from your local machine, this data is shipped within a specific R package (palmerpenguins). When you install an R package, you usually also install some practice data. Actually, from the moment you download R you also download additional practice datasets. These datasets are shipped with R for this exact purpose - testing and learning.
 
 ```{r}
+
+#install the palmerpenguins package
+#install.packages("palmerpenguins")
 
 #to load in data that comes with R, we can just call the data like it is a variable
 our_data <- penguins
@@ -35,12 +38,6 @@ our_data <- penguins
 #data()
 
 ```
-
-As we have covered before, if you wanted to load data from your local machine you would need to make sure the computer knows where to look. Positron helps you with this by allowing you to open a folder and basically call it "home" for the computer. RStudio does a very similar thing using a file called an Rproject file. When you load data from your local machine you will need to use specific functions to read the data in, the function changes depending on the type of data you are trying to read in.
-
-:::{.callout-note}
-The "<-" symbol is the same as "=". To my knowledge no other language uses "<-". You can press "Alt" + "-" as a shortcut to get this symbol.
-:::
 
 # Exploring Data
 
@@ -80,6 +77,32 @@ With the data explorer you can learn pretty much anything you want. It is also i
 :::{.callout-note}
 The data explorer is emphermeral - the changes you make to the dataset are not permanent and **do not** make changes to the actual data that you have loaded in.
 :::
+
+## Loading Your Own Data
+
+We will take a quick detour here to discuss loading your own local data, this is important because loading data local data is actually one of the biggest frustrations of a budding data analyst. The crux of the issue is that if you wanted to load data from your local machine you would need to make sure the computer knows where to look, and importantly, you need to understand how pedantic computers are about finding things:
+
+ - If the file you want to load is at: "C:\User\adam\my_file.csv"
+ - and you tell the computer you want: "C:\User\adam\My_file.csv"
+
+It will fail (captial M).
+
+ - If the file you want to load is at: "C:\User\adam\sub_folder\my_file.csv"
+ - and you tell the computer you want: "C:\User\adam\my_file.csv"
+
+ It will fail (its not looking in the sub folder).
+
+ - If the file you want to load is at: "C:\User\adam\sub_folder\my_file.csv"
+ - and you tell the computer you want: "C:\User\adam\sub_folder\my_file.xlsx"
+
+ It will fail (wrong extension).
+
+  - If you use the wrong load function it will fail
+  - If you use the wrong function arguments it will fail
+  - If you use the wrong code syntax it will fail
+  - If you don't assign the output to an object it will (kind of) fail
+
+This is not intended to scare you, but rather to acknowledge how annoying computers can be, and reassure you that everyone feels this pain to begin with. So, when you load your own data pay very close attention to each of the above possibilites. You should also make heavy use of Positron "project" folders, and R "Rproject" files (google them).
 
 # Understanding Data Types
 
@@ -229,22 +252,12 @@ Conversely to filter, the `select()` function works on **columns**. As you might
 #use select on our data to only keep the species and bill length columns
 species_bill_length <- select(our_data, c(species, bill_len))
 
-test <- our_data |> 
-    select(1:3)
-
-
-```
-
-```{r}
-
-code <- "test"
-
 ```
 
 Selecting columns is very simple to understand, but there are a few tricks to learn, some of the easiest are:
 
  1. You can reverse your selection using an exclamation mark or minus symbol: `select(our_data, !c(species, bill_len))`
- 2. You can select my column index: `select(our_data, 1:3)`
+ 2. You can select by column index: `select(our_data, 1:3)`
  3. You can use helper functions to perform complex selections: `select(our_data, starts_with("prefix_"))`
 
 :::{.callout-caution}

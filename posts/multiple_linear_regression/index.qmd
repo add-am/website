@@ -1,6 +1,6 @@
 ---
 title: "Multiple Linear Regression Modelling in R"
-date: "11-11-2025"
+date: "11/11/2025"
 abstract-title: "ABSTRACT"
 abstract: 'Did you know that "multiple regression" is a type of machine learning? I sure did until I started learning for this blog! Read on to find out more.'
 image: "image.png"

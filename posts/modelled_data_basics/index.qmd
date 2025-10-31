@@ -1,6 +1,6 @@
 ---
 title: "Linear Modelling in R"
-date: "11-4-2025"
+date: "11/4/2025"
 abstract-title: "ABSTRACT"
 abstract: '"Modelling" has become a pretty big buzz word these days, almost as much as "AI". "Why cant you just use AI for that?", "Can you just model it?" The unfortunately reality is these terms are often too complicated to concisely explain, which is one of the root causes of their misuse. In this blog I go back to basics and try to build an understanding of the fundamentals that will help us all answer those tricky questions in the future.'
 image: "image.png"
