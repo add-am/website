@@ -1,6 +1,6 @@
 ---
 title: "Linear Modelling in R"
-date: "07/16/2025"
+date: "11-4-2025"
 abstract-title: "ABSTRACT"
 abstract: '"Modelling" has become a pretty big buzz word these days, almost as much as "AI". "Why cant you just use AI for that?", "Can you just model it?" The unfortunately reality is these terms are often too complicated to concisely explain, which is one of the root causes of their misuse. In this blog I go back to basics and try to build an understanding of the fundamentals that will help us all answer those tricky questions in the future.'
 image: "image.png"
@@ -128,7 +128,7 @@ There are additional methods for evalutation the performance of our model, but w
 
 ## Using a Linear Regression Model
 
-Now that we have established our linear model is not useless, what is the point of the model, and how do we use it? Well point 1 is simply to be able to confirm "yes, tree height does change with elevation", congratulations we can all go home. But that is kind of boring and doesn't have a satisifying conclusion, particularly because we specifically made this data up to have that relationship. Point 2 is that we can use this model to predict the height of trees that we have never observed before.
+Now that we have established our linear model is not useless, what is the point of the model, and how do we use it? Well point 1 is simply to be able to statistically confirm "yes, tree height does change with elevation", congratulations we can all go home. But that is kind of boring and doesn't have a satisifying conclusion, particularly because we specifically made this data up to have that relationship. Point 2 is that we can use this model to predict the height of trees that we have never observed before.
 
 Imagine that the data I just made up is from Hill A, and just over the way, is a second hill; Hill B:
 
