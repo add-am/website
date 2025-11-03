@@ -31,3 +31,5 @@ posts/ereefs_plotting_data/example_data.csv
 
 
 /.luarc.json
+
+**/*.quarto_ipynb
